@@ -21,7 +21,11 @@
         </v-row>
       </v-container>
 
-      <div>{{ startDateTime }} to {{ endDateTime }} is {{ duration }}</div>
+      <div>
+        {{ startDateTime | formatDateTime }} to
+        {{ endDateTime | formatDateTime }} is
+        {{ duration }}
+      </div>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -35,6 +39,7 @@
 import Vue from "vue";
 import DatePickerDialog from "@/components/dialogs/DatePickerDialog.vue";
 import TimePickerDialog from "@/components/dialogs/TimePickerDialog.vue";
+import { DateTime, Duration } from "luxon";
 
 export default Vue.extend({
   name: "TimeEntryForm",
@@ -54,16 +59,28 @@ export default Vue.extend({
   },
 
   computed: {
-    startDateTime(): string {
-      return `${this.startDate} ${this.startTime}`;
+    startDateTime(): DateTime | null {
+      return this.startDate.length && this.startTime.length
+        ? DateTime.fromISO(`${this.startDate}T${this.startTime}`)
+        : null;
     },
 
-    endDateTime(): string {
-      return `${this.endDate} ${this.endTime}`;
+    endDateTime(): DateTime | null {
+      return this.endDate.length && this.endTime.length
+        ? DateTime.fromISO(`${this.endDate}T${this.endTime}`)
+        : null;
     },
 
-    duration(): string {
-      return "NOT SURE";
+    duration(): number | null {
+      const start = this.startDateTime;
+      const end = this.endDateTime;
+      return start && end ? end.diff(start).as("minutes") : null;
+    }
+  },
+
+  filters: {
+    formatDateTime(dateTime: DateTime) {
+      return dateTime ? dateTime.toFormat("dd-MMM-yyyy hh:mm a") : "(null)";
     }
   },
 
