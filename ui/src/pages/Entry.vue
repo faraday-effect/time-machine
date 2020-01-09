@@ -1,11 +1,22 @@
 <template>
-  <h1>Enter Time</h1>
+  <v-container>
+    <v-row>
+      <v-col>
+        <time-entry-form />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import TimeEntryForm from "@/components/forms/TimeEntryForm.vue";
 
 export default Vue.extend({
-  name: "Entry"
+  name: "Entry",
+
+  components: {
+    TimeEntryForm
+  }
 });
 </script>

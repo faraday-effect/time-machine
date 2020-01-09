@@ -4,6 +4,12 @@
       <span>Time</span>
       <span class="font-weight-light">Machine</span>
     </v-toolbar-title>
+
+    <v-spacer />
+
+    <v-btn text href="https://github.com/faraday-effect/time-machine">
+      <v-icon color="grey">mdi-github-circle</v-icon>
+    </v-btn>
   </v-app-bar>
 </template>
 
