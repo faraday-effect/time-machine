@@ -74,7 +74,6 @@ export default Vue.extend({
           suppressSeconds: true,
           includeOffset: false
         });
-        console.log("HANDLER", this.title, val, dt, this.date, this.time);
       }
     }
   }

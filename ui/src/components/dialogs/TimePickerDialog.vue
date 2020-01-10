@@ -14,7 +14,7 @@
         v-on="on"
       />
     </template>
-    <v-time-picker v-model="time" scrollable>
+    <v-time-picker v-model="time" scrollable ampm-in-title>
       <v-spacer />
       <v-btn text color="primary" @click="isOpen = false">Cancel</v-btn>
       <v-btn text color="primary" @click="onOkay">Ok</v-btn>

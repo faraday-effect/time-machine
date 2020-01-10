@@ -11,20 +11,10 @@
             <date-time-picker title="End Time" v-model="endDateTime" />
           </v-col>
           <v-col>
-            <div class="title">Duration</div>
-            <div class="body-1">{{ duration }}</div>
+            <duration :minutes="minutes" :warning="warning" />
           </v-col>
         </v-row>
-        <v-row v-if="alert">
-          <v-alert type="info">
-            {{ alert }}
-          </v-alert>
-        </v-row>
       </v-container>
-
-      <div>
-        {{ startDateTime }} to {{ endDateTime }} is {{ duration }} minutes.
-      </div>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -38,12 +28,17 @@
 import Vue from "vue";
 import { DateTime } from "luxon";
 import DateTimePicker from "@/components/DateTimePicker.vue";
+import Duration from "@/components/Duration.vue";
+import { hoursMinutes } from "@/components/helpers";
+
+const MAX_MINUTES = 16 * 60;
 
 export default Vue.extend({
   name: "TimeEntryForm",
 
   components: {
-    DateTimePicker
+    DateTimePicker,
+    Duration
   },
 
   data() {
@@ -54,21 +49,35 @@ export default Vue.extend({
   },
 
   computed: {
-    duration(): number | null {
-      const start = DateTime.fromISO(this.startDateTime);
-      const end = DateTime.fromISO(this.endDateTime);
-      return start && end ? end.diff(start).as("minutes") : null;
+    minutes(): number {
+      if (this.startDateTime && this.endDateTime) {
+        const start = DateTime.fromISO(this.startDateTime);
+        const end = DateTime.fromISO(this.endDateTime);
+        return end.diff(start).as("minutes");
+      } else {
+        return 0;
+      }
     },
 
-    alert(): string | null {
-      if (this.duration && this.duration < 0) {
-        return "NEGATIVE DURATION";
+    warning(): string {
+      if (this.minutes === 0) {
+        return "No duration";
+      } else if (this.minutes < 0) {
+        return "End time precedes start time";
+      } else if (this.minutes > MAX_MINUTES) {
+        return `Duration (${hoursMinutes(this.minutes)}) is too long`;
+      } else {
+        return "";
       }
-      return null;
     },
 
     isValidRange(): boolean {
-      return this.startDateTime !== null && this.endDateTime !== null;
+      return (
+        this.startDateTime.length > 0 &&
+        this.endDateTime.length > 0 &&
+        this.minutes > 0 &&
+        this.minutes < MAX_MINUTES
+      );
     }
   },
 
