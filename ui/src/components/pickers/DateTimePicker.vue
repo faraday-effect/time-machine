@@ -67,14 +67,18 @@ export default Vue.extend({
 
   watch: {
     value: {
-      handler(val) {
-        const dt = DateTime.fromISO(val);
+      handler(val: string) {
+        let dt: DateTime;
+        if (val) {
+          dt = DateTime.fromISO(val);
+        } else {
+          dt = DateTime.local();
+        }
         this.date = dt.toISODate();
-        this.time = dt.toISOTime({
-          suppressSeconds: true,
-          includeOffset: false
-        });
-      }
+        this.time = dt.toFormat("HH:mm");
+        this.onUpdate();
+      },
+      immediate: true
     }
   }
 });
