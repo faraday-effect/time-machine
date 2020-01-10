@@ -5,91 +5,78 @@
       <v-container>
         <v-row>
           <v-col>
-            <date-picker-dialog v-model="startDate" label="Start date" />
+            <date-time-picker title="Start Time" v-model="startDateTime" />
           </v-col>
           <v-col>
-            <time-picker-dialog v-model="startTime" label="Start time" />
+            <date-time-picker title="End Time" v-model="endDateTime" />
+          </v-col>
+          <v-col>
+            <div class="title">Duration</div>
+            <div class="body-1">{{ duration }}</div>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <date-picker-dialog v-model="endDate" label="End date" />
-          </v-col>
-          <v-col>
-            <time-picker-dialog v-model="endTime" label="End time" />
-          </v-col>
+        <v-row v-if="alert">
+          <v-alert type="info">
+            {{ alert }}
+          </v-alert>
         </v-row>
       </v-container>
 
       <div>
-        {{ startDateTime | formatDateTime }} to
-        {{ endDateTime | formatDateTime }} is
-        {{ duration }}
+        {{ startDateTime }} to {{ endDateTime }} is {{ duration }} minutes.
       </div>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn text>Cancel</v-btn>
-      <v-btn text color="success">Submit</v-btn>
+      <v-btn text color="success" :disabled="!isValidRange">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import DatePickerDialog from "@/components/dialogs/DatePickerDialog.vue";
-import TimePickerDialog from "@/components/dialogs/TimePickerDialog.vue";
-import { DateTime, Duration } from "luxon";
+import { DateTime } from "luxon";
+import DateTimePicker from "@/components/DateTimePicker.vue";
 
 export default Vue.extend({
   name: "TimeEntryForm",
 
   components: {
-    DatePickerDialog,
-    TimePickerDialog
+    DateTimePicker
   },
 
   data() {
     return {
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: ""
+      startDateTime: "",
+      endDateTime: ""
     };
   },
 
   computed: {
-    startDateTime(): DateTime | null {
-      return this.startDate.length && this.startTime.length
-        ? DateTime.fromISO(`${this.startDate}T${this.startTime}`)
-        : null;
-    },
-
-    endDateTime(): DateTime | null {
-      return this.endDate.length && this.endTime.length
-        ? DateTime.fromISO(`${this.endDate}T${this.endTime}`)
-        : null;
-    },
-
     duration(): number | null {
-      const start = this.startDateTime;
-      const end = this.endDateTime;
+      const start = DateTime.fromISO(this.startDateTime);
+      const end = DateTime.fromISO(this.endDateTime);
       return start && end ? end.diff(start).as("minutes") : null;
-    }
-  },
+    },
 
-  filters: {
-    formatDateTime(dateTime: DateTime) {
-      return dateTime ? dateTime.toFormat("dd-MMM-yyyy hh:mm a") : "(null)";
+    alert(): string | null {
+      if (this.duration && this.duration < 0) {
+        return "NEGATIVE DURATION";
+      }
+      return null;
+    },
+
+    isValidRange(): boolean {
+      return this.startDateTime !== null && this.endDateTime !== null;
     }
   },
 
   watch: {
-    // Unless it's already set, set the end date to the start date
-    // when the start date changes.
-    startDate(val) {
-      if (!this.endDate.length) {
-        this.endDate = val;
+    // Unless it's already set, set the end to the start when the start updates.
+    startDateTime(val) {
+      if (!this.endDateTime) {
+        this.endDateTime = val;
       }
     }
   }
