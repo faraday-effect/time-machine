@@ -7,8 +7,9 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="time"
         :label="label"
+        :value="time"
+        @input="$emit('input', $event)"
         prepend-icon="mdi-calendar"
         readonly
         v-on="on"
@@ -26,7 +27,7 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "DatePickerDialog",
+  name: "TimePickerDialog",
 
   props: {
     label: {

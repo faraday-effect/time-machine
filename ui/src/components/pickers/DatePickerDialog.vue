@@ -7,8 +7,9 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="date"
         :label="label"
+        :value="date"
+        @input="$emit('input', $event)"
         prepend-icon="mdi-calendar"
         readonly
         v-on="on"

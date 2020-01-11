@@ -1,16 +1,25 @@
 <template>
   <div id="picker">
     <h1 class="title mb-4">{{ title }}</h1>
-    <date-picker-dialog label="Date" :value="date" @input="setDate" />
-    <time-picker-dialog label="Time" :value="time" @input="setTime" />
+
+    <date-picker-dialog
+      label="Date"
+      :value="value.date"
+      @input="update('date', $event)"
+    />
+
+    <time-picker-dialog
+      label="Time"
+      :value="value.time"
+      @input="update('time', $event)"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import DatePickerDialog from "@/components/dialogs/DatePickerDialog.vue";
-import TimePickerDialog from "@/components/dialogs/TimePickerDialog.vue";
-import { DateTime } from "luxon";
+import DatePickerDialog from "@/components/pickers/DatePickerDialog.vue";
+import TimePickerDialog from "@/components/pickers/TimePickerDialog.vue";
 
 export default Vue.extend({
   name: "DateTimePicker",
@@ -21,64 +30,19 @@ export default Vue.extend({
   },
 
   props: {
-    title: { type: String, required: true },
-    value: { type: String }
-  },
-
-  data() {
-    return {
-      date: "",
-      time: ""
-    };
-  },
-
-  methods: {
-    onUpdate() {
-      let iso: string;
-
-      if (this.time) {
-        if (this.date) {
-          iso = `${this.date}T${this.time}`;
-        } else {
-          iso = this.time;
-        }
-      } else {
-        iso = this.date;
-      }
-
-      if (iso) {
-        this.$emit("input", iso);
-      }
+    title: {
+      type: String,
+      required: true
     },
-
-    setDate(newDate: string) {
-      this.date = newDate;
-      this.onUpdate();
-    },
-
-    setTime(newTime: string) {
-      this.time = newTime;
-      if (!this.date) {
-        this.date = DateTime.local().toISODate();
-      }
-      this.onUpdate();
+    value: {
+      type: Object,
+      required: true
     }
   },
 
-  watch: {
-    value: {
-      handler(val: string) {
-        let dt: DateTime;
-        if (val) {
-          dt = DateTime.fromISO(val);
-        } else {
-          dt = DateTime.local();
-        }
-        this.date = dt.toISODate();
-        this.time = dt.toFormat("HH:mm");
-        this.onUpdate();
-      },
-      immediate: true
+  methods: {
+    update(key: string, value: string) {
+      this.$emit("input", { ...this.value, [key]: value });
     }
   }
 });
