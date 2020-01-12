@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 import TimeEntryForm from "@/components/forms/TimeEntryForm.vue";
-import { EntryDetails } from "@/components/pickers/entry-entities";
+import { Entry } from "@/components/pickers/entry-entities";
 
 export default Vue.extend({
   name: "Entry",
@@ -24,19 +24,13 @@ export default Vue.extend({
     return {
       entry: {
         startStop: {
-          start: {
-            date: "",
-            time: ""
-          },
-          stop: {
-            date: "",
-            time: ""
-          },
           valid: false,
+          startDateTime: "",
+          stopDateTime: "",
           minutes: 0
         },
         description: ""
-      } as EntryDetails
+      } as Entry
     };
   }
 });

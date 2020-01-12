@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form v-model="formValid">
     <v-row>
       <start-stop-picker
         :value="value.startStop"
@@ -21,7 +21,7 @@
     <v-row>
       <v-spacer />
       <v-btn text>Cancel</v-btn>
-      <v-btn text color="success">Submit</v-btn>
+      <v-btn text :disabled="!formValid" color="success">Submit</v-btn>
     </v-row>
   </v-form>
 </template>
@@ -29,7 +29,7 @@
 <script lang="ts">
 import Vue from "vue";
 import StartStopPicker from "@/components/pickers/StartStopPicker.vue";
-import { EntryDetails } from "@/components/pickers/entry-entities";
+import { Entry } from "@/components/pickers/entry-entities";
 
 export default Vue.extend({
   name: "TimeEntryForm",
@@ -39,19 +39,25 @@ export default Vue.extend({
   },
 
   props: {
-    value: {} as () => EntryDetails
+    value: {} as () => Entry
+  },
+
+  data() {
+    return {
+      formValid: false,
+
+      required: [(v: string) => !!v || "Required"]
+    };
   },
 
   methods: {
     update(key: string, value: string) {
       this.$emit("input", { ...this.value, [key]: value });
     }
-  },
-
-  data() {
-    return {
-      required: [(v: string) => !!v || "Required"]
-    };
   }
 });
 </script>
+
+/* Super helpful:
+https://simonkollross.de/posts/vuejs-using-v-model-with-objects-for-custom-components
+*/
