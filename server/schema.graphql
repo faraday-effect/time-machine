@@ -18,6 +18,12 @@ input AccountCreateInput {
   lastName: String!
 }
 
+input EntryCreateInput {
+  start: String!
+  stop: String!
+  description: String!
+}
+
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
 }
