@@ -1,0 +1,48 @@
+{
+  "$id": "https://github.com/faraday-effect",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "description": "Schema for JSON files that specify Nest-related entities",
+  "type": "object",
+  "required": ["name", "fields"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["primaryKey", "createdDate", "updatedDate", "string"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "forCreate": {
+            "type": "boolean",
+            "default": true
+          },
+          "forUpdate": {
+            "type": "boolean",
+            "default": true
+          },
+          "forDatabase": {
+            "type": "boolean",
+            "default": true
+          },
+          "forGraphQL": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    }
+  }
+}

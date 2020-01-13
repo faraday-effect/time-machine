@@ -1,0 +1,40 @@
+{
+  "name": "Entity",
+  "fields": [
+    {
+      "name": "id",
+      "type": "primaryKey",
+      "description": "Unique ID",
+      "forCreate": false
+    },
+    {
+      "name": "created",
+      "type": "createdDate",
+      "description": "When this record was created",
+      "forCreate": false,
+      "forUpdate": false
+    },
+    {
+      "name": "updated",
+      "type": "updatedDate",
+      "description": "When this record was last updated",
+      "forCreate": false,
+      "forUpdate": false
+    },
+    {
+      "name": "start",
+      "type": "string",
+      "description": "Start time"
+    },
+    {
+      "name": "stop",
+      "type": "string",
+      "description": "Stop time"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Entry description"
+    }
+  ]
+}

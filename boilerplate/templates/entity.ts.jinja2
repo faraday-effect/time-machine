@@ -1,0 +1,50 @@
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
+
+{% macro gqlField(description, nullable=false) -%}
+    @Field({ description: "{{ description }}" {{ ", nullable: true" if nullable }} })
+{%- endmacro %}
+
+@Entity()
+@ObjectType()
+export class {{ name }} {
+{%- for field in fields -%}
+{% if field.type == 'primaryKey' %}
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number;
+{% elif field.type == 'createdDate' %}
+  {{ gqlField(field.description) }}
+  @CreateDateColumn()
+  {{ field.name }}: Date;
+{% elif field.type == 'updatedDate' %}
+  {{ gqlField(field.description) }}
+  @UpdateDateColumn()
+  {{ field.name }}: Date;
+{% elif field.type == 'string' %}
+  {{ gqlField(field.description) }}
+  @Column()
+  {{ field.name }}: {{ field.type }};
+{% endif -%}
+{%- endfor -%}
+}
+
+@InputType()
+export class {{ name }}CreateInput {
+{%- for field in fields -%}
+{% if field.forCreate is not defined or field.forCreate %}
+  {{ gqlField(field.description) }}
+  {{ field.name }}: {{ field.type }};
+{% endif -%}
+{%- endfor -%}
+}
+
+@InputType()
+export class {{ name }}UpdateInput {
+{%- for field in fields -%}
+{% if field.forUpdate is not defined or field.forUpdate %}
+  {{ gqlField(field.description, nullable=field.type != 'primaryKey') }}
+  {{ field.name }}: {{ field.type }};
+{% endif -%}
+{%- endfor -%}
+}
