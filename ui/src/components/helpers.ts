@@ -27,7 +27,7 @@ export function formatDate(dt: DateTime = now()) {
 }
 
 export function formatTime(dt: DateTime = now()) {
-  return dt.toFormat("hh:mm");
+  return dt.toFormat("HH:mm");
 }
 
 export function nowDateTime() {

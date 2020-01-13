@@ -21,7 +21,7 @@
     <v-row>
       <v-spacer />
       <v-btn text>Cancel</v-btn>
-      <v-btn text :disabled="!formValid" color="success">Submit</v-btn>
+      <v-btn text :disabled="!canSubmit" color="success">Submit</v-btn>
     </v-row>
   </v-form>
 </template>
@@ -48,6 +48,12 @@ export default Vue.extend({
 
       required: [(v: string) => !!v || "Required"]
     };
+  },
+
+  computed: {
+    canSubmit(): boolean {
+      return this.formValid && this.value.startStop.valid;
+    }
   },
 
   methods: {
