@@ -18,6 +18,20 @@ input AccountCreateInput {
   lastName: String!
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Entry {
+  id: Int!
+  created: DateTime!
+  updated: DateTime!
+  start: String!
+  stop: String!
+  description: String!
+}
+
 input EntryCreateInput {
   start: String!
   stop: String!
@@ -26,8 +40,10 @@ input EntryCreateInput {
 
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
+  createEntry(createInput: EntryCreateInput!): Entry!
 }
 
 type Query {
   readAccounts: [Account!]!
+  readEntries: [Entry!]!
 }

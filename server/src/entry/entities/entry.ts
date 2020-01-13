@@ -5,9 +5,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import { Field, InputType, Int } from "type-graphql";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
 
 @Entity()
+@ObjectType()
 export class Entry {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
