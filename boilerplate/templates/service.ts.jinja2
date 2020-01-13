@@ -1,0 +1,19 @@
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { {{ name }}, {{ name }}CreateInput } from "./entities";
+import { Repository } from "typeorm";
+
+@Injectable()
+export class {{ name }}Service {
+  constructor(
+    @InjectRepository({{ name }}) private readonly {{ name|lower }}Repo: Repository<{{ name }}>
+  ) {}
+
+  create{{ name }}(createInput: {{ name }}CreateInput) {
+    return this.{{ name }}Repo.save(this.{{ name|lower }}Repo.create(createInput));
+  }
+
+  read{{ namePlural }}() {
+    return this.{{ name }}Repo.find();
+  }
+}

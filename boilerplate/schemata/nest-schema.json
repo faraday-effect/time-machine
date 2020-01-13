@@ -8,6 +8,10 @@
     "name": {
       "type": "string"
     },
+    "namePlural": {
+      "$comment": "Optional plural name; only necessary if automatic pluralization fails",
+      "type": "string"
+    },
     "fields": {
       "type": "array",
       "items": {
