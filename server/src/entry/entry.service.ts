@@ -16,4 +16,8 @@ export class EntryService {
   readEntries() {
     return this.entryRepo.find();
   }
+
+  deleteEntry(id: number) {
+    return this.entryRepo.delete(id).then(result => result.affected);
+  }
 }

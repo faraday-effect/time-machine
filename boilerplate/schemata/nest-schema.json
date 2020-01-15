@@ -3,7 +3,10 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "description": "Schema for JSON files that specify Nest-related entities",
   "type": "object",
-  "required": ["name", "fields"],
+  "required": [
+    "name",
+    "fields"
+  ],
   "properties": {
     "name": {
       "type": "string"
@@ -16,19 +19,40 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "type", "description"],
-        "additionalProperties": false,
+        "required": [
+          "name",
+          "type",
+          "description"
+        ],
         "properties": {
           "name": {
             "type": "string"
           },
-          "type": {
-            "type": "string",
-            "enum": ["primaryKey", "createdDate", "updatedDate", "string"]
-          },
           "description": {
             "type": "string"
           },
+          "oneOf": [
+            {
+              "simpleType": "string",
+              "enum": [
+                "string",
+                "boolean"
+              ]
+            },
+            {
+              "dateType": "string",
+              "enum": [
+                "createdDate",
+                "updatedDate"
+              ]
+            },
+            {
+              "primaryKey": "string"
+            },
+            {
+              "foreignKey": "string"
+            }
+          ],
           "forCreate": {
             "type": "boolean",
             "default": true
@@ -44,7 +68,8 @@
           "forGraphQL": {
             "type": "boolean",
             "default": true
-          }
+          },
+          "additionalProperties": false
         }
       }
     }

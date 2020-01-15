@@ -41,6 +41,7 @@ input EntryCreateInput {
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
   createEntry(createInput: EntryCreateInput!): Entry!
+  deleteEntry(id: Int!): Int!
 }
 
 type Query {
