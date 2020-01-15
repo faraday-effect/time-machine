@@ -38,9 +38,17 @@ input EntryCreateInput {
   description: String!
 }
 
+input EntryUpdateInput {
+  id: Int!
+  start: String
+  stop: String
+  description: String
+}
+
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
   createEntry(createInput: EntryCreateInput!): Entry!
+  updateEntry(updateInput: EntryUpdateInput!): Entry!
   deleteEntry(id: Int!): Int!
 }
 

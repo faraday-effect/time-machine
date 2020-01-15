@@ -30,7 +30,7 @@
 
     <time-entry-dialog
       v-model="dialog.visible"
-      :initial-entry="dialog.entry"
+      :initial-entry="dialog.uiEntry"
       @result="onResult"
     />
 
@@ -47,7 +47,8 @@ import { Entry } from "@/components/pickers/entry-entities";
 import {
   ALL_ENTRIES,
   CREATE_ENTRY,
-  DELETE_ENTRY
+  DELETE_ENTRY,
+  UPDATE_ENTRY
 } from "@/graphql/entries.graphql";
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
@@ -95,7 +96,7 @@ export default Vue.extend({
       dialog: {
         visible: false,
         mode: DialogMode.CREATE,
-        entry: {} as Entry
+        uiEntry: {} as Entry
       },
 
       snackbar: {
@@ -123,18 +124,8 @@ export default Vue.extend({
       }
     },
 
-    onResult(entry: Entry) {
-      if (this.dialog.mode === DialogMode.CREATE) {
-        this.createEntry(entry);
-      } else if (this.dialog.mode === DialogMode.UPDATE) {
-        this.updateEntry(entry);
-      } else {
-        throw Error(`Bogus dialog mode '${this.dialog.mode}'`);
-      }
-    },
-
     showCreateDialog() {
-      this.dialog.entry = {
+      this.dialog.uiEntry = {
         startStop: {
           valid: false,
           startDateTime: "",
@@ -144,8 +135,38 @@ export default Vue.extend({
         description: ""
       } as Entry;
 
+      this.dialog.gqlEntry = null;
+
       this.dialog.mode = DialogMode.CREATE;
       this.dialog.visible = true;
+    },
+
+    showUpdateDialog(gqlEntry: GqlEntry) {
+      this.dialog.uiEntry = {
+        startStop: {
+          valid: true,
+          startDateTime: gqlEntry.start,
+          stopDateTime: gqlEntry.stop,
+          minutes: 0
+        },
+        description: gqlEntry.description
+      } as Entry;
+
+      this.dialog.mode = DialogMode.UPDATE;
+      this.dialog.visible = true;
+    },
+
+    onResult(uiEntry: Entry) {
+      switch (this.dialog.mode) {
+        case DialogMode.CREATE:
+          this.createEntry(uiEntry);
+          break;
+        case DialogMode.UPDATE:
+          this.updateEntry(uiEntry);
+          break;
+        default:
+          throw Error(`Bogus dialog mode '${this.dialog.mode}'`);
+      }
     },
 
     createEntry(entry: Entry) {
@@ -167,25 +188,16 @@ export default Vue.extend({
         .catch(error => this.showSnackbar(error));
     },
 
-    showUpdateDialog(entry: GqlEntry) {
-      this.dialog.entry = {
-        startStop: {
-          valid: true,
-          startDateTime: entry.start,
-          stopDateTime: entry.stop,
-          minutes: 0
-        },
-        description: entry.description
-      } as Entry;
-
-      console.log("DIALOG", this.dialog);
-
-      this.dialog.mode = DialogMode.UPDATE;
-      this.dialog.visible = true;
-    },
-
-    updateEntry(entry: GqlEntry) {
-      console.log("ENTRY", entry);
+    updateEntry(uiEntry: Entry) {
+      this.$apollo
+        .mutate({
+          mutation: UPDATE_ENTRY,
+          variables: {
+            updateInput: uiEntry
+          }
+        })
+        .then(result => this.showSnackbar(JSON.stringify(result)))
+        .catch(error => this.showSnackbar(error));
     },
 
     deleteEntry(entryId: number) {

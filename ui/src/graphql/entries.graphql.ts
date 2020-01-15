@@ -26,6 +26,19 @@ export const ALL_ENTRIES = gql`
   }
 `;
 
+export const UPDATE_ENTRY = gql`
+  mutation UpdateEntry($updateInput: EntryUpdateInput!) {
+    updateEntry(updateInput: $updateInput) {
+      id
+      created
+      updated
+      start
+      stop
+      description
+    }
+  }
+`;
+
 export const DELETE_ENTRY = gql`
   mutation DeleteEntry($id: Int!) {
     deleteEntry(id: $id)

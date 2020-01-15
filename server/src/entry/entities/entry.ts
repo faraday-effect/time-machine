@@ -27,3 +27,11 @@ export class EntryCreateInput {
   @Field() stop: string;
   @Field() description: string;
 }
+
+@InputType()
+export class EntryUpdateInput {
+  @Field(() => Int) id: number;
+  @Field({ nullable: true }) start: string;
+  @Field({ nullable: true }) stop: string;
+  @Field({ nullable: true }) description: string;
+}

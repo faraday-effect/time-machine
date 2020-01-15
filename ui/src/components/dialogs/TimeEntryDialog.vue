@@ -36,7 +36,7 @@ export default Vue.extend({
   data() {
     return {
       canSubmit: false,
-      entry: this.initialEntry
+      entry: {} as Entry
     };
   },
 
@@ -48,6 +48,15 @@ export default Vue.extend({
     onSubmit() {
       this.$emit("result", this.entry);
       this.close();
+    }
+  },
+
+  watch: {
+    initialEntry: {
+      handler(newValue) {
+        this.entry = newValue;
+      },
+      immediate: true
     }
   }
 });

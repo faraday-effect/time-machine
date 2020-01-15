@@ -20,8 +20,11 @@
 import Vue from "vue";
 import DateTimePicker from "@/components/pickers/DateTimePicker.vue";
 import Duration from "@/components/Duration.vue";
-import { DateTime } from "luxon";
-import {yearsDaysHoursMinutes, minutesBetween, nowDateTime} from "@/helpers/time-and-date";
+import {
+  yearsDaysHoursMinutes,
+  minutesBetween,
+  nowDateTime
+} from "@/helpers/time-and-date";
 import {
   EntryStartStop,
   MAX_MINUTES

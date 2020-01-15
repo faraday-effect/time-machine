@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Entry, EntryCreateInput } from "./entities";
+import { Entry, EntryCreateInput, EntryUpdateInput } from "./entities";
 import { Repository } from "typeorm";
 
 @Injectable()
@@ -15,6 +15,12 @@ export class EntryService {
 
   readEntries() {
     return this.entryRepo.find();
+  }
+
+  updateEntry(updateInput: EntryUpdateInput) {
+    return this.entryRepo
+      .preload(updateInput)
+      .then(result => this.entryRepo.save(result));
   }
 
   deleteEntry(id: number) {
