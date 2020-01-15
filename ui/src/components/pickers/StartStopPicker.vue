@@ -21,7 +21,7 @@ import Vue from "vue";
 import DateTimePicker from "@/components/pickers/DateTimePicker.vue";
 import Duration from "@/components/Duration.vue";
 import { DateTime } from "luxon";
-import { hoursMinutes, nowDateTime } from "@/components/helpers";
+import {yearsDaysHoursMinutes, minutesBetween, nowDateTime} from "@/helpers/time-and-date";
 import {
   EntryStartStop,
   MAX_MINUTES
@@ -75,9 +75,7 @@ export default Vue.extend({
   computed: {
     minutes(): number {
       if (this.startDateTime && this.stopDateTime) {
-        const start = DateTime.fromISO(this.startDateTime);
-        const end = DateTime.fromISO(this.stopDateTime);
-        return end.diff(start).as("minutes");
+        return minutesBetween(this.startDateTime, this.stopDateTime);
       } else {
         return 0;
       }
@@ -89,7 +87,7 @@ export default Vue.extend({
       } else if (this.minutes < 0) {
         return "End time precedes start time";
       } else if (this.minutes > MAX_MINUTES) {
-        return `Duration (${hoursMinutes(this.minutes)}) is too long`;
+        return `Duration (${yearsDaysHoursMinutes(this.minutes)}) is too long`;
       } else {
         return "";
       }

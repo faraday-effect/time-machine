@@ -11,7 +11,7 @@ import Vue from "vue";
 import DatePickerDialog from "@/components/pickers/DatePickerDialog.vue";
 import TimePickerDialog from "@/components/pickers/TimePickerDialog.vue";
 import { DateTime } from "luxon";
-import { formatDate, formatTime } from "@/components/helpers";
+import { formatDate, formatTime } from "@/helpers/time-and-date";
 
 export default Vue.extend({
   name: "DateTimePicker",

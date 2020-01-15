@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { hoursMinutes } from "@/components/helpers";
+import { yearsDaysHoursMinutes } from "@/helpers/time-and-date";
 
 export default Vue.extend({
   name: "Duration",
@@ -25,7 +25,7 @@ export default Vue.extend({
 
   computed: {
     hrMin() {
-      return hoursMinutes(this.minutes);
+      return yearsDaysHoursMinutes(this.minutes);
     }
   }
 });
