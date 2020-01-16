@@ -12,8 +12,9 @@
           :value="value.description"
           @input="update('description', $event)"
           label="Description"
-          rows="2"
+          rows="3"
           auto-grow
+          filled
           :rules="required"
         />
       </v-col>

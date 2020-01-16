@@ -3,56 +3,40 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "description": "Schema for JSON files that specify Nest-related entities",
   "type": "object",
-  "required": [
-    "name",
-    "fields"
-  ],
+  "required": ["entity"],
   "properties": {
-    "name": {
-      "type": "string"
+    "entity": {
+      "type": "object",
+      "required": ["name", "pk"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namePlural": {
+          "$comment": "Optional plural name; only necessary if automatic pluralization fails",
+          "type": "string"
+        },
+        "pk": {
+          "type": "string"
+        }
+      }
     },
-    "namePlural": {
-      "$comment": "Optional plural name; only necessary if automatic pluralization fails",
-      "type": "string"
-    },
-    "fields": {
+    "attributes": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "name",
-          "type",
-          "description"
-        ],
+        "required": ["name", "type", "description"],
+        "additionalProperties": false,
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           },
           "description": {
             "type": "string"
           },
-          "oneOf": [
-            {
-              "simpleType": "string",
-              "enum": [
-                "string",
-                "boolean"
-              ]
-            },
-            {
-              "dateType": "string",
-              "enum": [
-                "createdDate",
-                "updatedDate"
-              ]
-            },
-            {
-              "primaryKey": "string"
-            },
-            {
-              "foreignKey": "string"
-            }
-          ],
           "forCreate": {
             "type": "boolean",
             "default": true
@@ -68,8 +52,29 @@
           "forGraphQL": {
             "type": "boolean",
             "default": true
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fk", "description", "toEntity", "type"],
+        "properties": {
+          "fk": {
+            "type": "string"
           },
-          "additionalProperties": false
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["oneToMany", "manyToOne", "manyToMany"]
+          },
+          "toEntity": {
+            "type": "string"
+          }
         }
       }
     }

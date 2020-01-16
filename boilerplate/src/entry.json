@@ -1,12 +1,9 @@
 {
-  "name": "Entry",
-  "fields": [
-    {
-      "name": "id",
-      "type": "primaryKey",
-      "description": "Unique ID",
-      "forCreate": false
-    },
+  "entity": {
+    "name": "Entry",
+    "pk": "id"
+  },
+  "attributes": [
     {
       "name": "created",
       "type": "createdDate",
@@ -35,6 +32,14 @@
       "name": "description",
       "type": "string",
       "description": "Entry description"
+    }
+  ],
+  "relationships": [
+    {
+      "fk": "fooId",
+      "description": "My bars",
+      "toEntity": "bar",
+      "type": "manyToOne"
     }
   ]
 }

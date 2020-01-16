@@ -55,26 +55,10 @@ export function minutesBetween(startDateTime: string, stopDateTime: string) {
 const FANCY_DATE_FORMAT = "ccc/dd-LLL-yyyy";
 const FANCY_TIME_FORMAT = "hh:mm a";
 
-export function fancyDateTime(dt: string) {
-  return DateTime.fromISO(dt).toFormat(
-    `${FANCY_DATE_FORMAT} ${FANCY_TIME_FORMAT}`
-  );
-}
-
 export function fancyDate(dt: string) {
   return DateTime.fromISO(dt).toFormat(FANCY_DATE_FORMAT);
 }
 
 export function fancyTime(dt: string) {
   return DateTime.fromISO(dt).toFormat(FANCY_TIME_FORMAT);
-}
-
-export function sameDate(dt1: string, dt2: string) {
-  const startObj = DateTime.fromISO(dt1).toObject();
-  const stopObj = DateTime.fromISO(dt2).toObject();
-  return (
-    startObj.year === stopObj.year &&
-    startObj.month === stopObj.month &&
-    startObj.day === stopObj.day
-  );
 }
