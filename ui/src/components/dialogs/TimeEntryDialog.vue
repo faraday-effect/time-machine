@@ -54,7 +54,7 @@ export default Vue.extend({
   watch: {
     initialEntry: {
       handler(newValue) {
-        this.entry = newValue;
+        this.entry = { ...newValue };
       },
       immediate: true
     }

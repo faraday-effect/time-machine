@@ -12,6 +12,13 @@ export interface EntryCreateInput {
   description: string;
 }
 
+export interface EntryUpdateInput {
+  id: number;
+  start?: string | null;
+  stop?: string | null;
+  description?: string | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

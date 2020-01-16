@@ -53,7 +53,10 @@ import {
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
 import { AllEntries_allEntries as GqlEntry } from "@/graphql/types/AllEntries";
-import { EntryCreateInput } from "@/graphql/types/globalTypes";
+import {
+  EntryCreateInput,
+  EntryUpdateInput
+} from "@/graphql/types/globalTypes";
 import { CreateEntry } from "@/graphql/types/CreateEntry";
 import {
   fancyDateTime,
@@ -62,6 +65,7 @@ import {
   sameDate,
   yearsDaysHoursMinutes
 } from "@/helpers/time-and-date";
+import { UpdateEntry } from "@/graphql/types/UpdateEntry";
 
 enum DialogMode {
   CREATE,
@@ -94,9 +98,10 @@ export default Vue.extend({
       ],
 
       dialog: {
-        visible: false,
+        entryId: NaN,
+        uiEntry: {} as Entry,
         mode: DialogMode.CREATE,
-        uiEntry: {} as Entry
+        visible: false
       },
 
       snackbar: {
@@ -135,13 +140,12 @@ export default Vue.extend({
         description: ""
       } as Entry;
 
-      this.dialog.gqlEntry = null;
-
       this.dialog.mode = DialogMode.CREATE;
       this.dialog.visible = true;
     },
 
     showUpdateDialog(gqlEntry: GqlEntry) {
+      this.dialog.entryId = gqlEntry.id;
       this.dialog.uiEntry = {
         startStop: {
           valid: true,
@@ -169,15 +173,15 @@ export default Vue.extend({
       }
     },
 
-    createEntry(entry: Entry) {
+    createEntry(uiEntry: Entry) {
       this.$apollo
         .mutate<CreateEntry>({
           mutation: CREATE_ENTRY,
           variables: {
             createInput: {
-              start: entry.startStop.startDateTime,
-              stop: entry.startStop.stopDateTime,
-              description: entry.description
+              start: uiEntry.startStop.startDateTime,
+              stop: uiEntry.startStop.stopDateTime,
+              description: uiEntry.description
             } as EntryCreateInput
           }
         })
@@ -190,13 +194,25 @@ export default Vue.extend({
 
     updateEntry(uiEntry: Entry) {
       this.$apollo
-        .mutate({
+        .mutate<UpdateEntry>({
           mutation: UPDATE_ENTRY,
           variables: {
-            updateInput: uiEntry
+            updateInput: {
+              id: this.dialog.entryId,
+              start: uiEntry.startStop.startDateTime,
+              stop: uiEntry.startStop.stopDateTime,
+              description: uiEntry.description
+            } as EntryUpdateInput
           }
         })
-        .then(result => this.showSnackbar(JSON.stringify(result)))
+        .then(result => {
+          const updateEntry = result.data!.updateEntry;
+          const idx = this.allEntries.findIndex(
+            elt => elt.id === updateEntry.id
+          );
+          this.$set(this.allEntries, idx, updateEntry);
+          this.showSnackbar("Updated time entry");
+        })
         .catch(error => this.showSnackbar(error));
     },
 
