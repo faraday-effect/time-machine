@@ -2,21 +2,38 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <h1 class="title">Time Log</h1>
-        <v-spacer />
-        <v-btn color="primary" @click="showCreateDialog">
-          Add Entry
-        </v-btn>
+        <v-row class="align-baseline">
+          <v-col>
+            <h1 class="title">Time Log</h1>
+          </v-col>
+          <v-col>
+            <v-switch
+              class="mr-2"
+              label="Newest first"
+              v-model="reverseOrder"
+            />
+          </v-col>
+          <v-col>
+            <v-btn color="primary" @click="showCreateDialog">
+              Add Entry
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-title>
-      <v-data-table :headers="headers" :items="allEntries">
+      <v-data-table
+        :headers="headers"
+        :items="sortedEntries"
+        :disable-sort="true"
+      >
         <template v-slot:item="{ item }">
           <tr>
-            <td>{{ item.start | formatDateTime }}</td>
-            <td>{{ maybeShortenDateTime(item) }}</td>
-            <td>{{ duration(item) }}</td>
+            <td>{{ item.start | formatDate }}</td>
+            <td>{{ item.start | formatTime }}</td>
+            <td>{{ stopTimeMaybeDate(item) }}</td>
+            <td class="text-right">{{ duration(item) }}</td>
             <td>{{ item.description }}</td>
             <td>
-              <v-btn icon class="mr-3" @click="showUpdateDialog(item)">
+              <v-btn icon class="mr-1" @click="showUpdateDialog(item)">
                 <v-icon>mdi-pencil-outline</v-icon>
               </v-btn>
               <v-btn icon @click="deleteEntry(item.id)">
@@ -59,13 +76,14 @@ import {
 } from "@/graphql/types/globalTypes";
 import { CreateEntry } from "@/graphql/types/CreateEntry";
 import {
-  fancyDateTime,
+  dayDelta,
+  fancyDate,
   fancyTime,
   minutesBetween,
-  sameDate,
   yearsDaysHoursMinutes
 } from "@/helpers/time-and-date";
 import { UpdateEntry } from "@/graphql/types/UpdateEntry";
+import { sortBy } from "lodash";
 
 enum DialogMode {
   CREATE,
@@ -89,12 +107,15 @@ export default Vue.extend({
     return {
       allEntries: [] as GqlEntry[],
 
+      reverseOrder: false,
+
       headers: [
-        { text: "Start", value: "start" },
-        { text: "Stop", value: "stop" },
-        { text: "Duration", value: "duration" },
-        { text: "Description", value: "description" },
-        { text: "Actions", value: "actions", sortable: false }
+        { text: "Date" },
+        { text: "Start" },
+        { text: "Stop" },
+        { text: "Duration", align: "end" },
+        { text: "Description", width: "50%" },
+        { text: "Actions" }
       ],
 
       dialog: {
@@ -111,6 +132,16 @@ export default Vue.extend({
     };
   },
 
+  computed: {
+    sortedEntries(): GqlEntry[] {
+      const sorted = sortBy(this.allEntries, elt => elt.start);
+      if (this.reverseOrder) {
+        return sorted.reverse();
+      }
+      return sorted;
+    }
+  },
+
   methods: {
     showSnackbar(content: string) {
       this.snackbar.content = content;
@@ -121,12 +152,13 @@ export default Vue.extend({
       return yearsDaysHoursMinutes(minutesBetween(entry.start, entry.stop));
     },
 
-    maybeShortenDateTime(entry: GqlEntry) {
-      if (sameDate(entry.start, entry.stop)) {
-        return fancyTime(entry.stop);
-      } else {
-        return fancyDateTime(entry.stop);
+    stopTimeMaybeDate(entry: GqlEntry) {
+      const result = [fancyTime(entry.stop)];
+      const delta = dayDelta(entry.start, entry.stop);
+      if (delta > 0) {
+        result.push(`(+${delta}d)`);
       }
+      return result.join(" ");
     },
 
     showCreateDialog() {
@@ -234,8 +266,12 @@ export default Vue.extend({
   },
 
   filters: {
-    formatDateTime(dt: string) {
-      return fancyDateTime(dt);
+    formatDate(dt: string) {
+      return fancyDate(dt);
+    },
+
+    formatTime(dt: string) {
+      return fancyTime(dt);
     }
   }
 });

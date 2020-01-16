@@ -35,6 +35,17 @@ export function nowDateTime() {
   return `${formatDate(dt)}T${formatTime(dt)}`;
 }
 
+function dateTimeToDateObject(dt: string) {
+  const { year, month, day } = DateTime.fromISO(dt).toObject();
+  return DateTime.fromObject({ year, month, day });
+}
+
+export function dayDelta(startDateTime: string, stopDateTime: string) {
+  const start = dateTimeToDateObject(startDateTime);
+  const stop = dateTimeToDateObject(stopDateTime);
+  return stop.diff(start, "days").days;
+}
+
 export function minutesBetween(startDateTime: string, stopDateTime: string) {
   const start = DateTime.fromISO(startDateTime);
   const end = DateTime.fromISO(stopDateTime);
