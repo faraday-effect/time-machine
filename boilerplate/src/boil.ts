@@ -1,20 +1,31 @@
-const RESOLVER_TEMPLATE = `
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { {{ name }}Service } from "./{{ name|lower }}.service";
-import { {{ name }}, {{ name }}CreateInput } from "./entities";
+import { readdirSync, readFileSync } from "fs";
+import { join } from "path";
 
-@Resolver("{{ name }}")
-export class {{ name }}Resolver {
-  constructor(private readonly {{ name|lower }}Service: {{ name }}Service) {}
+import Handlebars from "handlebars";
 
-  @Mutation(() => {{ name }})
-  create{{ name }}(@Args("createInput") createInput: {{ name }}CreateInput) {
-    return this.{{ name|lower }}Service.create{{ name }}(createInput);
-  }
+Handlebars.registerHelper("lower", (str: string) => str.toLowerCase());
 
-  @Query(() => [{{ name }}])
-  read{{ namePlural }}() {
-    return this.{{ name|lower }}Service.read{{ namePlural }}();
+type TemplateFunctionMap = Map<string, HandlebarsTemplateDelegate>;
+
+const templates: TemplateFunctionMap = new Map();
+
+for (const fileName of readdirSync(join(__dirname, "../templates"))) {
+  if (fileName.endsWith(".hbs")) {
+    const key = fileName.replace(/\..*/, "");
+    const template = readFileSync(
+      join(__dirname, "../templates", fileName),
+      "utf-8"
+    );
+    const templateFunction = Handlebars.compile(template);
+    templates.set(key, templateFunction);
   }
 }
-`;
+
+templates.forEach((templateFunction, key) => {
+  console.log("PROCESSING", key);
+  try {
+    console.log(templateFunction({ name: "Entry" }));
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+});

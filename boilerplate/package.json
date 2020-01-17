@@ -1,6 +1,11 @@
 {
   "name": "boilerplate",
   "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "Tom Nurkkala",
+    "email": "tnurkkala@cse.taylor.edu"
+  },
   "scripts": {
     "boil": "ts-node src/boil.ts"
   },
