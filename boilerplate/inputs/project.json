@@ -1,0 +1,31 @@
+{
+  "entity": {
+    "name": "Project",
+    "pk": "id",
+    "attributes": [
+      {
+        "name": "title",
+        "type": "string",
+        "description": "Project title"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "description": "Description of this project"
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "description": "Is this project active?"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "name": "entries",
+      "type": "oneToMany",
+      "toEntity": "Entry",
+      "description": "Entries for this project"
+    }
+  ]
+}

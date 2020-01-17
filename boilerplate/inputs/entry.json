@@ -1,0 +1,51 @@
+{
+  "entity": {
+    "name": "Entry",
+    "pk": "id",
+    "attributes": [
+      {
+        "name": "created",
+        "type": "created",
+        "description": "When this record was created",
+        "forCreate": false,
+        "forUpdate": false
+      },
+      {
+        "name": "updated",
+        "type": "updated",
+        "description": "When this record was last updated",
+        "forCreate": false,
+        "forUpdate": false
+      },
+      {
+        "name": "start",
+        "type": "string",
+        "description": "Start time"
+      },
+      {
+        "name": "stop",
+        "type": "string",
+        "description": "Stop time"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "description": "Entry description"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "name": "account",
+      "type": "manyToOne",
+      "toEntity": "Account",
+      "description": "Account for this entry"
+    },
+    {
+      "name": "project",
+      "type": "manyToOne",
+      "toEntity": "Project",
+      "description": "Project for this entry"
+    }
+  ]
+}

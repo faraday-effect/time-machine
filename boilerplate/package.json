@@ -1,0 +1,16 @@
+{
+  "name": "boilerplate",
+  "version": "0.0.1",
+  "scripts": {
+    "boil": "ts-node src/boil.ts"
+  },
+  "dependencies": {
+    "commander": "^4.1.0",
+    "handlebars": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.7",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}

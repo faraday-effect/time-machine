@@ -1,0 +1,83 @@
+{
+  "$id": "https://github.com/faraday-effect",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "description": "Schema for JSON files that specify entities and relationships",
+  "type": "object",
+  "required": ["entity"],
+  "properties": {
+    "entity": {
+      "type": "object",
+      "required": ["name", "pk"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namePlural": {
+          "$comment": "Optional plural name; only necessary if automatic pluralization fails",
+          "type": "string"
+        },
+        "pk": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "description"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["string", "boolean", "created", "updated"]
+              },
+              "description": {
+                "type": "string"
+              },
+              "forCreate": {
+                "type": "boolean",
+                "default": true
+              },
+              "forUpdate": {
+                "type": "boolean",
+                "default": true
+              },
+              "forDatabase": {
+                "type": "boolean",
+                "default": true
+              },
+              "forGraphQL": {
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description", "toEntity", "type"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "toEntity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["oneToMany", "manyToOne"]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

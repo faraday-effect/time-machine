@@ -1,0 +1,21 @@
+entity:
+  name: Account
+  pk: id
+  attributes:
+    - name: email
+      type: string
+      description: Email address
+    - name: password
+      type: string
+      description: Password
+    - name: firstName
+      type: string
+      description: First name
+    - name: lastName
+      type: string
+      description: Last name
+relationships:
+  - name: entries
+    type: oneToMany
+    toEntity: Entry
+    description: Entries made by this account
