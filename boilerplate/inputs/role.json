@@ -1,0 +1,27 @@
+{
+  "entity": {
+    "name": "Role",
+    "pk": "id",
+    "attributes": [
+      {
+        "name": "name",
+        "type": "string",
+        "unique": true,
+        "description": "Role name"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "description": "Description of this role"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "name": "accounts",
+      "type": "manyToManyOwner",
+      "to": "Account",
+      "description": "Accounts with this role"
+    }
+  ]
+}

@@ -114,7 +114,7 @@ export default Vue.extend({
         { text: "Start" },
         { text: "Stop" },
         { text: "Duration", align: "end" },
-        { text: "Description", width: "50%" },
+        { text: "Description", width: "40%" },
         { text: "Actions" }
       ],
 

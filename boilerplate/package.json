@@ -10,13 +10,17 @@
     "boil": "ts-node src/boil.ts"
   },
   "dependencies": {
+    "class-transformer": "^0.2.3",
     "commander": "^4.1.0",
     "figlet": "^1.2.4",
     "handlebars": "^4.7.2",
-    "pluralize": "^8.0.0"
+    "lodash": "^4.17.15",
+    "pluralize": "^8.0.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/figlet": "^1.2.0",
+    "@types/lodash": "^4.14.149",
     "@types/node": "^13.1.7",
     "@types/pluralize": "^0.0.29",
     "ts-node": "^8.6.2",

@@ -37,6 +37,12 @@
       "type": "manyToMany",
       "to": "Project",
       "description": "Projects for this account"
+    },
+    {
+      "name": "roles",
+      "type": "manyToMany",
+      "to": "Role",
+      "description": "Roles for this account"
     }
   ]
 }

@@ -36,21 +36,20 @@
               "description": {
                 "type": "string"
               },
-              "forCreate": {
-                "type": "boolean",
-                "default": true
+              "unique": {
+                "type": "boolean"
               },
-              "forUpdate": {
-                "type": "boolean",
-                "default": true
+              "isDbColumn": {
+                "type": "boolean"
               },
-              "forDatabase": {
-                "type": "boolean",
-                "default": true
+              "isGqlField": {
+                "type": "boolean"
               },
-              "forGraphQL": {
-                "type": "boolean",
-                "default": true
+              "forGqlCreate": {
+                "type": "boolean"
+              },
+              "forGqlUpdate": {
+                "type": "boolean"
               }
             }
           }

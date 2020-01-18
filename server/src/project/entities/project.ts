@@ -25,13 +25,13 @@ export class Project {
   active: boolean;
 
   @OneToMany(
-    type => Entry,
+    () => Entry,
     entry => entry.project
   )
   entries: Entry[];
 
   @ManyToMany(
-    type => Account,
+    () => Account,
     account => account.projects
   )
   @JoinTable()

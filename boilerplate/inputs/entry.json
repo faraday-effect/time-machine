@@ -29,7 +29,7 @@
       },
       {
         "name": "description",
-        "type": "string",
+        "type": "text",
         "description": "Entry description"
       }
     ]
