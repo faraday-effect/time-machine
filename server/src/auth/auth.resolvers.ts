@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
-import { AuthService } from "../auth/auth.service";
+import { AuthService } from "@/auth/auth.service";
 import { LoginCredentials, LoginResponse } from "./entities";
 
 // This should be pretty much the only unguarded resolver; it's the

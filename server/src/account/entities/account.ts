@@ -1,5 +1,4 @@
 import {
-  AfterLoad,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -9,9 +8,9 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 import { Field, ObjectType, Int, InputType } from "type-graphql";
-import { Entry } from "../../entry/entities";
-import { Project } from "../../project/entities";
-import { hashPassword } from "../../auth/crypto";
+import { Entry } from "@/entry/entities";
+import { Project } from "@/project/entities";
+import { hashPassword } from "@/auth/crypto";
 import { Role } from "./role";
 
 @Entity()
@@ -40,13 +39,13 @@ export class Account {
   }
 
   @OneToMany(
-    type => Entry,
+    () => Entry,
     entry => entry.account
   )
   entries: Entry[];
 
   @ManyToMany(
-    type => Project,
+    () => Project,
     project => project.accounts
   )
   projects: Project[];
@@ -68,7 +67,7 @@ export class AccountCreateInput {
 
 @InputType()
 export class ChangePasswordInput {
-  @Field(type => Int) accountId: number;
+  @Field(() => Int) accountId: number;
   @Field() currentPassword: string;
   @Field() newPassword: string;
 }
@@ -79,5 +78,5 @@ export class JWTClaims {
   @Field() firstName: string;
   @Field() lastName: string;
   @Field() email: string;
-  @Field(type => [Role]) roles: Role[];
+  @Field(() => [Role]) roles: Role[];
 }

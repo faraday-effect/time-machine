@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType } from "type-graphql";
-import { JWTClaims } from "../../account/entities";
+import { JWTClaims } from "@/account/entities";
 
 @InputType()
 export class LoginCredentials {
@@ -10,5 +10,5 @@ export class LoginCredentials {
 @ObjectType()
 export class LoginResponse {
   @Field() accessToken: string;
-  @Field(type => JWTClaims) claims: JWTClaims;
+  @Field(() => JWTClaims) claims: JWTClaims;
 }

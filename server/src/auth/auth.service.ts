@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { validatePassword } from "./crypto";
 import { LoginCredentials } from "./entities";
-import { AccountService } from "../account/account.service";
-import {JWTClaims} from "../account/entities";
+import { AccountService } from "@/account/account.service";
+import {JWTClaims} from "@/account/entities";
 
 @Injectable()
 export class AuthService {

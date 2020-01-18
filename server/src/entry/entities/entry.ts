@@ -7,8 +7,8 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { Project } from "../../project/entities";
-import { Account } from "../../account/entities";
+import { Project } from "@/project/entities";
+import { Account } from "@/account/entities";
 
 @Entity()
 @ObjectType()

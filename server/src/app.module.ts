@@ -5,7 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
 import { Account, Role } from "./account/entities";
 import { EntryModule } from "./entry/entry.module";
-import { Entry } from "./entry/entities/entry";
+import { Entry } from "@/entry/entities";
 import { GraphQLModule } from "@nestjs/graphql";
 import { Project } from "./project/entities";
 import { ProjectModule } from "./project/project.module";
