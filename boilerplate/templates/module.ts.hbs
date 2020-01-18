@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { {{ entityName }}Service } from "./entry.service";
-import { {{ entityName }}Resolver } from "./entry.resolver";
+import { {{ entityName }}Service } from "./{{ lower entityName }}.service";
+import { {{ entityName }}Resolver } from "./{{ lower entityName }}.resolver";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { {{ entityName }} } from "./entities";
 

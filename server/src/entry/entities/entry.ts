@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
 import { Field, InputType, Int, ObjectType } from "type-graphql";
+import { Project } from "../../project/entities";
+import { Account } from "../../account/entities";
 
 @Entity()
 @ObjectType()
@@ -19,6 +22,17 @@ export class Entry {
   @Field() @Column() start: string;
   @Field() @Column() stop: string;
   @Field() @Column("text") description: string;
+
+  @ManyToOne(
+    type => Account,
+    account => account.entries
+  )
+  account: Account;
+  @ManyToOne(
+    type => Project,
+    project => project.entries
+  )
+  project: Project;
 }
 
 @InputType()

@@ -38,13 +38,13 @@
     {
       "name": "account",
       "type": "manyToOne",
-      "toEntity": "Account",
+      "to": "Account",
       "description": "Account for this entry"
     },
     {
       "name": "project",
       "type": "manyToOne",
-      "toEntity": "Project",
+      "to": "Project",
       "description": "Project for this entry"
     }
   ]

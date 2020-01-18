@@ -50,9 +50,50 @@ type Mutation {
   createEntry(createInput: EntryCreateInput!): Entry!
   updateEntry(updateInput: EntryUpdateInput!): Entry!
   deleteEntry(id: Int!): Int!
+  createProject(createInput: ProjectCreateInput!): Project!
+  updateProject(updateInput: ProjectUpdateInput!): Project!
+  deleteProject(id: Int!): Int!
+}
+
+type Project {
+  id: Int!
+
+  """Project title"""
+  title: String!
+
+  """Description of this project"""
+  description: String!
+
+  """Is this project active?"""
+  active: Boolean
+}
+
+input ProjectCreateInput {
+  """Project title"""
+  title: String!
+
+  """Description of this project"""
+  description: String!
+
+  """Is this project active?"""
+  active: Boolean = true
+}
+
+input ProjectUpdateInput {
+  id: Int!
+
+  """Project title"""
+  title: String
+
+  """Description of this project"""
+  description: String
+
+  """Is this project active?"""
+  active: Boolean
 }
 
 type Query {
   readAccounts: [Account!]!
   readEntries: [Entry!]!
+  readProjects: [Project!]!
 }

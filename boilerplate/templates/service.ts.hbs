@@ -10,11 +10,11 @@ export class {{ entityName }}Service {
   ) {}
 
   create{{ entityName }}(createInput: {{ entityName }}CreateInput) {
-    return this.{{ entityName }}Repo.save(this.{{ lower entityName }}Repo.create(createInput));
+    return this.{{ lower entityName }}Repo.save(this.{{ lower entityName }}Repo.create(createInput));
   }
 
   read{{ entityNamePlural }}() {
-    return this.{{ entityName }}Repo.find();
+    return this.{{ lower entityName }}Repo.find();
   }
 
   update{{ entityName }}(updateInput: {{ entityName }}UpdateInput) {

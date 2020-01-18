@@ -11,7 +11,7 @@ export interface Attribute {
 export interface Relationship {
   name: string;
   type: string;
-  toEntity: string;
+  to: string;
   description: string;
 }
 

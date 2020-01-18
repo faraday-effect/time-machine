@@ -3,7 +3,7 @@ import { join } from "path";
 
 import Handlebars from "handlebars";
 import figlet from "figlet";
-import { ERSchema } from "./er-schema";
+import { Attribute, ERSchema } from "./er-schema";
 import pluralize from "pluralize";
 import program from "commander";
 
@@ -52,6 +52,14 @@ function loadSchema(name: string) {
   return schema;
 }
 
+function gqlField(attr: Attribute, nullable = false) {
+  const options = [`description: "${attr.description}"`];
+  if (nullable) {
+    options.push("nullable: true");
+  }
+  return `@Field({ ${options.join(", ")} })`;
+}
+
 function generateEntity(schema: ERSchema) {
   const objectFields: string[] = [];
   const inputFields: string[] = [];
@@ -65,33 +73,75 @@ function generateEntity(schema: ERSchema) {
   for (const attr of schema.entity.attributes) {
     switch (attr.type) {
       case "created":
-        objectFields.push(`@Field() @CreateDateColumn() ${attr.name}: Date`);
-        inputFields.push(`@Field() ${attr.name}: Date`);
+        objectFields.push(
+          `${gqlField(attr)} @CreateDateColumn() ${attr.name}: Date`
+        );
+        inputFields.push(`${gqlField(attr)}  ${attr.name}: Date`);
         break;
       case "updated":
-        objectFields.push(`@Field() @UpdateDateColumn() ${attr.name}: Date`);
-        inputFields.push(`@Field() ${attr.name}: Date`);
+        objectFields.push(
+          `${gqlField(attr)} @UpdateDateColumn() ${attr.name}: Date`
+        );
+        inputFields.push(`${gqlField(attr)}  ${attr.name}: Date`);
         break;
       case "text":
-        objectFields.push(`@Field() @Column("text") ${attr.name}: string`);
-        inputFields.push(`@Field() ${attr.name}: string`);
-        updateFields.push(`@Field({ nullable: true }) ${attr.name}: string`);
+        objectFields.push(
+          `${gqlField(attr)} @Column("text") ${attr.name}: string`
+        );
+        inputFields.push(`${gqlField(attr)}  ${attr.name}: string`);
+        updateFields.push(`${gqlField(attr, true)} ${attr.name}: string`);
         break;
       case "string":
       case "boolean":
-        objectFields.push(`@Field() @Column() ${attr.name}: ${attr.type}`);
-        inputFields.push(`@Field() ${attr.name}: ${attr.type}`);
-        updateFields.push(
-          `@Field({ nullable: true }) ${attr.name}: ${attr.type}`
+        objectFields.push(
+          `${gqlField(attr)} @Column() ${attr.name}: ${attr.type}`
         );
+        inputFields.push(`${gqlField(attr)}  ${attr.name}: ${attr.type}`);
+        updateFields.push(`${gqlField(attr, true)} ${attr.name}: ${attr.type}`);
         break;
       default:
         throw Error(`Invalid attribute '${attr}'`);
     }
   }
 
+  for (const rel of schema.relationships) {
+    const toLower = rel.to.toLowerCase();
+    const entityLower = schema.entity.name.toLowerCase();
+    const entityLowerPlural = pluralize(entityLower);
+
+    switch (rel.type) {
+      case "oneToMany":
+        objectFields.push(
+          `@OneToMany(type => ${rel.to}, ${toLower} => ${toLower}.${entityLower}) 
+          ${rel.name}: ${rel.to}[]`
+        );
+        break;
+      case "manyToOne":
+        objectFields.push(
+          `@ManyToOne(type => ${rel.to}, ${toLower} => ${toLower}.${entityLowerPlural})
+           ${rel.name}: ${rel.to}`
+        );
+        break;
+      case "manyToMany":
+        objectFields.push(
+          `@ManyToMany(type => ${rel.to}, ${toLower} => ${toLower}.${entityLowerPlural})
+           ${rel.name}: ${rel.to}[]`
+        );
+        break;
+      case "manyToManyOwner":
+        objectFields.push(
+          `@ManyToMany(type => ${rel.to}, ${toLower} => ${toLower}.${entityLowerPlural})
+          @JoinTable()
+          ${rel.name}: ${rel.to}[]`
+        );
+        break;
+      default:
+        throw Error(`Invalid relationship type '${rel.type}'`);
+    }
+  }
+
   return renderTemplate("entity", {
-    name: schema.entity.name,
+    entityName: schema.entity.name,
     objectFields: objectFields.join(";\n  "),
     inputFields: inputFields.join(";\n  "),
     updateFields: updateFields.join(";\n  ")
@@ -156,7 +206,7 @@ program
   .option("-m --module", "generate module")
   .option("-r --resolver", "generate resolver")
   .option("-s --service", "generate service")
-  .option("-a --all", "generate all", true)
+  .option("-a --all", "generate all")
   .option("-v --verbose", "be verbose")
   .parse(process.argv);
 

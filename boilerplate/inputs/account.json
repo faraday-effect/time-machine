@@ -29,8 +29,14 @@
     {
       "name": "entries",
       "type": "oneToMany",
-      "toEntity": "Entry",
+      "to": "Entry",
       "description": "Entries made by this account"
+    },
+    {
+      "name": "projects",
+      "type": "manyToMany",
+      "to": "Project",
+      "description": "Projects for this account"
     }
   ]
 }

@@ -1,5 +1,5 @@
-import {Column,CreateDateColumn,Entity,PrimaryGeneratedColumn,UpdateDateColumn} from "typeorm";
-import {Field, InputType, Int, ObjectType} from "type-graphql";
+import {Column,Entity,JoinTable,ManyToMany,OneToMany,PrimaryGeneratedColumn} from "typeorm";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
 
 @Entity()
 @ObjectType()
@@ -8,11 +8,11 @@ export class {{ entityName }} {
 }
 
 @InputType()
-export class {{ name }}CreateInput {
+export class {{ entityName }}CreateInput {
   {{ inputFields }}
 }
 
 @InputType()
-export class {{ name }}UpdateInput {
+export class {{ entityName }}UpdateInput {
   {{ updateFields }}
 }

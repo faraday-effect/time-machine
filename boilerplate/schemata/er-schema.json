@@ -61,17 +61,17 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "description", "toEntity", "type"],
+        "required": ["name", "to", "type", "description"],
         "properties": {
           "name": {
             "type": "string"
           },
-          "toEntity": {
+          "to": {
             "type": "string"
           },
           "type": {
             "type": "string",
-            "enum": ["oneToMany", "manyToOne"]
+            "enum": ["oneToMany", "manyToOne", "manyToMany", "manyToManyOwner"]
           },
           "description": {
             "type": "string"

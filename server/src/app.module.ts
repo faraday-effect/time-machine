@@ -7,6 +7,8 @@ import { Account } from "./account/entities";
 import { EntryModule } from "./entry/entry.module";
 import { Entry } from "./entry/entities/entry";
 import { GraphQLModule } from "@nestjs/graphql";
+import { Project } from "./project/entities";
+import { ProjectModule } from "./project/project.module";
 
 @Module({
   imports: [
@@ -19,10 +21,11 @@ import { GraphQLModule } from "@nestjs/graphql";
       username: "tom",
       database: "time-machine",
       synchronize: true,
-      entities: [Account, Entry]
+      entities: [Account, Entry, Project]
     }),
     AccountModule,
-    EntryModule
+    EntryModule,
+    ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService]
