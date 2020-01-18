@@ -73,7 +73,11 @@ export class Attribute {
       return "";
     }
 
-    const options = [`type: ${this.type}`];
+    const options: string[] = [];
+
+    if (this.unique) {
+      options.push("unique: true");
+    }
 
     switch (this.type) {
       case "created":
@@ -81,21 +85,19 @@ export class Attribute {
       case "updated":
         return "@UpdateDataColumn()";
       case "text":
+        options.push('type: "text"');
       case "string":
       case "boolean":
+        // TypeORM infers correct type from the declaration.
         break;
       default:
         throw Error(`Bogus type '${this.type}'`);
     }
 
-    if (this.unique) {
-      options.push("unique: true");
-    }
-
     return `@Column(${Attribute.joinOptions(options)})`;
   }
 
-  private typeDeclaration(opType: OpType) {
+  private typeDeclaration() {
     switch (this.type) {
       case "created":
       case "updated":
@@ -122,7 +124,7 @@ export class Attribute {
     return [
       this.gqlField(opType),
       this.dbColumn(opType),
-      this.typeDeclaration(opType)
+      this.typeDeclaration()
     ].join(" ");
   }
 }
@@ -195,10 +197,12 @@ export class ERSchema {
       objectFields.push(rel.decorators(this.entity.name));
     }
 
+    const JOIN_STRING = ";\n\n  ";
+
     return {
-      objectFields: objectFields.join(";\n  "),
-      inputFields: createFields.join(";\n  "),
-      updateFields: updateFields.join(";\n  ")
+      objectFields: objectFields.join(JOIN_STRING),
+      inputFields: createFields.join(JOIN_STRING),
+      updateFields: updateFields.join(JOIN_STRING)
     };
   }
 }

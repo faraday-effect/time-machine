@@ -6,7 +6,6 @@
 type Account {
   id: Int!
   email: String!
-  password: String!
   firstName: String!
   lastName: String!
 }
@@ -16,6 +15,12 @@ input AccountCreateInput {
   password: String!
   firstName: String!
   lastName: String!
+}
+
+input ChangePasswordInput {
+  accountId: Int!
+  currentPassword: String!
+  newPassword: String!
 }
 
 """
@@ -43,6 +48,14 @@ input EntryUpdateInput {
   start: String
   stop: String
   description: String
+}
+
+type JWTClaims {
+  id: Float!
+  firstName: String!
+  lastName: String!
+  email: String!
+  roles: [Role!]!
 }
 
 type Mutation {
@@ -96,4 +109,32 @@ type Query {
   readAccounts: [Account!]!
   readEntries: [Entry!]!
   readProjects: [Project!]!
+}
+
+type Role {
+  id: Int!
+
+  """Role name"""
+  name: String!
+
+  """Description of this role"""
+  description: String!
+}
+
+input RoleCreateInput {
+  """Role name"""
+  name: String!
+
+  """Description of this role"""
+  description: String!
+}
+
+input RoleUpdateInput {
+  id: Int!
+
+  """Role name"""
+  name: String
+
+  """Description of this role"""
+  description: String
 }

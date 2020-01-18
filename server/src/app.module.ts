@@ -3,7 +3,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
-import { Account } from "./account/entities";
+import { Account, Role } from "./account/entities";
 import { EntryModule } from "./entry/entry.module";
 import { Entry } from "./entry/entities/entry";
 import { GraphQLModule } from "@nestjs/graphql";
@@ -21,7 +21,7 @@ import { ProjectModule } from "./project/project.module";
       username: "tom",
       database: "time-machine",
       synchronize: true,
-      entities: [Account, Entry, Project]
+      entities: [Account, Entry, Project, Role]
     }),
     AccountModule,
     EntryModule,

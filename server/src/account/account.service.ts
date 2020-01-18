@@ -16,4 +16,8 @@ export class AccountService {
   readAccounts() {
     return this.accountRepo.find();
   }
+
+  findAccountByEmail(email: string) {
+    return this.accountRepo.findOne({ email });
+  }
 }

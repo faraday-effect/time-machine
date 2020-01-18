@@ -12,6 +12,7 @@ import { Field, ObjectType, Int, InputType } from "type-graphql";
 import { Entry } from "../../entry/entities";
 import { Project } from "../../project/entities";
 import { hashPassword } from "../../auth/crypto";
+import { Role } from "./role";
 
 @Entity()
 @ObjectType()
@@ -49,6 +50,12 @@ export class Account {
     project => project.accounts
   )
   projects: Project[];
+
+  @ManyToMany(
+    () => Role,
+    role => role.accounts
+  )
+  roles: Role[];
 }
 
 @InputType()
@@ -57,4 +64,20 @@ export class AccountCreateInput {
   @Field() password: string;
   @Field() firstName: string;
   @Field() lastName: string;
+}
+
+@InputType()
+export class ChangePasswordInput {
+  @Field(type => Int) accountId: number;
+  @Field() currentPassword: string;
+  @Field() newPassword: string;
+}
+
+@ObjectType()
+export class JWTClaims {
+  @Field() id: number;
+  @Field() firstName: string;
+  @Field() lastName: string;
+  @Field() email: string;
+  @Field(type => [Role]) roles: Role[];
 }
