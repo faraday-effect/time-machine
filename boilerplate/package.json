@@ -11,10 +11,14 @@
   },
   "dependencies": {
     "commander": "^4.1.0",
-    "handlebars": "^4.7.2"
+    "figlet": "^1.2.4",
+    "handlebars": "^4.7.2",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
+    "@types/figlet": "^1.2.0",
     "@types/node": "^13.1.7",
+    "@types/pluralize": "^0.0.29",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   }
