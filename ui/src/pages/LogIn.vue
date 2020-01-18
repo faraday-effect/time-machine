@@ -4,7 +4,7 @@
       <v-col cols="12" sm="8" md="6">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Log in</v-toolbar-title>
+            <v-toolbar-title>Log In</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -41,10 +41,12 @@
   </v-container>
 </template>
 
-<script>
-// import { LOGIN_MUTATION } from "../graphql/users.graphql";
+<script lang="ts">
+import Vue from "vue";
 
-export default {
+export default Vue.extend({
+  name: "LogIn",
+
   data() {
     return {
       email: "",
@@ -58,31 +60,10 @@ export default {
   },
 
   methods: {
-    showSnackbar(text) {
+    showSnackbar(text: string) {
       this.snackbar.text = text;
       this.snackbar.show = true;
-    },
-
-    logIn() {
-      this.$apollo
-        .mutate({
-          // mutation: LOGIN_MUTATION,
-          variables: {
-            credentials: {
-              email: this.email,
-              password: this.password
-            }
-          }
-        })
-        .then(response => {
-          this.$store.commit("logIn", response.data.login);
-          this.$router.push({ name: "letters" });
-        })
-        .catch(() => {
-          this.$store.commit("logOut");
-          this.showSnackbar("Invalid credentials; please try again.");
-        });
     }
   }
-};
+});
 </script>

@@ -59,10 +59,19 @@ export class Account {
 
 @InputType()
 export class AccountCreateInput {
-  @Field() email: string;
-  @Field() password: string;
-  @Field() firstName: string;
-  @Field() lastName: string;
+  @Field({ description: "Email address" }) email: string;
+  @Field({ description: "Password" }) password: string;
+  @Field({ description: "First name" }) firstName: string;
+  @Field({ description: "Last name" }) lastName: string;
+}
+
+@InputType()
+export class AccountUpdateInput {
+  @Field(() => Int) id: number;
+  @Field({ description: "Email address", nullable: true }) email: string;
+  @Field({ description: "Password", nullable: true }) password: string;
+  @Field({ description: "First name", nullable: true }) firstName: string;
+  @Field({ description: "Last name", nullable: true }) lastName: string;
 }
 
 @InputType()

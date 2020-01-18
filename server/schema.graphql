@@ -11,10 +11,33 @@ type Account {
 }
 
 input AccountCreateInput {
+  """Email address"""
   email: String!
+
+  """Password"""
   password: String!
+
+  """First name"""
   firstName: String!
+
+  """Last name"""
   lastName: String!
+}
+
+input AccountUpdateInput {
+  id: Int!
+
+  """Email address"""
+  email: String
+
+  """Password"""
+  password: String
+
+  """First name"""
+  firstName: String
+
+  """Last name"""
+  lastName: String
 }
 
 input ChangePasswordInput {
@@ -60,6 +83,8 @@ type JWTClaims {
 
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
+  updateAccount(updateInput: AccountUpdateInput!): Account!
+  deleteAccount(id: Int!): Int!
   createEntry(createInput: EntryCreateInput!): Entry!
   updateEntry(updateInput: EntryUpdateInput!): Entry!
   deleteEntry(id: Int!): Int!

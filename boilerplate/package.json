@@ -7,7 +7,7 @@
     "email": "tnurkkala@cse.taylor.edu"
   },
   "scripts": {
-    "boil": "ts-node src/boil.ts"
+    "boiler": "ts-node src/boiler.ts"
   },
   "dependencies": {
     "class-transformer": "^0.2.3",

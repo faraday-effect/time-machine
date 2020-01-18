@@ -1,4 +1,6 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Int } from "type-graphql";
+
 import { {{ entityName }}Service } from "./{{ lower entityName }}.service";
 import { {{ entityName }}, {{ entityName }}CreateInput } from "./entities";
 
