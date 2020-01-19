@@ -7,28 +7,28 @@
             <v-toolbar-title>Log In</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form>
+            <v-form v-model="formValid">
               <v-text-field
                 v-model="email"
                 label="Email"
-                name="email"
                 prepend-icon="mdi-email"
-                type="text"
+                :rules="validator.email"
               />
 
               <v-text-field
                 v-model="password"
-                id="password"
                 label="Password"
-                name="password"
                 prepend-icon="mdi-lock"
                 type="password"
+                :rules="validator.password"
               />
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn @click="logIn" color="primary">Log In</v-btn>
+            <v-btn text color="primary" :disabled="!formValid" @click="logIn">
+              Log In
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -43,14 +43,28 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { LOGIN } from "@/graphql/accounts.graphql";
+import { LogIn, LogInVariables } from "@/graphql/types/LogIn";
 
 export default Vue.extend({
   name: "LogIn",
 
   data() {
     return {
+      formValid: false,
+
       email: "",
       password: "",
+
+      validator: {
+        email: [(v: string) => /^.+@.+$/.test(v) || "Invalid email address"],
+        password: [
+          (v: string) => /[A-Z]/.test(v) || "Upper case letter required",
+          (v: string) => /[a-z]/.test(v) || "Lower case letter required",
+          (v: string) => /\d/.test(v) || "Digit required",
+          (v: string) => v.length > 6 || "Minimum six characters"
+        ]
+      },
 
       snackbar: {
         show: false,
@@ -63,6 +77,27 @@ export default Vue.extend({
     showSnackbar(text: string) {
       this.snackbar.text = text;
       this.snackbar.show = true;
+    },
+
+    logIn() {
+      this.$apollo
+        .mutate<LogIn>({
+          mutation: LOGIN,
+          variables: {
+            credentials: {
+              email: this.email,
+              password: this.password
+            }
+          } as LogInVariables
+        })
+        .then(response => {
+          this.$store.commit("logIn", response.data!.login);
+          this.$router.push({ name: "entries" });
+        })
+        .catch(() => {
+          this.$store.commit("logOut");
+          this.showSnackbar("Invalid credentials; please try again.");
+        });
     }
   }
 });

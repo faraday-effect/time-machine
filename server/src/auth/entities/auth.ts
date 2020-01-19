@@ -1,5 +1,14 @@
-import { Field, InputType, ObjectType } from "type-graphql";
-import { JWTClaims } from "@/account/entities";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
+import { Role } from "@/account/entities";
+
+@ObjectType()
+export class JWTClaims {
+  @Field() id: number;
+  @Field() firstName: string;
+  @Field() lastName: string;
+  @Field() email: string;
+  @Field(() => [Role]) roles: Role[];
+}
 
 @InputType()
 export class LoginCredentials {
@@ -9,6 +18,13 @@ export class LoginCredentials {
 
 @ObjectType()
 export class LoginResponse {
-  @Field() accessToken: string;
+  @Field() token: string;
   @Field(() => JWTClaims) claims: JWTClaims;
+}
+
+@InputType()
+export class ChangePasswordInput {
+  @Field(() => Int) accountId: number;
+  @Field() currentPassword: string;
+  @Field() newPassword: string;
 }

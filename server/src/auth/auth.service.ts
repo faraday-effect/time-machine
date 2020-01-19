@@ -1,9 +1,8 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { validatePassword } from "./crypto";
-import { LoginCredentials } from "./entities";
+import { JWTClaims, LoginCredentials } from "./entities";
 import { AccountService } from "@/account/account.service";
-import {JWTClaims} from "@/account/entities";
 
 @Injectable()
 export class AuthService {
@@ -24,18 +23,18 @@ export class AuthService {
       );
 
       if (validPassword) {
-        const accountPayload: JWTClaims = {
+        const jwtClaims: JWTClaims = {
           id: account.id,
           firstName: account.firstName,
           lastName: account.lastName,
           email: account.email,
           roles: account.roles
         };
-        const token = this.jwtService.sign(accountPayload);
+        const token = this.jwtService.sign(jwtClaims);
 
         return {
-          account: accountPayload,
-          accessToken: token
+          token,
+          claims: jwtClaims
         };
       }
     }

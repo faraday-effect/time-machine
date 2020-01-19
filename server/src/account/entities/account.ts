@@ -68,24 +68,8 @@ export class AccountCreateInput {
 @InputType()
 export class AccountUpdateInput {
   @Field(() => Int) id: number;
-  @Field({ description: "Email address", nullable: true }) email: string;
-  @Field({ description: "Password", nullable: true }) password: string;
-  @Field({ description: "First name", nullable: true }) firstName: string;
-  @Field({ description: "Last name", nullable: true }) lastName: string;
-}
-
-@InputType()
-export class ChangePasswordInput {
-  @Field(() => Int) accountId: number;
-  @Field() currentPassword: string;
-  @Field() newPassword: string;
-}
-
-@ObjectType()
-export class JWTClaims {
-  @Field() id: number;
-  @Field() firstName: string;
-  @Field() lastName: string;
-  @Field() email: string;
-  @Field(() => [Role]) roles: Role[];
+  @Field({ description: "Email address", nullable: true }) email?: string;
+  @Field({ description: "Password", nullable: true }) password?: string;
+  @Field({ description: "First name", nullable: true }) firstName?: string;
+  @Field({ description: "Last name", nullable: true }) lastName?: string;
 }

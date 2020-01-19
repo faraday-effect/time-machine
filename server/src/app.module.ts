@@ -9,6 +9,7 @@ import { Entry } from "@/entry/entities";
 import { GraphQLModule } from "@nestjs/graphql";
 import { Project } from "./project/entities";
 import { ProjectModule } from "./project/project.module";
+import { AuthModule } from "@/auth/auth.module";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ProjectModule } from "./project/project.module";
     }),
     AccountModule,
     EntryModule,
-    ProjectModule
+    ProjectModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService]

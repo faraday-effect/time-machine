@@ -64,6 +64,7 @@ import {
   CreateAccount,
   CreateAccountVariables
 } from "@/graphql/types/CreateAccount";
+import { collectErrorMessages } from "@/helpers/graphql";
 
 export default Vue.extend({
   name: "SignUp",
@@ -126,8 +127,11 @@ export default Vue.extend({
           this.showSnackbar(
             `${result.data!.createAccount.firstName} signed up successfully`
           );
+          this.$router.push({ name: "login" });
         })
-        .catch(error => this.showSnackbar(error));
+        .catch(errResult =>
+          this.showSnackbar(collectErrorMessages(errResult.graphQLErrors))
+        );
     }
   }
 });

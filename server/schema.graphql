@@ -81,6 +81,16 @@ type JWTClaims {
   roles: [Role!]!
 }
 
+input LoginCredentials {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  token: String!
+  claims: JWTClaims!
+}
+
 type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
   updateAccount(updateInput: AccountUpdateInput!): Account!
@@ -91,6 +101,8 @@ type Mutation {
   createProject(createInput: ProjectCreateInput!): Project!
   updateProject(updateInput: ProjectUpdateInput!): Project!
   deleteProject(id: Int!): Int!
+  login(loginCredentials: LoginCredentials!): LoginResponse!
+  changePassword(passwordInput: ChangePasswordInput!): String!
 }
 
 type Project {

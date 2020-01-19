@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Account, AccountCreateInput, AccountUpdateInput } from "./entities";
 import { Repository } from "typeorm";
@@ -9,7 +9,12 @@ export class AccountService {
     @InjectRepository(Account) private readonly accountRepo: Repository<Account>
   ) {}
 
-  createAccount(createInput: AccountCreateInput) {
+  async createAccount(createInput: AccountCreateInput) {
+    if (await this.findAccountByEmail(createInput.email)) {
+      throw new BadRequestException(
+        `The email address '${createInput.email}' is already registered.`
+      );
+    }
     return this.accountRepo.save(this.accountRepo.create(createInput));
   }
 
@@ -17,8 +22,12 @@ export class AccountService {
     return this.accountRepo.find();
   }
 
+  readAccount(id: number) {
+    return this.accountRepo.findOne(id);
+  }
+
   findAccountByEmail(email: string) {
-    return this.accountRepo.findOne({ email });
+    return this.accountRepo.findOne({ email }, { relations: ["roles"] });
   }
 
   updateAccount(updateInput: AccountUpdateInput) {

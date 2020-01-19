@@ -13,6 +13,12 @@ export interface AccountCreateInput {
   lastName: string;
 }
 
+export interface ChangePasswordInput {
+  accountId: number;
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface EntryCreateInput {
   start: string;
   stop: string;
@@ -24,6 +30,11 @@ export interface EntryUpdateInput {
   start?: string | null;
   stop?: string | null;
   description?: string | null;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
 }
 
 //==============================================================

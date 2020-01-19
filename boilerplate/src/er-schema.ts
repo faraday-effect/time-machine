@@ -97,16 +97,18 @@ export class Attribute {
     return `@Column(${Attribute.joinOptions(options)})`;
   }
 
-  private typeDeclaration() {
+  private typeDeclaration(opType: OpType) {
+    const optional = opType === OpType.UPDATE ? "?" : "";
+
     switch (this.type) {
       case "created":
       case "updated":
-        return `${this.name}: Date`;
+        return `${this.name}${optional}: Date`;
       case "text":
-        return `${this.name}: string`;
+        return `${this.name}${optional}: string`;
       case "string":
       case "boolean":
-        return `${this.name}: ${this.type}`;
+        return `${this.name}${optional}: ${this.type}`;
         break;
       default:
         throw Error(`Bogus type '${this.type}'`);
@@ -124,7 +126,7 @@ export class Attribute {
     return [
       this.gqlField(opType),
       this.dbColumn(opType),
-      this.typeDeclaration()
+      this.typeDeclaration(opType)
     ].join(" ");
   }
 }
