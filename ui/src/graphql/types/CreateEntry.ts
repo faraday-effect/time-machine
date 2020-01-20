@@ -8,6 +8,14 @@ import { EntryCreateInput } from "./globalTypes";
 // GraphQL mutation operation: CreateEntry
 // ====================================================
 
+export interface CreateEntry_createEntry_project {
+  id: number;
+  /**
+   * Project title
+   */
+  title: string;
+}
+
 export interface CreateEntry_createEntry {
   id: number;
   start: string;
@@ -15,6 +23,7 @@ export interface CreateEntry_createEntry {
   description: string;
   created: any;
   updated: any;
+  project: CreateEntry_createEntry_project;
 }
 
 export interface CreateEntry {

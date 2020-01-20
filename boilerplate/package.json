@@ -14,12 +14,14 @@
     "commander": "^4.1.0",
     "figlet": "^1.2.4",
     "handlebars": "^4.7.2",
+    "invariant": "^2.2.4",
     "lodash": "^4.17.15",
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/figlet": "^1.2.0",
+    "@types/invariant": "^2.2.31",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.1.7",
     "@types/pluralize": "^0.0.29",

@@ -31,6 +31,7 @@
             <td>{{ item.start | formatTime }}</td>
             <td>{{ stopTimeMaybeDate(item) }}</td>
             <td class="text-right">{{ duration(item) }}</td>
+            <td>{{ item.project.title }}</td>
             <td>{{ item.description }}</td>
             <td>
               <v-btn icon class="mr-1" @click="showUpdateDialog(item)">
@@ -95,7 +96,7 @@ enum DialogMode {
 }
 
 export default Vue.extend({
-  name: "Entry",
+  name: "Entries",
 
   components: {
     TimeEntryDialog
@@ -112,6 +113,7 @@ export default Vue.extend({
         { text: "Start" },
         { text: "Stop" },
         { text: "Duration", align: "end" },
+        { text: "Project" },
         { text: "Description", width: "40%" },
         { text: "Actions" }
       ],
@@ -183,7 +185,8 @@ export default Vue.extend({
           stopDateTime: "",
           minutes: 0
         },
-        description: ""
+        description: "",
+        projectId: NaN
       } as Entry;
 
       this.dialog.mode = DialogMode.CREATE;
@@ -199,7 +202,8 @@ export default Vue.extend({
           stopDateTime: gqlEntry.stop,
           minutes: 0
         },
-        description: gqlEntry.description
+        description: gqlEntry.description,
+        projectId: gqlEntry.project.id
       } as Entry;
 
       this.dialog.mode = DialogMode.UPDATE;
@@ -228,7 +232,8 @@ export default Vue.extend({
               accountId: this.$store.state.claims.id,
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
-              description: uiEntry.description
+              description: uiEntry.description,
+              projectId: uiEntry.projectId
             } as EntryCreateInput
           }
         })
@@ -248,7 +253,8 @@ export default Vue.extend({
               id: this.dialog.entryId,
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
-              description: uiEntry.description
+              description: uiEntry.description,
+              projectId: uiEntry.projectId
             } as EntryUpdateInput
           }
         })

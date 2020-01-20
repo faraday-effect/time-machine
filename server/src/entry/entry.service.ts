@@ -4,41 +4,57 @@ import { Entry, EntryCreateInput, EntryUpdateInput } from "./entities";
 import { Repository } from "typeorm";
 import { Account } from "@/account/entities";
 import debug from "debug";
+import { Project } from "@/project/entities";
 
 const entryDebug = debug("event");
 
 @Injectable()
 export class EntryService {
   constructor(
-    @InjectRepository(Entry) private readonly entryRepo: Repository<Entry>,
-    @InjectRepository(Account) private readonly accountRepo: Repository<Account>
+    @InjectRepository(Entry)
+    private readonly entryRepo: Repository<Entry>,
+    @InjectRepository(Account)
+    private readonly accountRepo: Repository<Account>,
+    @InjectRepository(Project)
+    private readonly projectRepo: Repository<Project>
   ) {}
 
   async createEntry(createInput: EntryCreateInput) {
     entryDebug("createInput %O", createInput);
 
-    const account = await this.accountRepo.findOneOrFail(createInput.accountId);
-    const entry = this.entryRepo.create(createInput);
-    entry.account = account;
-    return this.entryRepo.save(entry);
+    return this.entryRepo
+      .save(this.entryRepo.create(createInput))
+      .then(savedEntity =>
+        this.entryRepo.findOne(savedEntity.id, {
+          relations: ["account", "project"]
+        })
+      );
   }
 
   readEntries() {
-    return this.entryRepo.find({ relations: ["account"] });
+    return this.entryRepo.find({ relations: ["account", "project"] });
   }
 
   readEntriesForAccount(accountId: number) {
     return this.entryRepo
       .createQueryBuilder("entry")
       .innerJoinAndSelect("entry.account", "account")
+      .innerJoinAndSelect("entry.project", "project")
       .where("account.id = :id", { id: accountId })
       .getMany();
   }
 
-  updateEntry(updateInput: EntryUpdateInput) {
+  async updateEntry(updateInput: EntryUpdateInput) {
+    entryDebug("updateInput %O", updateInput);
+
     return this.entryRepo
       .preload(updateInput)
-      .then(result => this.entryRepo.save(result));
+      .then(updatedInput => this.entryRepo.save(updatedInput))
+      .then(savedInput =>
+        this.entryRepo.findOne(savedInput.id, {
+          relations: ["account", "project"]
+        })
+      );
   }
 
   deleteEntry(id: number) {

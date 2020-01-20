@@ -6,6 +6,14 @@
 // GraphQL query operation: EntriesForAccount
 // ====================================================
 
+export interface EntriesForAccount_accountEntries_project {
+  id: number;
+  /**
+   * Project title
+   */
+  title: string;
+}
+
 export interface EntriesForAccount_accountEntries {
   id: number;
   start: string;
@@ -13,6 +21,7 @@ export interface EntriesForAccount_accountEntries {
   description: string;
   created: any;
   updated: any;
+  project: EntriesForAccount_accountEntries_project;
 }
 
 export interface EntriesForAccount {

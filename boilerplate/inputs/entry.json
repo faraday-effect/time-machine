@@ -46,6 +46,7 @@
       "name": "project",
       "type": "manyToOne",
       "to": "Project",
+      "nullable": false,
       "description": "Project for this entry"
     }
   ]

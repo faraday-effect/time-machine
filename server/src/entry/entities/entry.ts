@@ -30,18 +30,22 @@ export class Entry {
     { nullable: false }
   )
   account: Account;
+  @Column("integer") accountId: number;
 
   @Field(() => Project)
   @ManyToOne(
     () => Project,
-    project => project.entries
+    project => project.entries,
+    { nullable: false }
   )
   project: Project;
+  @Column("integer") projectId: number;
 }
 
 @InputType()
 export class EntryCreateInput {
   @Field(() => Int) accountId: number;
+  @Field(() => Int) projectId: number;
   @Field() start: string;
   @Field() stop: string;
   @Field() description: string;
@@ -50,6 +54,7 @@ export class EntryCreateInput {
 @InputType()
 export class EntryUpdateInput {
   @Field(() => Int) id: number;
+  @Field({ nullable: true }) projectId: number;
   @Field({ nullable: true }) start: string;
   @Field({ nullable: true }) stop: string;
   @Field({ nullable: true }) description: string;

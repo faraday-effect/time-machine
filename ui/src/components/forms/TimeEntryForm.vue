@@ -7,12 +7,22 @@
       />
     </v-row>
     <v-row>
+      <v-col cols="4">
+        <v-select
+          :value="value.projectId"
+          @input="update('projectId', $event)"
+          label="Project"
+          :items="projectChoices"
+          filled
+          :rules="required"
+        />
+      </v-col>
       <v-col>
         <v-textarea
           :value="value.description"
           @input="update('description', $event)"
           label="Description"
-          rows="3"
+          rows="1"
           auto-grow
           filled
           :rules="required"
@@ -26,6 +36,9 @@
 import Vue from "vue";
 import StartStopPicker from "@/components/pickers/StartStopPicker.vue";
 import { Entry } from "@/components/pickers/entry-entities";
+import { ALL_PROJECTS } from "@/graphql/projects.graphql";
+import { AllProjects_allProjects as Project } from "@/graphql/types/AllProjects";
+import { VSelectChoices } from "@/common.types";
 
 export default Vue.extend({
   name: "TimeEntryForm",
@@ -38,11 +51,28 @@ export default Vue.extend({
     value: {} as () => Entry
   },
 
+  apollo: {
+    allProjects: {
+      query: ALL_PROJECTS
+    }
+  },
+
   data() {
     return {
+      allProjects: [] as Project[],
+
       formValid: false,
       required: [(v: string) => !!v || "Required"]
     };
+  },
+
+  computed: {
+    projectChoices(): VSelectChoices<number> {
+      return this.allProjects.map(project => ({
+        text: project.title,
+        value: project.id
+      }));
+    }
   },
 
   methods: {

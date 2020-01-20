@@ -64,6 +64,7 @@ type Entry {
 
 input EntryCreateInput {
   accountId: Int!
+  projectId: Int!
   start: String!
   stop: String!
   description: String!
@@ -71,6 +72,7 @@ input EntryCreateInput {
 
 input EntryUpdateInput {
   id: Int!
+  projectId: Float
   start: String
   stop: String
   description: String
@@ -118,7 +120,9 @@ type Project {
   description: String!
 
   """Is this project active?"""
-  active: Boolean
+  active: Boolean!
+  entries: [Entry!]!
+  accounts: [Account!]!
 }
 
 input ProjectCreateInput {
@@ -129,7 +133,7 @@ input ProjectCreateInput {
   description: String!
 
   """Is this project active?"""
-  active: Boolean = true
+  active: Boolean!
 }
 
 input ProjectUpdateInput {

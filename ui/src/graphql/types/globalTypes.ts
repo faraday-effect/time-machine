@@ -21,6 +21,7 @@ export interface ChangePasswordInput {
 
 export interface EntryCreateInput {
   accountId: number;
+  projectId: number;
   start: string;
   stop: string;
   description: string;
@@ -36,6 +37,12 @@ export interface EntryUpdateInput {
 export interface LoginCredentials {
   email: string;
   password: string;
+}
+
+export interface ProjectCreateInput {
+  title: string;
+  description: string;
+  active: boolean;
 }
 
 //==============================================================

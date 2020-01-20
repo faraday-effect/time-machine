@@ -1,5 +1,6 @@
 import pluralize from "pluralize";
 import { Type } from "class-transformer";
+import invariant from "invariant";
 
 type AttributeType =
   | "string"
@@ -20,6 +21,11 @@ export enum OpType {
   OBJECT,
   CREATE,
   UPDATE
+}
+
+function lowerFirst(s: string) {
+  invariant(s.length > 0, "string is empty");
+  return s.replace(/^\w/, c => c.toLowerCase());
 }
 
 export class Attribute {
@@ -148,14 +154,28 @@ export class Relationship {
   nullable: boolean = true; // Default for TypeORM
   description: string = "";
 
-  private gqlFIeld() {
+  private relationId() {
+    const columnName = lowerFirst(this.name) + "Id";
+
+    // This only belongs on side of the relationship where the FK lives.
+    switch (this.type) {
+      case "manyToOne":
+      case "manyToManyOwner":
+        return `@Column("integer") ${columnName}: number`;
+      case "oneToMany":
+      case "manyToMany":
+        return null;
+    }
+  }
+
+  private gqlField() {
     switch (this.type) {
       case "manyToOne":
         return `@Field(() => ${this.to})`;
       case "oneToMany":
       case "manyToMany":
       case "manyToManyOwner":
-        return `@Field(() => [${this.to})]`;
+        return `@Field(() => [${this.to}])`;
     }
   }
 
@@ -172,8 +192,8 @@ export class Relationship {
   }
 
   private inverseSide(entityName: string) {
-    const toLower = this.to.toLowerCase();
-    const entityLower = entityName.toLowerCase();
+    const toLower = lowerFirst(this.to);
+    const entityLower = lowerFirst(entityName);
     const entityLowerPlural = pluralize(entityLower);
 
     switch (this.type) {
@@ -206,11 +226,18 @@ export class Relationship {
       allArgs.push("{ nullable: false }");
     }
 
-    return [
-      this.gqlFIeld(),
+    const options = [
+      this.gqlField(),
       `${name}(${allArgs.join(", ")})`,
-      this.typeDeclaration()
-    ].join("\n  ");
+      this.typeDeclaration() + ";"
+    ];
+
+    const relationId = this.relationId();
+    if (relationId) {
+      options.push(relationId + ";");
+    }
+
+    return options.join("\n  ");
   }
 }
 
@@ -252,3 +279,6 @@ export class ERSchema {
     };
   }
 }
+
+// Credits:
+// https://joshtronic.com/2016/02/14/how-to-capitalize-the-first-letter-in-a-string-in-javascript/

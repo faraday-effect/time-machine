@@ -7,6 +7,7 @@ export interface EntryStartStop {
 
 export interface Entry {
   startStop: EntryStartStop;
+  projectId: number;
   description: string;
 }
 

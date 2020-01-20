@@ -9,19 +9,10 @@ export const CREATE_ENTRY = gql`
       description
       created
       updated
-    }
-  }
-`;
-
-export const ALL_ENTRIES = gql`
-  query AllEntries {
-    allEntries: readEntries {
-      id
-      created
-      updated
-      start
-      stop
-      description
+      project {
+        id
+        title
+      }
     }
   }
 `;
@@ -35,6 +26,10 @@ export const ENTRIES_FOR_ACCOUNT = gql`
       description
       created
       updated
+      project {
+        id
+        title
+      }
     }
   }
 `;
@@ -43,11 +38,15 @@ export const UPDATE_ENTRY = gql`
   mutation UpdateEntry($updateInput: EntryUpdateInput!) {
     updateEntry(updateInput: $updateInput) {
       id
-      created
-      updated
       start
       stop
       description
+      created
+      updated
+      project {
+        id
+        title
+      }
     }
   }
 `;
