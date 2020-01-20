@@ -17,6 +17,13 @@ export class EntryResolver {
     return this.entryService.readEntries();
   }
 
+  @Query(() => [Entry])
+  readEntriesForAccount(
+    @Args({ name: "accountId", type: () => Int }) accountId: number
+  ) {
+    return this.entryService.readEntriesForAccount(accountId);
+  }
+
   @Mutation(() => Entry)
   updateEntry(@Args("updateInput") updateInput: EntryUpdateInput) {
     return this.entryService.updateEntry(updateInput);

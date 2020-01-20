@@ -26,6 +26,19 @@ export const ALL_ENTRIES = gql`
   }
 `;
 
+export const ENTRIES_FOR_ACCOUNT = gql`
+  query EntriesForAccount($accountId: Int!) {
+    accountEntries: readEntriesForAccount(accountId: $accountId) {
+      id
+      start
+      stop
+      description
+      created
+      updated
+    }
+  }
+`;
+
 export const UPDATE_ENTRY = gql`
   mutation UpdateEntry($updateInput: EntryUpdateInput!) {
     updateEntry(updateInput: $updateInput) {

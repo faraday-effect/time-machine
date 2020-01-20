@@ -17,6 +17,14 @@ export class EntryService {
     return this.entryRepo.find();
   }
 
+  readEntriesForAccount(accountId: number) {
+    return this.entryRepo
+      .createQueryBuilder("entry")
+      .innerJoin("entry.account", "account")
+      .where("account.id = :id", { id: accountId })
+      .getMany();
+  }
+
   updateEntry(updateInput: EntryUpdateInput) {
     return this.entryRepo
       .preload(updateInput)

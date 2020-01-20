@@ -65,11 +65,15 @@ import {
   ALL_ENTRIES,
   CREATE_ENTRY,
   DELETE_ENTRY,
+  ENTRIES_FOR_ACCOUNT,
   UPDATE_ENTRY
 } from "@/graphql/entries.graphql";
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
-import { AllEntries_allEntries as GqlEntry } from "@/graphql/types/AllEntries";
+import {
+  EntriesForAccount_accountEntries as GqlEntry,
+  EntriesForAccountVariables
+} from "@/graphql/types/EntriesForAccount";
 import {
   EntryCreateInput,
   EntryUpdateInput
@@ -98,14 +102,17 @@ export default Vue.extend({
   },
 
   apollo: {
-    allEntries: {
-      query: ALL_ENTRIES
+    accountEntries: {
+      query: ENTRIES_FOR_ACCOUNT,
+      variables: {
+        accountId: 11
+      } as EntriesForAccountVariables
     }
   },
 
   data() {
     return {
-      allEntries: [] as GqlEntry[],
+      accountEntries: [] as GqlEntry[],
 
       reverseOrder: false,
 
@@ -133,8 +140,12 @@ export default Vue.extend({
   },
 
   computed: {
+    currentAccountId(): number {
+      return (this.$store.claims.id;
+    },
+
     sortedEntries(): GqlEntry[] {
-      const sorted = sortBy(this.allEntries, elt => elt.start);
+      const sorted = sortBy(this.accountEntries, elt => elt.start);
       if (this.reverseOrder) {
         return sorted.reverse();
       }
@@ -218,7 +229,7 @@ export default Vue.extend({
           }
         })
         .then(result => {
-          this.allEntries.push(result.data!.createEntry);
+          this.accountEntries.push(result.data!.createEntry);
           this.showSnackbar("Added time entry");
         })
         .catch(error => this.showSnackbar(error));
@@ -239,10 +250,10 @@ export default Vue.extend({
         })
         .then(result => {
           const updateEntry = result.data!.updateEntry;
-          const idx = this.allEntries.findIndex(
+          const idx = this.accountEntries.findIndex(
             elt => elt.id === updateEntry.id
           );
-          this.$set(this.allEntries, idx, updateEntry);
+          this.$set(this.accountEntries, idx, updateEntry);
           this.showSnackbar("Updated time entry");
         })
         .catch(error => this.showSnackbar(error));
@@ -257,8 +268,8 @@ export default Vue.extend({
           } as DeleteEntryVariables
         })
         .then(() => {
-          const idx = this.allEntries.findIndex(elt => elt.id === entryId);
-          this.allEntries.splice(idx, 1);
+          const idx = this.accountEntries.findIndex(elt => elt.id === entryId);
+          this.accountEntries.splice(idx, 1);
           this.showSnackbar("Deleted time entry");
         })
         .catch(error => this.showSnackbar(error));
