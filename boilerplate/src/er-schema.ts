@@ -31,6 +31,7 @@ export class Attribute {
   isGqlField: boolean = true;
   forGqlCreate: boolean = true;
   forGqlUpdate: boolean = true;
+  nullable: boolean = false; // Default for both TypeORM and TypeGraphQL
 
   private static joinOptions(options: string[]) {
     let allOptions = options.join(", ");
@@ -46,7 +47,7 @@ export class Attribute {
     }
 
     const options = [`description: "${this.description}"`];
-    if (opType === OpType.UPDATE) {
+    if (opType === OpType.UPDATE || this.nullable) {
       options.push("nullable: true");
     }
 
@@ -74,7 +75,9 @@ export class Attribute {
     }
 
     const options: string[] = [];
-
+    if (this.nullable) {
+      options.push("nullable: true");
+    }
     if (this.unique) {
       options.push("unique: true");
     }
@@ -109,7 +112,6 @@ export class Attribute {
       case "string":
       case "boolean":
         return `${this.name}${optional}: ${this.type}`;
-        break;
       default:
         throw Error(`Bogus type '${this.type}'`);
     }
@@ -143,30 +145,72 @@ export class Relationship {
   name: string = "";
   type: RelationshipType = null;
   to: string = "";
+  nullable: boolean = true; // Default for TypeORM
   description: string = "";
 
-  public decorators(entityName: string) {
+  private gqlFIeld() {
+    switch (this.type) {
+      case "manyToOne":
+        return `@Field(() => ${this.to})`;
+      case "oneToMany":
+      case "manyToMany":
+      case "manyToManyOwner":
+        return `@Field(() => [${this.to})]`;
+    }
+  }
+
+  private dbRelation() {
+    switch (this.type) {
+      case "oneToMany":
+        return "@OneToMany";
+      case "manyToOne":
+        return "@ManyToOne";
+      case "manyToMany":
+      case "manyToManyOwner":
+        return "@ManyToMany";
+    }
+  }
+
+  private inverseSide(entityName: string) {
     const toLower = this.to.toLowerCase();
     const entityLower = entityName.toLowerCase();
     const entityLowerPlural = pluralize(entityLower);
 
     switch (this.type) {
       case "oneToMany":
-        return `@OneToMany(() => ${this.to}, ${toLower} => ${toLower}.${entityLower}) 
-          ${this.name}: ${this.to}[]`;
+        return `${toLower} => ${toLower}.${entityLower}`;
       case "manyToOne":
-        return `@ManyToOne(() => ${this.to}, ${toLower} => ${toLower}.${entityLowerPlural})
-           ${this.name}: ${this.to}`;
       case "manyToMany":
-        return `@ManyToMany(() => ${this.to}, ${toLower} => ${toLower}.${entityLowerPlural})
-           ${this.name}: ${this.to}[]`;
       case "manyToManyOwner":
-        return `@ManyToMany(() => ${this.to}, ${toLower} => ${toLower}.${entityLowerPlural})
-          @JoinTable()
-          ${this.name}: ${this.to}[]`;
-      default:
-        throw Error(`Invalid relationship type '${this.type}'`);
+        return `${toLower} => ${toLower}.${entityLowerPlural}`;
     }
+  }
+
+  private typeDeclaration() {
+    switch (this.type) {
+      case "oneToMany":
+      case "manyToMany":
+      case "manyToManyOwner":
+        return `${this.name}: ${this.to}[]`;
+      case "manyToOne":
+        return `${this.name}: ${this.to}`;
+    }
+  }
+
+  public decorators(entityName: string) {
+    const name = this.dbRelation();
+
+    const allArgs = [`() => ${this.to}`, this.inverseSide(entityName)];
+    if (!this.nullable) {
+      // Only if not the default.
+      allArgs.push("{ nullable: false }");
+    }
+
+    return [
+      this.gqlFIeld(),
+      `${name}(${allArgs.join(", ")})`,
+      this.typeDeclaration()
+    ].join("\n  ");
   }
 }
 

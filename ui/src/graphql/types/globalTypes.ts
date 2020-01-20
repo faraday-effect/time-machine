@@ -20,6 +20,7 @@ export interface ChangePasswordInput {
 }
 
 export interface EntryCreateInput {
+  accountId: number;
   start: string;
   stop: string;
   description: string;

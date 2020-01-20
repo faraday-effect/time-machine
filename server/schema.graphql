@@ -58,9 +58,12 @@ type Entry {
   start: String!
   stop: String!
   description: String!
+  account: Account!
+  project: Project!
 }
 
 input EntryCreateInput {
+  accountId: Int!
   start: String!
   stop: String!
   description: String!

@@ -50,6 +50,9 @@
               },
               "forGqlUpdate": {
                 "type": "boolean"
+              },
+              "nullable": {
+                "type": "boolean"
               }
             }
           }
@@ -71,6 +74,9 @@
           "type": {
             "type": "string",
             "enum": ["oneToMany", "manyToOne", "manyToMany", "manyToManyOwner"]
+          },
+          "nullable": {
+            "type": "boolean"
           },
           "description": {
             "type": "string"

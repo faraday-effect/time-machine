@@ -22,7 +22,8 @@ import { AuthModule } from "@/auth/auth.module";
       username: "tom",
       database: "time-machine",
       synchronize: true,
-      entities: [Account, Entry, Project, Role]
+      entities: [Account, Entry, Project, Role],
+      logging: "all"
     }),
     AccountModule,
     EntryModule,

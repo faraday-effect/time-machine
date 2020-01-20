@@ -23,13 +23,17 @@ export class Entry {
   @Field() @Column() stop: string;
   @Field() @Column("text") description: string;
 
+  @Field(() => Account)
   @ManyToOne(
-    type => Account,
-    account => account.entries
+    () => Account,
+    account => account.entries,
+    { nullable: false }
   )
   account: Account;
+
+  @Field(() => Project)
   @ManyToOne(
-    type => Project,
+    () => Project,
     project => project.entries
   )
   project: Project;
@@ -37,6 +41,7 @@ export class Entry {
 
 @InputType()
 export class EntryCreateInput {
+  @Field(() => Int) accountId: number;
   @Field() start: string;
   @Field() stop: string;
   @Field() description: string;

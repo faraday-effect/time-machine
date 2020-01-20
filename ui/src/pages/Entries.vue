@@ -62,7 +62,6 @@
 import Vue from "vue";
 import { Entry } from "@/components/pickers/entry-entities";
 import {
-  ALL_ENTRIES,
   CREATE_ENTRY,
   DELETE_ENTRY,
   ENTRIES_FOR_ACCOUNT,
@@ -71,6 +70,7 @@ import {
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
 import {
+  EntriesForAccount,
   EntriesForAccount_accountEntries as GqlEntry,
   EntriesForAccountVariables
 } from "@/graphql/types/EntriesForAccount";
@@ -99,15 +99,6 @@ export default Vue.extend({
 
   components: {
     TimeEntryDialog
-  },
-
-  apollo: {
-    accountEntries: {
-      query: ENTRIES_FOR_ACCOUNT,
-      variables: {
-        accountId: 11
-      } as EntriesForAccountVariables
-    }
   },
 
   data() {
@@ -140,10 +131,6 @@ export default Vue.extend({
   },
 
   computed: {
-    currentAccountId(): number {
-      return (this.$store.claims.id;
-    },
-
     sortedEntries(): GqlEntry[] {
       const sorted = sortBy(this.accountEntries, elt => elt.start);
       if (this.reverseOrder) {
@@ -153,7 +140,23 @@ export default Vue.extend({
     }
   },
 
+  mounted() {
+    this.getEntries();
+  },
+
   methods: {
+    getEntries() {
+      this.$apollo
+        .query<EntriesForAccount>({
+          query: ENTRIES_FOR_ACCOUNT,
+          variables: {
+            accountId: this.$store.state.claims.id
+          } as EntriesForAccountVariables
+        })
+        .then(result => (this.accountEntries = result.data.accountEntries))
+        .catch(error => this.showSnackbar(error));
+    },
+
     showSnackbar(content: string) {
       this.snackbar.content = content;
       this.snackbar.visible = true;
@@ -222,6 +225,7 @@ export default Vue.extend({
           mutation: CREATE_ENTRY,
           variables: {
             createInput: {
+              accountId: this.$store.state.claims.id,
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
               description: uiEntry.description

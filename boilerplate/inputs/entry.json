@@ -39,6 +39,7 @@
       "name": "account",
       "type": "manyToOne",
       "to": "Account",
+      "nullable": false,
       "description": "Account for this entry"
     },
     {
