@@ -34,12 +34,10 @@
             <td>{{ item.project.title }}</td>
             <td>{{ item.description }}</td>
             <td>
-              <v-btn icon class="mr-1" @click="showUpdateDialog(item)">
-                <v-icon>mdi-pencil-outline</v-icon>
-              </v-btn>
-              <v-btn icon @click="deleteEntry(item.id)">
-                <v-icon>mdi-delete-outline</v-icon>
-              </v-btn>
+              <action-icons
+                @update="showUpdateDialog(item)"
+                @delete="deleteEntry(item.id)"
+              />
             </td>
           </tr>
         </template>
@@ -89,6 +87,7 @@ import {
 } from "@/helpers/time-and-date";
 import { UpdateEntry } from "@/graphql/types/UpdateEntry";
 import { sortBy } from "lodash";
+import ActionIcons from "@/components/ActionIcons.vue";
 
 enum DialogMode {
   CREATE,
@@ -99,7 +98,8 @@ export default Vue.extend({
   name: "Entries",
 
   components: {
-    TimeEntryDialog
+    TimeEntryDialog,
+    ActionIcons
   },
 
   data() {
@@ -148,6 +148,7 @@ export default Vue.extend({
 
   methods: {
     getEntries() {
+      // Defined this way to allow type-safe-ish use of `this.$store`.
       this.$apollo
         .query<EntriesForAccount>({
           query: ENTRIES_FOR_ACCOUNT,

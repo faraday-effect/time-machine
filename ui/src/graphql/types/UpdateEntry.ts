@@ -8,13 +8,22 @@ import { EntryUpdateInput } from "./globalTypes";
 // GraphQL mutation operation: UpdateEntry
 // ====================================================
 
+export interface UpdateEntry_updateEntry_project {
+  id: number;
+  /**
+   * Project title
+   */
+  title: string;
+}
+
 export interface UpdateEntry_updateEntry {
   id: number;
-  created: any;
-  updated: any;
   start: string;
   stop: string;
   description: string;
+  created: any;
+  updated: any;
+  project: UpdateEntry_updateEntry_project;
 }
 
 export interface UpdateEntry {

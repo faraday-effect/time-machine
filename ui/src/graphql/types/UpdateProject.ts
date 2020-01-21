@@ -2,13 +2,13 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ProjectCreateInput } from "./globalTypes";
+import { ProjectUpdateInput } from "./globalTypes";
 
 // ====================================================
-// GraphQL mutation operation: CreateProject
+// GraphQL mutation operation: UpdateProject
 // ====================================================
 
-export interface CreateProject_newProject {
+export interface UpdateProject_updatedProject {
   id: number;
   /**
    * Project title
@@ -24,10 +24,10 @@ export interface CreateProject_newProject {
   active: boolean;
 }
 
-export interface CreateProject {
-  newProject: CreateProject_newProject;
+export interface UpdateProject {
+  updatedProject: UpdateProject_updatedProject;
 }
 
-export interface CreateProjectVariables {
-  createInput: ProjectCreateInput;
+export interface UpdateProjectVariables {
+  updateInput: ProjectUpdateInput;
 }

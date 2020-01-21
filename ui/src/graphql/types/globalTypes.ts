@@ -29,6 +29,7 @@ export interface EntryCreateInput {
 
 export interface EntryUpdateInput {
   id: number;
+  projectId?: number | null;
   start?: string | null;
   stop?: string | null;
   description?: string | null;
@@ -43,6 +44,13 @@ export interface ProjectCreateInput {
   title: string;
   description: string;
   active: boolean;
+}
+
+export interface ProjectUpdateInput {
+  id: number;
+  title?: string | null;
+  description?: string | null;
+  active?: boolean | null;
 }
 
 //==============================================================
