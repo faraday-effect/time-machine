@@ -18,6 +18,7 @@ export const ALL_PROJECTS = gql`
       title
       description
       active
+      entryCount
     }
   }
 `;

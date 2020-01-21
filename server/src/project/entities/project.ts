@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn
@@ -13,11 +14,20 @@ import { Account } from "@/account/entities";
 @ObjectType()
 export class Project {
   @Field(() => Int) @PrimaryGeneratedColumn() id: number;
+
   @Field({ description: "Project title" }) @Column() title: string;
+
   @Field({ description: "Description of this project" })
   @Column()
   description: string;
+
   @Field({ description: "Is this project active?" }) @Column() active: boolean;
+
+  @Field(() => Int, {
+    description: "Number of entries for this project",
+    nullable: true
+  })
+  entryCount: number;
 
   @Field(() => [Entry])
   @OneToMany(
@@ -31,6 +41,7 @@ export class Project {
     () => Account,
     account => account.projects
   )
+  @JoinTable()
   accounts: Account[];
 }
 

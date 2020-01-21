@@ -1,7 +1,7 @@
 <template>
   <v-dialog :value="value" persistent max-width="800">
     <v-card>
-      <v-card-title>Enter Project</v-card-title>
+      <v-card-title>{{ title }}</v-card-title>
 
       <v-card-text>
         <v-form v-model="formValid">

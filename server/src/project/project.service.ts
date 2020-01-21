@@ -14,7 +14,12 @@ export class ProjectService {
   }
 
   readProjects() {
-    return this.projectRepo.find();
+    return this.projectRepo.query(`
+            SELECT project.*,
+                   (SELECT count(*) AS "entryCount"
+                    FROM entry
+                    WHERE entry."projectId" = project.id)
+            FROM project`);
   }
 
   updateProject(updateInput: ProjectUpdateInput) {

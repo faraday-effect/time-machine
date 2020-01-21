@@ -8,18 +8,15 @@
           </v-col>
           <v-col>
             <v-btn color="primary" @click="showCreateDialog">
-              Add Entry
+              Add Project
             </v-btn>
           </v-col>
         </v-row>
       </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="allProjects"
-        :disable-sort="true"
-      >
+      <v-data-table :headers="headers" :items="allProjects">
         <template v-slot:item.actions="{ item }">
           <action-icons
+            :can-delete="item.entryCount === 0"
             @update="showUpdateDialog(item)"
             @delete="deleteProject(item.id)"
           />
@@ -71,6 +68,7 @@ import {
   UpdateProject,
   UpdateProjectVariables
 } from "@/graphql/types/UpdateProject";
+import { pick } from "lodash";
 
 export default Vue.extend({
   name: "Projects",
@@ -103,6 +101,7 @@ export default Vue.extend({
         { text: "Title", value: "title" },
         { text: "Description", value: "description" },
         { text: "Active", value: "active" },
+        { text: "Entries", value: "entryCount" },
         { text: "Actions", value: "actions" }
       ],
 
@@ -149,10 +148,7 @@ export default Vue.extend({
         .mutate<UpdateProject>({
           mutation: UPDATE_PROJECT,
           variables: {
-            updateInput: project
-
-            // NO WORKIE
-            // message: "Variable "$updateInput" got invalid value { id: 4, title: "Zelda", description: "What it is.", active: true, __typename: "Project" }; Field "__typename" is not defined by type ProjectUpdateInput."
+            updateInput: pick(project, ["id", "title", "description", "active"])
           } as UpdateProjectVariables
         })
         .then(result => {

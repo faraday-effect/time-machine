@@ -6,6 +6,8 @@ type AttributeType =
   | "string"
   | "text"
   | "boolean"
+  | "integer"
+  | "float"
   | "created"
   | "updated"
   | null;
@@ -28,6 +30,14 @@ function lowerFirst(s: string) {
   return s.replace(/^\w/, c => c.toLowerCase());
 }
 
+function joinOptions(options: string[]) {
+  let allOptions = options.join(", ");
+  if (allOptions) {
+    allOptions = `{ ${allOptions} }`;
+  }
+  return allOptions;
+}
+
 export class Attribute {
   name: string = "";
   type: AttributeType = null;
@@ -39,40 +49,41 @@ export class Attribute {
   forGqlUpdate: boolean = true;
   nullable: boolean = false; // Default for both TypeORM and TypeGraphQL
 
-  private static joinOptions(options: string[]) {
-    let allOptions = options.join(", ");
-    if (allOptions) {
-      allOptions = `{ ${allOptions} }`;
-    }
-    return allOptions;
-  }
-
   private gqlField(opType: OpType) {
     if (!this.isGqlField) {
       return "";
     }
 
-    const options = [`description: "${this.description}"`];
-    if (opType === OpType.UPDATE || this.nullable) {
-      options.push("nullable: true");
-    }
-
+    let gqlType: string | null = null;
     switch (this.type) {
       case "string":
-        break;
       case "text":
-        break;
       case "boolean":
-        break;
       case "created":
-        break;
       case "updated":
+        // NOP
+        break;
+      case "integer":
+        gqlType = "() => Int";
+        break;
+      case "float":
+        gqlType = "() => Float";
         break;
       default:
         throw Error(`Bogus type '${this.type}'`);
     }
 
-    return `@Field(${Attribute.joinOptions(options)})`;
+    const advancedOptions = [`description: "${this.description}"`];
+    if (opType === OpType.UPDATE || this.nullable) {
+      advancedOptions.push("nullable: true");
+    }
+
+    const allOptions = [joinOptions(advancedOptions)];
+    if (gqlType) {
+      allOptions.unshift(gqlType);
+    }
+
+    return `@Field(${allOptions.join(", ")})`;
   }
 
   private dbColumn(opType: OpType) {
@@ -95,6 +106,7 @@ export class Attribute {
         return "@UpdateDataColumn()";
       case "text":
         options.push('type: "text"');
+        break;
       case "string":
       case "boolean":
         // TypeORM infers correct type from the declaration.
@@ -103,24 +115,34 @@ export class Attribute {
         throw Error(`Bogus type '${this.type}'`);
     }
 
-    return `@Column(${Attribute.joinOptions(options)})`;
+    return `@Column(${joinOptions(options)})`;
   }
 
   private typeDeclaration(opType: OpType) {
     const optional = opType === OpType.UPDATE ? "?" : "";
 
+    let tsType = "";
     switch (this.type) {
       case "created":
       case "updated":
-        return `${this.name}${optional}: Date`;
+        tsType = "Date";
+        break;
       case "text":
-        return `${this.name}${optional}: string`;
+        tsType = "string";
+        break;
+      case "integer":
+      case "float":
+        tsType = "number";
+        break;
       case "string":
       case "boolean":
-        return `${this.name}${optional}: ${this.type}`;
+        tsType = this.type;
+        break;
       default:
         throw Error(`Bogus type '${this.type}'`);
     }
+
+    return `${this.name}${optional}: ${tsType}`;
   }
 
   public decorators(opType: OpType) {
@@ -160,8 +182,8 @@ export class Relationship {
     // This only belongs on side of the relationship where the FK lives.
     switch (this.type) {
       case "manyToOne":
-      case "manyToManyOwner":
         return `@Column("integer") ${columnName}: number`;
+      case "manyToManyOwner": // Maybe for this also?
       case "oneToMany":
       case "manyToMany":
         return null;
@@ -226,11 +248,13 @@ export class Relationship {
       allArgs.push("{ nullable: false }");
     }
 
-    const options = [
-      this.gqlField(),
-      `${name}(${allArgs.join(", ")})`,
-      this.typeDeclaration() + ";"
-    ];
+    const options = [this.gqlField(), `${name}(${allArgs.join(", ")})`];
+
+    if (this.type === "manyToManyOwner") {
+      options.push("@JoinTable()");
+    }
+
+    options.push(this.typeDeclaration() + ";");
 
     const relationId = this.relationId();
     if (relationId) {

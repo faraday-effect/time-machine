@@ -121,6 +121,9 @@ type Project {
 
   """Is this project active?"""
   active: Boolean!
+
+  """Number of entries for this project"""
+  entryCount: Int
   entries: [Entry!]!
   accounts: [Account!]!
 }

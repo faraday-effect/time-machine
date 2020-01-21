@@ -31,7 +31,15 @@
               },
               "type": {
                 "type": "string",
-                "enum": ["string", "text", "boolean", "created", "updated"]
+                "enum": [
+                  "string",
+                  "text",
+                  "boolean",
+                  "integer",
+                  "float",
+                  "created",
+                  "updated"
+                ]
               },
               "description": {
                 "type": "string"

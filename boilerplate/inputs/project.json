@@ -17,6 +17,13 @@
         "name": "active",
         "type": "boolean",
         "description": "Is this project active?"
+      },
+      {
+        "name": "entryCount",
+        "type": "integer",
+        "description": "Number of entries for this project",
+        "nullable": true,
+        "isDbColumn": false
       }
     ]
   },

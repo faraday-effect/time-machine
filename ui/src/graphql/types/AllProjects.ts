@@ -20,6 +20,10 @@ export interface AllProjects_allProjects {
    * Is this project active?
    */
   active: boolean;
+  /**
+   * Number of entries for this project
+   */
+  entryCount: number | null;
 }
 
 export interface AllProjects {
