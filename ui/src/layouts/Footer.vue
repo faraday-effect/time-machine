@@ -1,14 +1,23 @@
 <template>
-  <v-footer app>
+  <v-footer app dark>
+    <span class="title text-uppercase font-weight-light">
+      Faraday
+    </span>
     <v-spacer />
-    <h6 class="caption">
-      &copy; Copyright {{ new Date().getFullYear() }} by Tom Nurkkala
-    </h6>
+    <span class="caption text-uppercase">
+      &copy; Copyright {{ theYear }} by Tom Nurkkala
+    </span>
   </v-footer>
 </template>
 
 <script lang="ts">
 export default {
-  name: "Footer"
+  name: "Footer",
+
+  computed: {
+    theYear() {
+      return new Date().getFullYear();
+    }
+  }
 };
 </script>

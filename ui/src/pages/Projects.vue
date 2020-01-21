@@ -13,7 +13,7 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <v-data-table :headers="headers" :items="allProjects">
+      <v-data-table :headers="headers" :items="allProjects" :sort-by="sortBy">
         <template v-slot:item.actions="{ item }">
           <action-icons
             :can-delete="item.entryCount === 0"
@@ -95,6 +95,8 @@ export default Vue.extend({
   data() {
     return {
       allProjects: [] as Project[],
+
+      sortBy: "title",
 
       createDialog: {
         visible: false
