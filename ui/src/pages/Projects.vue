@@ -21,6 +21,14 @@
             @delete="deleteProject(item.id)"
           />
         </template>
+        <template v-slot:item.active="{ item }">
+          <v-icon v-if="item.active" color="success">
+            mdi-check-circle-outline
+          </v-icon>
+          <v-icon v-else color="error">
+            mdi-minus-circle-outline
+          </v-icon>
+        </template>
       </v-data-table>
     </v-card>
 

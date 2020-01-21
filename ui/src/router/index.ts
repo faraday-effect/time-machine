@@ -28,6 +28,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (vuexStore.getters.isLoggedIn) {
     next(); // Already logged in.
+  } else if (to.name === "signup") {
+    next();
   } else if (to.name === "login") {
     next(); // Avoid infinite loop
   } else {

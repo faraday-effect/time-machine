@@ -23,6 +23,12 @@
                 :rules="validator.password"
               />
             </v-form>
+            <p class="mt-3 text-right">
+              No account?
+              <v-btn text small color="primary" :to="{ name: 'signup' }">
+                Create Account
+              </v-btn>
+            </p>
           </v-card-text>
           <v-card-actions>
             <v-spacer />

@@ -41,7 +41,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn text>Cancel</v-btn>
+            <v-btn text :to="{ name: 'login' }">Cancel</v-btn>
             <v-btn text @click="signUp" color="primary" :disabled="!formValid">
               Sign Up
             </v-btn>
