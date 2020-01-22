@@ -10,7 +10,7 @@
         :label="label"
         :value="date"
         @input="$emit('input', $event)"
-        prepend-icon="mdi-calendar"
+        prepend-icon="mdi-calendar-outline"
         readonly
         v-on="on"
       />

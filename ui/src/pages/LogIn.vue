@@ -27,7 +27,13 @@
           <v-card-actions>
             <p class="mt-3 text-right">
               No account?
-              <v-btn tabindex="-1" text small color="primary" :to="{ name: 'signup' }">
+              <v-btn
+                tabindex="-1"
+                text
+                smallv
+                color="primary"
+                :to="{ name: 'signup' }"
+              >
                 Create one
               </v-btn>
             </p>

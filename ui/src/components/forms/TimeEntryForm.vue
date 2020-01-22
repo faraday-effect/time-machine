@@ -13,7 +13,6 @@
           @input="update('projectId', $event)"
           label="Project"
           :items="projectChoices"
-          filled
           :rules="required"
         />
       </v-col>
@@ -24,7 +23,6 @@
           label="Description"
           rows="1"
           auto-grow
-          filled
           :rules="required"
         />
       </v-col>

@@ -10,7 +10,7 @@
         :label="label"
         :value="time"
         @input="$emit('input', $event)"
-        prepend-icon="mdi-calendar"
+        prepend-icon="mdi-clock-outline"
         readonly
         v-on="on"
       />

@@ -30,10 +30,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-div#picker {
-  padding: 20px;
-  background-color: #eee;
-}
-</style>

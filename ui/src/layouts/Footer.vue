@@ -5,7 +5,7 @@
     </span>
     <v-spacer />
     <span class="caption text-uppercase">
-      &copy; Copyright {{ theYear }} by Tom Nurkkala
+      &copy; Copyright {{ theYear }} Tom Nurkkala
     </span>
   </v-footer>
 </template>
