@@ -1,0 +1,166 @@
+<template>
+  <v-container>
+    <v-card>
+      <v-card-title>
+        <v-row class="align-baseline">
+          <v-col>
+            <h1 class="title">{{ title }}</h1>
+          </v-col>
+          <v-col>
+            <v-btn color="primary" @click="showCreateDialog">
+              Add {{ entityUpper }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="all{{ entityUpperPlural }}">
+        <template v-slot:item.actions="{ item }">
+          <action-icons
+            @update="showUpdateDialog(item)"
+            @delete="delete{{ entityUpper }}(item.id)"
+          />
+        </template>
+        <template v-slot:item.active="{ item }">
+          <v-icon v-if="item.active" color="success">
+            mdi-check-circle-outline
+          </v-icon>
+          <v-icon v-else color="error">
+            mdi-minus-circle-outline
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <{{ entityLower }}-dialog
+      v-model="createDialog.visible"
+      title="Create {{ entityLower }}"
+      :{{ entityLower }}="{}"
+      @ready="create{{ entityUpper }}"
+    />
+
+    <{{ entityLower }}-dialog
+      v-model="updateDialog.visible"
+      title="Update {{ entityLower }}"
+      :{{ entityLower }}="updateDialog.{{ entityLower }}"
+      @ready="update{{ entityUpper }}"
+    />
+
+    <v-snackbar v-model="snackbar.visible">
+      {{ snackbar.content }}
+      <v-btn text @click="snackbar.visible = false">Close</v-btn>
+    </v-snackbar>
+  </v-container>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import ActionIcons from "@/components/ActionIcons.vue";
+import {{ entityUpper }}Dialog from "@/components/dialogs/{{ entityUpper }}Dialog.vue";
+
+import { pick } from "lodash";
+
+export default Vue.extend({
+  name: "{{ entityUpperPlural }}",
+
+  components: {
+    ActionIcons,
+    {{ entityUpper }}Dialog
+  },
+
+  apollo: {
+    all{{ entityUpperPlural }}: {
+      query: ALL_{{ entityAllUpperPlural }}
+    }
+  },
+
+  data() {
+    return {
+      all{{ entityUpperPlural }}: [] as {{ entityUpper }}[],
+
+      sortBy: "title",
+
+      createDialog: {
+        visible: false
+      },
+
+      updateDialog: {
+        {{ entityLower }}: {} as {{ entityUpper }},
+        visible: false
+      },
+
+      headers: [
+        { text: "Title", value: "title" },
+        { text: "Description", value: "description" },
+        { text: "Actions", value: "actions" }
+      ],
+
+      snackbar: {
+        visible: false,
+        content: ""
+      }
+    };
+  },
+
+  methods: {
+    showSnackbar(content: string) {
+      this.snackbar.content = content;
+      this.snackbar.visible = true;
+    },
+
+    showCreateDialog() {
+      this.createDialog.visible = true;
+    },
+
+    showUpdateDialog({{ entityLower }}: {{ entityUpper }}) {
+      this.updateDialog.{{ entityLower }} = {{ entityLower }};
+      this.updateDialog.visible = true;
+    },
+
+    create{{ entityUpper }}({{ entityLower }}: {{ entityUpper }}) {
+      this.$apollo
+        .mutate<Create{{ entityUpper }}>({
+          mutation: CREATE_{{ entityAllUpper }},
+          variables: {
+            createInput: {{ entityLower }}
+          } as Create{{ entityUpper }}Variables
+        })
+        .then(result => {
+          const new{{ entityUpper }} = result.data!.new{{ entityUpper }};
+          this.all{{ entityUpperPlural }}.push(new{{ entityUpper }});
+          this.showSnackbar(`Created {{ entityLower }} ${new{{ entityUpper }}.title}`);
+        });
+    },
+
+    update{{ entityUpper }}({{ entityLower }}: {{ entityUpper }}) {
+      this.$apollo
+        .mutate<Update{{ entityUpper }}>({
+          mutation: UPDATE_{{ entityAllUpper }},
+          variables: {
+            updateInput: pick({{ entityLower }}, ["id", "title", "description", "active"])
+          } as Update{{ entityUpper }}Variables
+        })
+        .then(result => {
+          const updated{{ entityUpper }} = result.data!.updated{{ entityUpper }};
+          const idx = this.all{{ entityUpperPlural }}.findIndex(
+            {{ entityLower }} => {{ entityLower }}.id === updated{{ entityUpper }}.id
+          );
+          this.$set(this.all{{ entityUpperPlural }}, idx, updated{{ entityUpper }});
+          this.showSnackbar(`Updated {{ entityLower }} ${updated{{ entityUpper }}.title}`);
+        });
+    },
+
+    deleteEntity(id: number) {
+      this.$apollo
+        .mutate<Delete{{ entityUpper }}>({
+          mutation: DELETE_{{ entityAllUpper }},
+          variables: { id } as Delete{{ entityUpper }}Variables
+        })
+        .then(() => {
+          const idx = this.all{{ entityUpperPlural }}.findIndex({{ entityLower }} => {{ entityLower }}.id === id);
+          this.all{{ entityUpperPlural }}.splice(idx, 1);
+          this.showSnackbar("{{ entityUpper }} deleted");
+        });
+    }
+  }
+});
+</script>

@@ -1,6 +1,7 @@
-import pluralize from "pluralize";
-import { Type } from "class-transformer";
-import invariant from "invariant";
+import { plainToClass, Type } from "class-transformer";
+import { InflectionTable, lowerFirst } from "./helpers";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 type AttributeType =
   | "string"
@@ -23,11 +24,6 @@ export enum OpType {
   OBJECT,
   CREATE,
   UPDATE
-}
-
-function lowerFirst(s: string) {
-  invariant(s.length > 0, "string is empty");
-  return s.replace(/^\w/, c => c.toLowerCase());
 }
 
 function joinOptions(options: string[]) {
@@ -163,7 +159,6 @@ export class Attribute {
 
 export class Entity {
   name: string = "";
-  namePlural: string = "";
   pk: string = "";
   @Type(() => Attribute)
   attributes: Attribute[] = [];
@@ -213,18 +208,16 @@ export class Relationship {
     }
   }
 
-  private inverseSide(entityName: string) {
+  private inverseSide(inflections: InflectionTable) {
     const toLower = lowerFirst(this.to);
-    const entityLower = lowerFirst(entityName);
-    const entityLowerPlural = pluralize(entityLower);
 
     switch (this.type) {
       case "oneToMany":
-        return `${toLower} => ${toLower}.${entityLower}`;
+        return `${toLower} => ${toLower}.${inflections.entityLower}`;
       case "manyToOne":
       case "manyToMany":
       case "manyToManyOwner":
-        return `${toLower} => ${toLower}.${entityLowerPlural}`;
+        return `${toLower} => ${toLower}.${inflections.entityLowerPlural}`;
     }
   }
 
@@ -239,10 +232,10 @@ export class Relationship {
     }
   }
 
-  public decorators(entityName: string) {
+  public decorators(inflections: InflectionTable) {
     const name = this.dbRelation();
 
-    const allArgs = [`() => ${this.to}`, this.inverseSide(entityName)];
+    const allArgs = [`() => ${this.to}`, this.inverseSide(inflections)];
     if (!this.nullable) {
       // Only if not the default.
       allArgs.push("{ nullable: false }");
@@ -270,6 +263,7 @@ export class ERSchema {
   entity: Entity = {} as Entity;
   @Type(() => Relationship)
   relationships: Relationship[] = [];
+  inflections: InflectionTable = {} as InflectionTable;
 
   declareFields() {
     const objectFields: string[] = [];
@@ -291,7 +285,7 @@ export class ERSchema {
 
     // Relationships
     for (const rel of this.relationships) {
-      objectFields.push(rel.decorators(this.entity.name));
+      objectFields.push(rel.decorators(this.inflections));
     }
 
     const JOIN_STRING = ";\n\n  ";
@@ -302,6 +296,15 @@ export class ERSchema {
       updateFields: updateFields.join(JOIN_STRING)
     };
   }
+}
+
+export function loadSchema(name: string) {
+  const plainObject = JSON.parse(
+    readFileSync(join(__dirname, "..", name), "utf-8")
+  );
+  const schema = plainToClass(ERSchema, plainObject);
+  schema.inflections = new InflectionTable(schema.entity.name);
+  return schema;
 }
 
 // Credits:

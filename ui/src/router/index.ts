@@ -7,6 +7,7 @@ import SignUp from "@/pages/SignUp.vue";
 import NotFound from "@/pages/NotFound.vue";
 import Password from "@/pages/Password.vue";
 import Projects from "@/pages/Projects.vue";
+import Roles from "@/pages/Roles.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,7 @@ const routes = [
   { path: "/change-password", name: "password", component: Password },
   { path: "/sign-up", name: "signup", component: SignUp },
   { path: "/projects", name: "projects", component: Projects },
+  { path: "/roles", name: "roles", component: Roles },
   { path: "*", component: NotFound }
 ];
 

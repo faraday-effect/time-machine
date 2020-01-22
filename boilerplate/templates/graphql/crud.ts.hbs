@@ -1,0 +1,31 @@
+import gql from "graphql-tag";
+
+export const CREATE_{{ entityAllUpper }} = gql`
+  mutation Create{{ entityUpper }}($createInput: {{ entityUpper }}CreateInput!) {
+    new{{ entityUpper }}: create{{ entityUpper }}(createInput: $createInput) {
+      id
+    }
+  }
+`;
+
+export const ALL_{{ entityAllUpperPlural }} = gql`
+  query All{{ entityUpperPlural }} {
+    all{{ entityUpperPlural }}: read{{ entityUpperPlural }} {
+      id
+    }
+  }
+`;
+
+export const UPDATE_{{ entityAllUpper }} = gql`
+  mutation Update{{ entityUpper }}($updateInput: {{ entityUpper }}UpdateInput!) {
+    updated{{ entityUpper }}: update{{ entityUpper }}(updateInput: $updateInput) {
+      id
+    }
+  }
+`;
+
+export const DELETE_{{ entityAllUpper }} = gql`
+  mutation Delete{{ entityUpper }}($id: Int!) {
+    delete{{ entityUpper }}(id: $id)
+  }
+`;

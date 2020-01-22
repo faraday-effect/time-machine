@@ -1,0 +1,67 @@
+<template>
+    <v-dialog :value="value" persistent max-width="800">
+        <v-card>
+            <v-card-title>{{ title }}</v-card-title>
+
+            <v-card-text>
+                <v-form v-model="formValid">
+                    <!-- Form fields here -->
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer />
+                <v-btn text @click="onClose">Cancel</v-btn>
+                <v-btn text color="success" :disabled="!formValid" @click="onSubmit">
+                    Submit
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+</template>
+
+<script lang="ts">
+    import Vue from "vue";
+    import { Create{{ entityUpper }}_new{{ entityUpper }} as {{ entityUpper }} } from "@/graphql/types/Create{{ entityUpper }}";
+
+    export default Vue.extend({
+        name: "{{ entityUpper }}Dialog",
+
+        props: {
+            value: { type: Boolean, required: true },
+            title: { type: String, required: true },
+            {{ entityLower }}: { type: Object as () => {{ entityUpper }} }
+    },
+
+    data() {
+        return {
+            form: {
+                // Form models here.
+            } as {{ entityUpper }},
+
+            formValid: false,
+            required: [(v: string) => !!v || "Required field"]
+        };
+    },
+
+    methods: {
+        onClose() {
+            this.$emit("input", false);
+        },
+
+        onSubmit() {
+            this.$emit("ready", this.form);
+            this.$emit("input", false);
+        }
+    },
+
+    watch: {
+        {{ entityLower }}: {
+            handler(newValue: {{ entityUpper }}) {
+                this.form = { ...newValue }; // Don't clobber parent.
+            },
+            immediate: true
+        }
+    }
+    });
+</script>

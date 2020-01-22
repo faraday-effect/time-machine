@@ -53,6 +53,17 @@ export interface ProjectUpdateInput {
   active?: boolean | null;
 }
 
+export interface RoleCreateInput {
+  name: string;
+  description: string;
+}
+
+export interface RoleUpdateInput {
+  id: number;
+  name?: string | null;
+  description?: string | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

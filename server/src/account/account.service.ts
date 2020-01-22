@@ -1,5 +1,12 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { Account, AccountCreateInput, AccountUpdateInput } from "./entities";
+import {
+  Account,
+  AccountCreateInput,
+  AccountUpdateInput,
+  Role,
+  RoleCreateInput,
+  RoleUpdateInput
+} from "./entities";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -38,5 +45,30 @@ export class AccountService {
 
   deleteAccount(id: number) {
     return this.accountRepo.delete(id).then(result => result.affected);
+  }
+}
+
+@Injectable()
+export class RoleService {
+  constructor(
+    @InjectRepository(Role) private readonly roleRepo: Repository<Role>
+  ) {}
+
+  createRole(createInput: RoleCreateInput) {
+    return this.roleRepo.save(this.roleRepo.create(createInput));
+  }
+
+  readRoles() {
+    return this.roleRepo.find();
+  }
+
+  updateRole(updateInput: RoleUpdateInput) {
+    return this.roleRepo
+      .preload(updateInput)
+      .then(result => this.roleRepo.save(result));
+  }
+
+  deleteRole(id: number) {
+    return this.roleRepo.delete(id).then(result => result.affected);
   }
 }

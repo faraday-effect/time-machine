@@ -1,13 +1,13 @@
-import { readdirSync, readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync } from "fs";
+import { parse } from "path";
 import "reflect-metadata";
 
 import Handlebars from "handlebars";
 import figlet from "figlet";
-import { ERSchema } from "./er-schema";
+import { ERSchema, loadSchema } from "./er-schema";
 import pluralize from "pluralize";
 import program from "commander";
-import { plainToClass } from "class-transformer";
+import { sync } from "walkdir/walkdir";
 
 type TemplateFunctionMap = Map<string, HandlebarsTemplateDelegate>;
 
@@ -23,18 +23,21 @@ function banner(text: string) {
 const templateMap: TemplateFunctionMap = new Map();
 
 function loadTemplates() {
-  for (const fileName of readdirSync(join(__dirname, "../templates"))) {
-    if (fileName.endsWith(".hbs")) {
-      const key = fileName.replace(/\..*/, "");
-      const template = readFileSync(
-        join(__dirname, "../templates", fileName),
-        "utf-8"
-      );
+  for (const path of sync("templates")) {
+    if (path.endsWith(".hbs")) {
+      const pathInfo = parse(path);
+      const key = pathInfo.name.replace(/\..*/, "");
+      const template = readFileSync(path, "utf-8");
       const templateFunction = Handlebars.compile(template, {
         noEscape: true
       });
       templateMap.set(key, templateFunction);
     }
+  }
+
+  if (program.verbose) {
+    banner("templates");
+    templateMap.forEach((value, key) => console.log(key));
   }
 }
 
@@ -47,13 +50,6 @@ function renderTemplate(templateKey: string, context: object) {
   }
 }
 
-function loadSchema(name: string) {
-  const plainObject = JSON.parse(
-    readFileSync(join(__dirname, "..", name), "utf-8")
-  );
-  return plainToClass(ERSchema, plainObject);
-}
-
 function generateEntity(schema: ERSchema) {
   return renderTemplate("entity", {
     entityName: schema.entity.name,
@@ -61,25 +57,17 @@ function generateEntity(schema: ERSchema) {
   });
 }
 
-function pluralSchemaName(schema: ERSchema) {
-  let result = schema.entity.namePlural;
-  if (!result) {
-    result = pluralize(schema.entity.name);
-  }
-  return result;
-}
-
 function main(schemaName: string) {
   registerHelpers();
   loadTemplates();
 
   const schema = loadSchema(schemaName);
-  const entityName = schema.entity.name;
-  const entityNamePlural = pluralSchemaName(schema);
 
   if (program.verbose) {
-    banner(entityName);
+    banner(schema.inflections.entityLower);
     console.log(JSON.stringify(schema, null, 2));
+    banner("inflections");
+    console.log(JSON.stringify(schema.inflections, null, 2));
   }
 
   if (program.entity || program.all) {
@@ -89,15 +77,17 @@ function main(schemaName: string) {
 
   if (program.module || program.all) {
     banner("module");
-    console.log(renderTemplate("module", { entityName }));
+    console.log(
+      renderTemplate("module", { entityName: schema.inflections.entityUpper })
+    );
   }
 
   if (program.resolver || program.all) {
     banner("resolver");
     console.log(
       renderTemplate("resolver", {
-        entityName,
-        entityNamePlural
+        entityName: schema.inflections.entityUpper,
+        entityNamePlural: schema.inflections.entityUpperPlural
       })
     );
   }
@@ -106,11 +96,20 @@ function main(schemaName: string) {
     banner("service");
     console.log(
       renderTemplate("service", {
-        entityName,
-        entityNamePlural
+        entityName: schema.inflections.entityUpper,
+        entityNamePlural: schema.inflections.entityUpperPlural
       })
     );
   }
+
+  banner("table");
+  console.log(renderTemplate("table", schema.inflections));
+
+  banner("create-update");
+  console.log(renderTemplate("create-update", schema.inflections));
+
+  banner("crud");
+  console.log(renderTemplate("crud", schema.inflections));
 }
 
 program

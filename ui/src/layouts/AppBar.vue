@@ -17,13 +17,18 @@
       </template>
 
       <v-list>
+        <v-list-item :to="{ name: 'roles' }">
+          Roles
+        </v-list-item>
         <v-list-item :to="{ name: 'projects' }">
           Projects
         </v-list-item>
         <v-list-item :to="{ name: 'entries' }">
           Entries
         </v-list-item>
+
         <v-divider />
+
         <v-list-item :to="{ name: 'password' }">
           <v-list-item-title>Change Password</v-list-item-title>
         </v-list-item>

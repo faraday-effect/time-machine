@@ -7,11 +7,7 @@
             <h1 class="title">Time Log</h1>
           </v-col>
           <v-col>
-            <v-switch
-              class="mr-2"
-              label="Newest first"
-              v-model="reverseOrder"
-            />
+            <v-switch label="Chronological" v-model="chronologicalOrder" />
           </v-col>
           <v-col>
             <v-btn color="primary" @click="showCreateDialog">
@@ -106,7 +102,7 @@ export default Vue.extend({
     return {
       accountEntries: [] as GqlEntry[],
 
-      reverseOrder: false,
+      chronologicalOrder: false,
 
       headers: [
         { text: "Date" },
@@ -135,7 +131,7 @@ export default Vue.extend({
   computed: {
     sortedEntries(): GqlEntry[] {
       const sorted = sortBy(this.accountEntries, elt => elt.start);
-      if (this.reverseOrder) {
+      if (!this.chronologicalOrder) {
         return sorted.reverse();
       }
       return sorted;

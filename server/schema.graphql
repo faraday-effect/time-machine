@@ -100,6 +100,9 @@ type Mutation {
   createAccount(createInput: AccountCreateInput!): Account!
   updateAccount(updateInput: AccountUpdateInput!): Account!
   deleteAccount(id: Int!): Int!
+  createRole(createInput: RoleCreateInput!): Role!
+  updateRole(updateInput: RoleUpdateInput!): Role!
+  deleteRole(id: Int!): Int!
   createEntry(createInput: EntryCreateInput!): Entry!
   updateEntry(updateInput: EntryUpdateInput!): Entry!
   deleteEntry(id: Int!): Int!
@@ -154,6 +157,7 @@ input ProjectUpdateInput {
 
 type Query {
   readAccounts: [Account!]!
+  readRoles: [Role!]!
   readEntries: [Entry!]!
   readEntriesForAccount(accountId: Int!): [Entry!]!
   readProjects: [Project!]!
@@ -167,6 +171,7 @@ type Role {
 
   """Description of this role"""
   description: String!
+  accounts: [Account!]!
 }
 
 input RoleCreateInput {
