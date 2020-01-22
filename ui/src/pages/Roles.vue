@@ -4,7 +4,7 @@
       <v-card-title>
         <v-row class="align-baseline">
           <v-col>
-            <h1 class="title"></h1>
+            <h1 class="title">Roles</h1>
           </v-col>
           <v-col>
             <v-btn color="primary" @click="showCreateDialog">
@@ -101,7 +101,7 @@ export default Vue.extend({
       },
 
       headers: [
-        { text: "Title", value: "title" },
+        { text: "Name", value: "name" },
         { text: "Description", value: "description" },
         { text: "Actions", value: "actions" }
       ],
@@ -131,7 +131,7 @@ export default Vue.extend({
     createRole(role: Role) {
       this.$apollo
         .mutate<CreateRole>({
-          mutation: CREATE_ROLE,
+          mutation: CREATE_ROLE
           // variables: {
           //   createInput: role
           // } as CreateRoleVariables
@@ -139,7 +139,7 @@ export default Vue.extend({
         .then(result => {
           const newRole = result.data!.newRole;
           this.allRoles.push(newRole);
-          // this.showSnackbar(`Created role ${newRole.title}`);
+          this.showSnackbar(`Created role ${newRole.name}`);
         });
     },
 
@@ -157,7 +157,7 @@ export default Vue.extend({
             role => role.id === updatedRole.id
           );
           this.$set(this.allRoles, idx, updatedRole);
-          // this.showSnackbar(`Updated role ${updatedRole.title}`);
+          this.showSnackbar(`Updated role ${updatedRole.name}`);
         });
     },
 

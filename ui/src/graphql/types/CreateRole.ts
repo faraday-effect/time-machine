@@ -10,6 +10,14 @@ import { RoleCreateInput } from "./globalTypes";
 
 export interface CreateRole_newRole {
   id: number;
+  /**
+   * Role name
+   */
+  name: string;
+  /**
+   * Description of this role
+   */
+  description: string;
 }
 
 export interface CreateRole {

@@ -8,6 +8,14 @@
 
 export interface AllRoles_allRoles {
   id: number;
+  /**
+   * Role name
+   */
+  name: string;
+  /**
+   * Description of this role
+   */
+  description: string;
 }
 
 export interface AllRoles {

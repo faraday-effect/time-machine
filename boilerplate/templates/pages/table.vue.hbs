@@ -4,7 +4,7 @@
       <v-card-title>
         <v-row class="align-baseline">
           <v-col>
-            <h1 class="title">{{ title }}</h1>
+            <h1 class="title">{{ entryUpper }}</h1>
           </v-col>
           <v-col>
             <v-btn color="primary" @click="showCreateDialog">
@@ -149,7 +149,7 @@ export default Vue.extend({
         });
     },
 
-    deleteEntity(id: number) {
+    delete{{ entityUpper }}(id: number) {
       this.$apollo
         .mutate<Delete{{ entityUpper }}>({
           mutation: DELETE_{{ entityAllUpper }},

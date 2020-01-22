@@ -10,6 +10,14 @@ import { RoleUpdateInput } from "./globalTypes";
 
 export interface UpdateRole_updatedRole {
   id: number;
+  /**
+   * Role name
+   */
+  name: string;
+  /**
+   * Description of this role
+   */
+  description: string;
 }
 
 export interface UpdateRole {
