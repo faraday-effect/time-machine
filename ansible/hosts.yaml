@@ -7,3 +7,6 @@ staging:
     faraday:
       server_name: faraday.cse.taylor.edu
       dir_abs_nginx: /etc/nginx
+
+production:
+  hosts:
