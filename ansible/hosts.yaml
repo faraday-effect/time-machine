@@ -4,8 +4,8 @@ development:
 
 staging:
   hosts:
-    faraday:
-      server_name: faraday.cse.taylor.edu
+    time-machine:
+      server_name: 45.79.56.172
       dir_abs_nginx: /etc/nginx
 
 production:

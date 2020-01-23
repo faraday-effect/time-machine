@@ -138,7 +138,6 @@ export default Vue.extend({
     },
 
     createProject(project: Project) {
-      console.log("PROJECT", project);
       this.$apollo
         .mutate<CreateProject>({
           mutation: CREATE_PROJECT,

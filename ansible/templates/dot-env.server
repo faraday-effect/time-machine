@@ -1,6 +1,6 @@
 ##### Node
 
-NODE_ENV={{ node_env }}
+NODE_ENV={{ node.env }}
 
 ##### Postgres
 

@@ -58,7 +58,7 @@
 
 - name: provision database
   hosts: staging, production
-  tags: database
+  tags: db
   become: yes
   become_user: postgres
   tasks:

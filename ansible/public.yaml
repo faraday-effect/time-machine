@@ -4,7 +4,7 @@ project:
 
 git_repo: "https://github.com/faraday-effect/time-machine"
 
-dir_abs_app: "{{ dir_abs_owner }}/app"
+dir_abs_app: "{{ owner.homedir }}/app"
 
 dir_abs_ui: "{{ dir_abs_app }}/ui"
 dir_abs_server: "{{ dir_abs_app }}/server"
