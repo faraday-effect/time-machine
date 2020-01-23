@@ -1,0 +1,15 @@
+project:
+  title: "Time Machine"
+  basename: "time-machine"
+
+git_repo: "https://github.com/faraday-effect/time-machine"
+
+dir_abs_app: "{{ dir_abs_owner }}/app"
+
+dir_abs_ui: "{{ dir_abs_app }}/ui"
+dir_abs_server: "{{ dir_abs_app }}/server"
+dir_abs_pm2: "{{ dir_abs_app }}/pm2"
+
+dir_abs_nginx_available: "{{ dir_abs_nginx }}/sites-available"
+dir_abs_nginx_enabled: "{{ dir_abs_nginx }}/sites-enabled"
+filename_nginx_conf: "{{ project_basename }}.conf"

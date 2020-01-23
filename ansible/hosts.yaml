@@ -1,0 +1,9 @@
+development:
+  hosts:
+    ubuntu-desktop:
+
+staging:
+  hosts:
+    faraday:
+      server_name: faraday.cse.taylor.edu
+      dir_abs_nginx: /etc/nginx
