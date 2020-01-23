@@ -1,6 +1,6 @@
 ##### Node
 
-NODE_ENV={{ node.env }}
+NODE_ENV={{ node_env }}
 
 ##### Postgres
 
@@ -8,6 +8,8 @@ PG_HOSTNAME={{ postgres.hostname }}
 PG_USERNAME={{ postgres.username }}
 PG_PASSWORD={{ postgres.password }}
 PG_DATABASE={{ postgres.database }}
+
+##### Security
 
 JWT_SECRET={{ secret.jwt }}
 

@@ -1,12 +1,16 @@
 development:
   hosts:
     ubuntu-desktop:
+  vars:
+    node_env: development
 
 staging:
   hosts:
     time-machine:
-      server_name: 45.79.56.172
-      dir_abs_nginx: /etc/nginx
+  vars:
+    node_env: development  # FOR NOW.
 
 production:
   hosts:
+  vars:
+    node_env: production
