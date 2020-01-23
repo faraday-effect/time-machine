@@ -18,9 +18,10 @@ import { AuthModule } from "@/auth/auth.module";
     }),
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "localhost",
-      username: "tom",
-      database: "time-machine",
+      host: process.env.PG_HOST,
+      database: process.env.PG_DATABASE,
+      username: process.env.PG_USERNAME,
+      password: process.env.PG_PASSWORD,
       synchronize: true,
       entities: [Account, Entry, Project, Role],
       logging: "all"

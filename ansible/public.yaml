@@ -12,4 +12,4 @@ dir_abs_pm2: "{{ dir_abs_app }}/pm2"
 
 dir_abs_nginx_available: "{{ dir_abs_nginx }}/sites-available"
 dir_abs_nginx_enabled: "{{ dir_abs_nginx }}/sites-enabled"
-filename_nginx_conf: "{{ project_basename }}.conf"
+filename_nginx_conf: "{{ project.basename }}.conf"
