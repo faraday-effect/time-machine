@@ -6,7 +6,7 @@ development:
 
 staging:
   hosts:
-    time-machine:
+    faraday-effect:
   vars:
     node_env: development  # FOR NOW.
 

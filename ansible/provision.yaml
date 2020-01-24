@@ -161,7 +161,7 @@
 
     - name: copy nginx config file
       template:
-        src: "templates/nginx-simple.conf"
+        src: "templates/{{ filename_template_nginx_conf }}"
         dest: "{{ dir_abs_nginx_available }}/{{ filename_nginx_conf }}"
         mode: 0444
 
