@@ -6,7 +6,7 @@ import {
 
 import groupBy from "lodash/groupBy";
 
-import { minutesBetween, yearsDaysHoursMinutes } from "@/helpers/time-and-date";
+import { hoursMinutes, minutesBetween } from "@/helpers/time-and-date";
 
 export class Account implements GqlAccount {
   readonly id: number;
@@ -62,7 +62,7 @@ export class Entry implements GqlEntry {
   }
 
   get duration() {
-    return yearsDaysHoursMinutes(this.minutes);
+    return hoursMinutes(this.minutes);
   }
 }
 
@@ -82,7 +82,7 @@ export class Entries {
   }
 
   get duration() {
-    return yearsDaysHoursMinutes(this.minutes);
+    return hoursMinutes(this.minutes);
   }
 
   private byGroups(iteratee: string) {
@@ -93,7 +93,7 @@ export class Entries {
         groupName: key,
         entries: val,
         minutes,
-        duration: yearsDaysHoursMinutes(minutes)
+        duration: hoursMinutes(minutes)
       };
     });
   }

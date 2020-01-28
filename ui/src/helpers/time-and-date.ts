@@ -1,21 +1,21 @@
 import { DateTime, Duration } from "luxon";
 
-export function yearsDaysHoursMinutes(minutes: number): string {
-  const duration = Duration.fromObject({ minutes });
-  const units = duration.shiftTo("years", "days", "hours", "minutes");
+type DurationUnit = "years" | "months" | "days" | "hours" | "minutes";
 
-  const strings = [`${units.minutes}m`];
-  if (units.hours) {
-    strings.unshift(`${units.hours}h`);
-  }
-  if (units.days) {
-    strings.unshift(`${units.days}d`);
-  }
-  if (units.years) {
-    strings.unshift(`${units.years}y`);
-  }
+export function durationAs(minutes: number, ...units: DurationUnit[]) {
+  const shifted = Duration.fromObject({ minutes }).shiftTo(...units);
+  const segments = units
+    .filter(unit => shifted[unit] > 0)
+    .map(unit => `${shifted[unit]}${unit[0]}`);
+  return segments.join(" ");
+}
 
-  return strings.join(" ");
+export function yearsDaysHoursMinutes(minutes: number) {
+  return durationAs(minutes, "years", "days", "hours", "minutes");
+}
+
+export function hoursMinutes(minutes: number) {
+  return durationAs(minutes, "hours", "minutes");
 }
 
 export function now() {
