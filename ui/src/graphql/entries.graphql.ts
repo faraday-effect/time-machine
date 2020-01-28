@@ -17,6 +17,29 @@ export const CREATE_ENTRY = gql`
   }
 `;
 
+export const ALL_ENTRIES = gql`
+  query AllEntries {
+    allEntries: readEntries {
+      id
+      created
+      updated
+      start
+      stop
+      description
+      account {
+        id
+        firstName
+        lastName
+        email
+      }
+      project {
+        id
+        title
+      }
+    }
+  }
+`;
+
 export const ENTRIES_FOR_ACCOUNT = gql`
   query EntriesForAccount($accountId: Int!) {
     accountEntries: readEntriesForAccount(accountId: $accountId) {

@@ -8,6 +8,7 @@ import NotFound from "@/pages/NotFound.vue";
 import Password from "@/pages/Password.vue";
 import Projects from "@/pages/Projects.vue";
 import Roles from "@/pages/Roles.vue";
+import Reports from "@/pages/Reports.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,7 @@ const routes = [
   { path: "/sign-up", name: "signup", component: SignUp },
   { path: "/projects", name: "projects", component: Projects },
   { path: "/roles", name: "roles", component: Roles },
+  { path: "/reports", name: "reports", component: Reports },
   { path: "*", component: NotFound }
 ];
 
