@@ -2,22 +2,20 @@
   <v-container>
     <v-row>
       <v-col>
-        <ul>
-          <li v-for="entry in allEntries.entries" :key="entry.id">
-            {{ entry.account.fullName }}
-            {{ entry.project.title }}
-            {{ entry.start }} {{ entry.stop }} {{ entry.duration }}
-          </li>
-          <li>
-            {{ allEntries.minutes }}
-            {{ allEntries.duration }}
-          </li>
-        </ul>
-        <ul>
-          <li v-for="entry in allEntries.byProject" :key="entry.id">
-            {{ entry }}
-          </li>
-        </ul>
+        <group-by
+          title="ByProject"
+          :entries="allEntries"
+          group-heading="Project"
+          iteratee="project.title"
+        />
+      </v-col>
+      <v-col>
+        <group-by
+          title="By Account"
+          :entries="allEntries"
+          group-heading="Account"
+          iteratee="account.fullName"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -31,9 +29,14 @@ import {
 } from "@/graphql/types/AllEntries";
 import { ALL_ENTRIES } from "@/graphql/entries.graphql";
 import { Entries } from "@/models/entry.model";
+import GroupBy from "@/components/GroupBy.vue";
 
 export default Vue.extend({
   name: "Reports",
+
+  components: {
+    GroupBy
+  },
 
   apollo: {},
 

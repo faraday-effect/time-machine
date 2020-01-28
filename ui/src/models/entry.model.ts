@@ -4,7 +4,7 @@ import {
   AllEntries_allEntries_account as GqlAccount
 } from "@/graphql/types/AllEntries";
 
-import * as _ from "lodash";
+import groupBy from "lodash/groupBy";
 
 import { minutesBetween, yearsDaysHoursMinutes } from "@/helpers/time-and-date";
 
@@ -66,6 +66,10 @@ export class Entry implements GqlEntry {
   }
 }
 
+function totalMinutes(entries: Entry[]) {
+  return entries.reduce((acc, val) => acc + val.minutes, 0);
+}
+
 export class Entries {
   private readonly entries: Entry[];
 
@@ -74,14 +78,31 @@ export class Entries {
   }
 
   get minutes() {
-    return this.entries.reduce((acc, val) => acc + val.minutes, 0);
+    return totalMinutes(this.entries);
   }
 
   get duration() {
     return yearsDaysHoursMinutes(this.minutes);
   }
 
+  private byGroups(iteratee: string) {
+    const groups = groupBy(this.entries, iteratee);
+    return Object.entries(groups).map(function([key, val]) {
+      const minutes = totalMinutes(val);
+      return {
+        groupName: key,
+        entries: val,
+        minutes,
+        duration: yearsDaysHoursMinutes(minutes)
+      };
+    });
+  }
+
   get byProject() {
-    return _.groupBy(this.entries, "project.title");
+    return this.byGroups("project.title");
+  }
+
+  get byAccount() {
+    return this.byGroups("account.fullName");
   }
 }
