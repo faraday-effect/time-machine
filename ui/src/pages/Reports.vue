@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <group-by
-          title="ByProject"
+          title="By Project"
           :entries="allEntries"
           group-heading="Project"
           iteratee="project.title"

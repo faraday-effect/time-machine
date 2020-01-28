@@ -1,39 +1,13 @@
 <template>
   <v-card>
     <v-card-title>{{ title }}</v-card-title>
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th>{{ groupHeading }}</th>
-            <th>Minutes</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="groupEntry in entries.byGroups(iteratee)"
-            :key="groupEntry.id"
-          >
-            <td>{{ groupEntry.groupName }}</td>
-            <td>{{ groupEntry.minutes }}</td>
-            <td>{{ groupEntry.duration }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>Totals</td>
-            <td>{{ entries.minutes }}</td>
-            <td>{{ entries.duration }}</td>
-          </tr>
-        </tfoot>
-      </template>
-    </v-simple-table>
+    <v-data-table :headers="headers" :items="groupEntries" />
   </v-card>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { Entries } from "@/models/entry.model";
 
 export default Vue.extend({
   name: "GroupBy",
@@ -43,6 +17,22 @@ export default Vue.extend({
     entries: { type: Object, required: true },
     groupHeading: { type: String, required: true },
     iteratee: { type: String, required: true }
+  },
+
+  computed: {
+    groupEntries(): Entries[] {
+      return this.entries.byGroups(this.iteratee);
+    }
+  },
+
+  data() {
+    return {
+      headers: [
+        { text: this.groupHeading, value: "groupName" },
+        { text: "Minutes", value: "minutes", align: "end" },
+        { text: "Duration", value: "duration", align: "end", sortable: false }
+      ]
+    };
   }
 });
 </script>
