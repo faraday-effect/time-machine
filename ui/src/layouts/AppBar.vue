@@ -26,9 +26,9 @@
         <v-list-item :to="{ name: 'entries' }">
           Entries
         </v-list-item>
-        <v-list-item :to="{ name: 'reports' }">
-          Reports
-        </v-list-item>
+<!--        <v-list-item :to="{ name: 'reports' }">-->
+<!--          Reports-->
+<!--        </v-list-item>-->
 
         <v-divider />
 
