@@ -1,7 +1,15 @@
 <template>
   <v-card>
     <v-card-title>{{ title }}</v-card-title>
-    <v-data-table :headers="headers" :items="groupEntries" />
+    <v-data-table :headers="headers" :items="groupEntries">
+      <template v-slot:body.append>
+        <tr class="secondary">
+          <td>Total</td>
+          <td class="text-end">{{ entries.minutes }}</td>
+          <td class="text-end">{{ entries.duration }}</td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 
