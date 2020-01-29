@@ -9,23 +9,6 @@ export const CREATE_ENTRY = gql`
       description
       created
       updated
-      project {
-        id
-        title
-      }
-    }
-  }
-`;
-
-export const ALL_ENTRIES = gql`
-  query AllEntries {
-    allEntries: readEntries {
-      id
-      created
-      updated
-      start
-      stop
-      description
       account {
         id
         firstName
@@ -40,15 +23,21 @@ export const ALL_ENTRIES = gql`
   }
 `;
 
-export const ENTRIES_FOR_ACCOUNT = gql`
-  query EntriesForAccount($accountId: Int!) {
-    accountEntries: readEntriesForAccount(accountId: $accountId) {
+export const READ_ENTRIES = gql`
+  query ReadEntries($accountId: Int) {
+    readEntries(accountId: $accountId) {
       id
+      created
+      updated
       start
       stop
       description
-      created
-      updated
+      account {
+        id
+        firstName
+        lastName
+        email
+      }
       project {
         id
         title

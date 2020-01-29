@@ -59,21 +59,16 @@ import { Entry } from "@/components/pickers/entry-entities";
 import {
   CREATE_ENTRY,
   DELETE_ENTRY,
-  ENTRIES_FOR_ACCOUNT,
+  READ_ENTRIES,
   UPDATE_ENTRY
 } from "@/graphql/entries.graphql";
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
 import {
-  EntriesForAccount,
-  EntriesForAccount_accountEntries as GqlEntry,
-  EntriesForAccountVariables
-} from "@/graphql/types/EntriesForAccount";
-import {
   EntryCreateInput,
   EntryUpdateInput
 } from "@/graphql/types/globalTypes";
-import { CreateEntry } from "@/graphql/types/CreateEntry";
+import { CreateEntry, CreateEntryVariables } from "@/graphql/types/CreateEntry";
 import {
   dayDelta,
   fancyDate,
@@ -84,6 +79,11 @@ import {
 import { UpdateEntry } from "@/graphql/types/UpdateEntry";
 import { sortBy } from "lodash";
 import ActionIcons from "@/components/ActionIcons.vue";
+import {
+  ReadEntries,
+  ReadEntries_readEntries as GqlEntry,
+  ReadEntriesVariables
+} from "@/graphql/types/ReadEntries";
 
 enum DialogMode {
   CREATE,
@@ -146,13 +146,13 @@ export default Vue.extend({
     getEntries() {
       // Defined this way to allow type-safe-ish use of `this.$store`.
       this.$apollo
-        .query<EntriesForAccount>({
-          query: ENTRIES_FOR_ACCOUNT,
+        .query<ReadEntries, ReadEntriesVariables>({
+          query: READ_ENTRIES,
           variables: {
             accountId: this.$store.state.claims.id
-          } as EntriesForAccountVariables
+          }
         })
-        .then(result => (this.accountEntries = result.data.accountEntries))
+        .then(result => (this.accountEntries = result.data.readEntries))
         .catch(error => this.showSnackbar(error));
     },
 
@@ -222,16 +222,16 @@ export default Vue.extend({
 
     createEntry(uiEntry: Entry) {
       this.$apollo
-        .mutate<CreateEntry>({
+        .mutate<CreateEntry, CreateEntryVariables>({
           mutation: CREATE_ENTRY,
           variables: {
             createInput: {
               accountId: this.$store.state.claims.id,
+              projectId: uiEntry.projectId,
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
-              description: uiEntry.description,
-              projectId: uiEntry.projectId
-            } as EntryCreateInput
+              description: uiEntry.description
+            }
           }
         })
         .then(result => {

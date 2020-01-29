@@ -1,8 +1,8 @@
 import {
-  AllEntries_allEntries as GqlEntry,
-  AllEntries_allEntries_project as GqlProject,
-  AllEntries_allEntries_account as GqlAccount
-} from "@/graphql/types/AllEntries";
+  ReadEntries_readEntries as GqlEntry,
+  ReadEntries_readEntries_project as GqlProject,
+  ReadEntries_readEntries_account as GqlAccount
+} from "@/graphql/types/ReadEntries";
 
 import groupBy from "lodash/groupBy";
 

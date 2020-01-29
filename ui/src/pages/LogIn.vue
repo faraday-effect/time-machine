@@ -104,7 +104,7 @@ export default Vue.extend({
         })
         .then(response => {
           this.$store.commit("logIn", response.data!.login);
-          this.$router.push({ name: "entries" });
+          this.$router.push({ name: "home" });
         })
         .catch(() => {
           this.$store.commit("logOut");

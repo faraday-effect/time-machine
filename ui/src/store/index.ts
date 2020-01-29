@@ -16,6 +16,12 @@ export class State {
 const getters = <GetterTree<State, any>>{
   isLoggedIn(state) {
     return state.token.length > 0;
+  },
+
+  hasRole(state) {
+    return function(roleName: string) {
+      return state.claims.roles.some(role => role.name === roleName);
+    };
   }
 };
 

@@ -3,18 +3,10 @@
     <v-row>
       <v-col>
         <group-by
-          title="By Project"
+          title="Time By Project"
           :entries="allEntries"
           group-heading="Project"
           iteratee="project.title"
-        />
-      </v-col>
-      <v-col>
-        <group-by
-          title="By Account"
-          :entries="allEntries"
-          group-heading="Account"
-          iteratee="account.fullName"
         />
       </v-col>
     </v-row>
@@ -23,26 +15,25 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {
-  AllEntries,
-  AllEntries_allEntries as GqlEntry
-} from "@/graphql/types/AllEntries";
-import { ALL_ENTRIES } from "@/graphql/entries.graphql";
 import { Entries } from "@/models/entry.model";
 import GroupBy from "@/components/GroupBy.vue";
+import {
+  ReadEntries,
+  ReadEntries_readEntries as GqlEntry,
+  ReadEntriesVariables
+} from "@/graphql/types/ReadEntries";
+import { READ_ENTRIES } from "@/graphql/entries.graphql";
 
 export default Vue.extend({
-  name: "Reports",
+  name: "StudentReports",
 
   components: {
     GroupBy
   },
 
-  apollo: {},
-
   data() {
     return {
-      gqlAllEntries: [] as GqlEntry[],
+      gqlAccountEntries: [] as GqlEntry[],
 
       snackbar: {
         visible: false,
@@ -53,7 +44,7 @@ export default Vue.extend({
 
   computed: {
     allEntries(): Entries {
-      return new Entries(this.gqlAllEntries);
+      return new Entries(this.gqlAccountEntries);
     }
   },
 
@@ -61,10 +52,13 @@ export default Vue.extend({
     getEntries() {
       // Defined this way to allow type-safe use of `this.$store`.
       this.$apollo
-        .query<AllEntries>({
-          query: ALL_ENTRIES
+        .query<ReadEntries, ReadEntriesVariables>({
+          query: READ_ENTRIES,
+          variables: {
+            accountId: this.$store.state.claims.id
+          }
         })
-        .then(result => (this.gqlAllEntries = result.data.allEntries))
+        .then(result => (this.gqlAccountEntries = result.data.readEntries))
         .catch(error => this.showSnackbar(error));
     },
 

@@ -111,7 +111,7 @@ export default Vue.extend({
             } as ChangePasswordInput
           }
         })
-        .then(() => this.$router.push({ name: "entries" }))
+        .then(() => this.$router.push({ name: "home" }))
         .catch(error => this.showSnackbar(error));
     }
   }

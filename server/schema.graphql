@@ -158,8 +158,7 @@ input ProjectUpdateInput {
 type Query {
   readAccounts: [Account!]!
   readRoles: [Role!]!
-  readEntries: [Entry!]!
-  readEntriesForAccount(accountId: Int!): [Entry!]!
+  readEntries(accountId: Int): [Entry!]!
   readProjects: [Project!]!
 }
 

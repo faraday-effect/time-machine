@@ -17,13 +17,18 @@
       </template>
 
       <v-list>
-        <v-list-item :to="{ name: 'roles' }">
-          Roles
-        </v-list-item>
-        <v-list-item :to="{ name: 'projects' }">
-          Projects
-        </v-list-item>
-        <v-list-item :to="{ name: 'entries' }">
+        <template v-if="hasRole('admin')">
+          <v-list-item :to="{ name: 'roles' }">
+            Roles
+          </v-list-item>
+          <v-list-item :to="{ name: 'projects' }">
+            Projects
+          </v-list-item>
+          <v-list-item :to="{ name: 'grader' }">
+            Grader
+          </v-list-item>
+        </template>
+        <v-list-item :to="{ name: 'home' }">
           Entries
         </v-list-item>
         <v-list-item :to="{ name: 'reports' }">
@@ -55,6 +60,10 @@ export default Vue.extend({
   name: "AppBar",
 
   methods: {
+    hasRole(roleName: string) {
+      return this.$store.getters.hasRole(roleName);
+    },
+
     logOut() {
       this.$store.commit("logOut");
       this.$router.push({ name: "login" });

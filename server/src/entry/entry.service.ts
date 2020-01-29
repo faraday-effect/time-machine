@@ -31,17 +31,17 @@ export class EntryService {
       );
   }
 
-  readEntries() {
-    return this.entryRepo.find({ relations: ["account", "project"] });
-  }
-
-  readEntriesForAccount(accountId: number) {
-    return this.entryRepo
-      .createQueryBuilder("entry")
-      .innerJoinAndSelect("entry.account", "account")
-      .innerJoinAndSelect("entry.project", "project")
-      .where("account.id = :id", { id: accountId })
-      .getMany();
+  readEntries(accountId?: number) {
+    if (accountId) {
+      return this.entryRepo
+        .createQueryBuilder("entry")
+        .innerJoinAndSelect("entry.account", "account")
+        .innerJoinAndSelect("entry.project", "project")
+        .where("account.id = :id", { id: accountId })
+        .getMany();
+    } else {
+      return this.entryRepo.find({ relations: ["account", "project"] });
+    }
   }
 
   async updateEntry(updateInput: EntryUpdateInput) {
