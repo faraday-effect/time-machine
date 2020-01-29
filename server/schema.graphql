@@ -24,6 +24,23 @@ input AccountCreateInput {
   lastName: String!
 }
 
+type AccountSummary {
+  """Account ID"""
+  accountId: Int!
+
+  """First name"""
+  firstName: String!
+
+  """Last name"""
+  lastName: String!
+
+  """Number of time entries"""
+  entryCount: Int!
+
+  """Total duration (minutes)"""
+  totalMinutes: Int!
+}
+
 input AccountUpdateInput {
   id: Int!
 
@@ -142,6 +159,20 @@ input ProjectCreateInput {
   active: Boolean!
 }
 
+type ProjectSummary {
+  """Project ID"""
+  projectId: Int!
+
+  """Project title"""
+  title: String!
+
+  """Number of time entries"""
+  entryCount: Int!
+
+  """Total duration (minutes)"""
+  totalMinutes: Int!
+}
+
 input ProjectUpdateInput {
   id: Int!
 
@@ -157,9 +188,11 @@ input ProjectUpdateInput {
 
 type Query {
   readAccounts: [Account!]!
+  readAccountSummaries: [AccountSummary!]!
   readRoles: [Role!]!
   readEntries(accountId: Int): [Entry!]!
   readProjects: [Project!]!
+  readProjectSummaries: [ProjectSummary!]!
 }
 
 type Role {

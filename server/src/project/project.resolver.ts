@@ -1,6 +1,11 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { ProjectService } from "./project.service";
-import { Project, ProjectCreateInput, ProjectUpdateInput } from "./entities";
+import {
+  Project,
+  ProjectCreateInput,
+  ProjectSummary,
+  ProjectUpdateInput
+} from "./entities";
 import { Int } from "type-graphql";
 
 @Resolver("Project")
@@ -15,6 +20,11 @@ export class ProjectResolver {
   @Query(() => [Project])
   readProjects() {
     return this.projectService.readProjects();
+  }
+
+  @Query(() => [ProjectSummary])
+  readProjectSummaries() {
+    return this.projectService.readProjectSummaries();
   }
 
   @Mutation(() => Project)

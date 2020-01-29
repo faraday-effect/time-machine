@@ -111,7 +111,6 @@ export default Vue.extend({
         { text: "Title", value: "title" },
         { text: "Description", value: "description" },
         { text: "Active", value: "active" },
-        { text: "Entries", value: "entryCount" },
         { text: "Actions", value: "actions" }
       ],
 

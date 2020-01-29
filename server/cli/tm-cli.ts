@@ -1,4 +1,4 @@
-import { hashPassword } from "../src/auth/crypto";
+import { hashPassword } from "@/auth/crypto";
 import * as commander from "commander";
 
 const program = new commander.Command();

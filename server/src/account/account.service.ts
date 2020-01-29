@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import {
   Account,
   AccountCreateInput,
+  AccountSummary,
   AccountUpdateInput,
   Role,
   RoleCreateInput,
@@ -27,6 +28,19 @@ export class AccountService {
 
   readAccounts() {
     return this.accountRepo.find();
+  }
+
+  readAccountSummaries(): Promise<AccountSummary> {
+    return this.accountRepo.query(`
+            SELECT a.id                                                                 AS "accountId",
+                   a."firstName",
+                   a."lastName",
+                   count(e)                                                             AS "entryCount",
+                   extract(EPOCH FROM sum(e.stop::timestamp - e.start::timestamp)) / 60 AS "totalMinutes"
+            FROM account a
+                     INNER JOIN entry e ON a.id = e."accountId"
+            GROUP BY a.id, a."firstName", a."lastName"
+            ORDER BY a."lastName", a."firstName"`);
   }
 
   readAccount(id: number) {

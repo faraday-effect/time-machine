@@ -11,6 +11,18 @@ export const CREATE_ACCOUNT = gql`
   }
 `;
 
+export const ACCOUNT_SUMMARIES = gql`
+  query AccountSummaries {
+    accountSummaries: readAccountSummaries {
+      accountId
+      firstName
+      lastName
+      entryCount
+      totalMinutes
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation LogIn($credentials: LoginCredentials!) {
     login(loginCredentials: $credentials) {

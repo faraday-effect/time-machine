@@ -61,3 +61,13 @@ export class ProjectUpdateInput {
   @Field({ description: "Is this project active?", nullable: true })
   active?: boolean;
 }
+
+@ObjectType()
+export class ProjectSummary {
+  @Field(() => Int, { description: "Project ID" }) projectId: number;
+  @Field({ description: "Project title" }) title: string;
+  @Field(() => Int, { description: "Number of time entries" })
+  entryCount: number;
+  @Field(() => Int, { description: "Total duration (minutes)" })
+  totalMinutes: number;
+}

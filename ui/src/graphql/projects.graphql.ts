@@ -18,7 +18,17 @@ export const ALL_PROJECTS = gql`
       title
       description
       active
+    }
+  }
+`;
+
+export const PROJECT_SUMMARIES = gql`
+  query ProjectSummaries {
+    projectSummaries: readProjectSummaries {
+      projectId
+      title
       entryCount
+      totalMinutes
     }
   }
 `;

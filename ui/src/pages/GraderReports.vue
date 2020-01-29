@@ -2,20 +2,27 @@
   <v-container>
     <v-row>
       <v-col>
-        <group-by
-          title="Time By Project"
-          :entries="allEntries"
-          group-heading="Project"
-          iteratee="project.title"
-        />
-      </v-col>
-      <v-col>
-        <group-by
-          title="Time By Account"
-          :entries="allEntries"
-          group-heading="Account"
-          iteratee="account.fullName"
-        />
+        <v-tabs v-model="currentTab">
+          <v-tab>By Project</v-tab>
+          <v-tab>By Account</v-tab>
+          <v-tab>Entries</v-tab>
+
+          <v-tab-item>
+            <project-summary-table />
+          </v-tab-item>
+
+          <v-tab-item>
+            <account-summary-table />
+          </v-tab-item>
+
+          <v-tab-item>
+            <entries-table
+              :entries="gqlAllEntries"
+              :chronological-order="false"
+              :show-actions="false"
+            />
+          </v-tab-item>
+        </v-tabs>
       </v-col>
     </v-row>
   </v-container>
@@ -30,17 +37,24 @@ import {
   ReadEntries_readEntries as GqlEntry
 } from "@/graphql/types/ReadEntries";
 import { READ_ENTRIES } from "@/graphql/entries.graphql";
+import EntriesTable from "@/components/tables/EntriesTable.vue";
+import ProjectSummaryTable from "@/components/tables/ProjectSummaryTable.vue";
+import AccountSummaryTable from "@/components/tables/AccountSummaryTable.vue";
 
 export default Vue.extend({
   name: "GraderReports",
 
   components: {
-    GroupBy
+    EntriesTable,
+    ProjectSummaryTable,
+    AccountSummaryTable
   },
 
   data() {
     return {
       gqlAllEntries: [] as GqlEntry[],
+
+      currentTab: null,
 
       snackbar: {
         visible: false,

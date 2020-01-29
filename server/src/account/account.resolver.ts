@@ -5,6 +5,7 @@ import { AccountService, RoleService } from "./account.service";
 import {
   Account,
   AccountCreateInput,
+  AccountSummary,
   AccountUpdateInput,
   Role,
   RoleCreateInput,
@@ -23,6 +24,11 @@ export class AccountResolver {
   @Query(() => [Account])
   readAccounts() {
     return this.accountService.readAccounts();
+  }
+
+  @Query(() => [AccountSummary])
+  readAccountSummaries() {
+    return this.accountService.readAccountSummaries();
   }
 
   @Mutation(() => Account)

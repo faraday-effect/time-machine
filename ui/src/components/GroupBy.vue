@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>{{ title }}</v-card-title>
+    <v-card-title v-if="title">{{ title }}</v-card-title>
     <v-data-table :headers="headers" :items="groupEntries">
       <template v-slot:body.append>
         <tr class="secondary">
@@ -21,7 +21,7 @@ export default Vue.extend({
   name: "GroupBy",
 
   props: {
-    title: { type: String, required: true },
+    title: { type: String },
     entries: { type: Object, required: true },
     groupHeading: { type: String, required: true },
     iteratee: { type: String, required: true }

@@ -73,3 +73,14 @@ export class AccountUpdateInput {
   @Field({ description: "First name", nullable: true }) firstName?: string;
   @Field({ description: "Last name", nullable: true }) lastName?: string;
 }
+
+@ObjectType()
+export class AccountSummary {
+  @Field(() => Int, { description: "Account ID" }) accountId: number;
+  @Field({ description: "First name" }) firstName: string;
+  @Field({ description: "Last name" }) lastName: string;
+  @Field(() => Int, { description: "Number of time entries" })
+  entryCount: number;
+  @Field(() => Int, { description: "Total duration (minutes)" })
+  totalMinutes: number;
+}
