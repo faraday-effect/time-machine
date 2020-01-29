@@ -21,6 +21,7 @@ const routes = [
   { path: "/change-password", name: "password", component: Password },
   { path: "/log-in", name: "login", component: LogIn },
 
+  // Available to any logged-in account
   {
     name: "home",
     path: "/",
@@ -29,10 +30,10 @@ const routes = [
   {
     name: "reports",
     path: "/reports",
-    component: StudentReports,
-    meta: { roleRequired: "admin" }
+    component: StudentReports
   },
 
+  // Role-restricted routes
   {
     name: "projects",
     path: "/projects",
