@@ -30,7 +30,7 @@ import {
 } from "@/helpers/time-and-date";
 import { sortBy } from "lodash";
 import ActionIcons from "@/components/ActionIcons.vue";
-import { ReadEntries_readEntries as GqlEntry } from "@/graphql/types/ReadEntries";
+import { Entries, Entry } from "@/models/entry.model";
 
 export default Vue.extend({
   name: "EntriesTable",
@@ -40,17 +40,17 @@ export default Vue.extend({
   },
 
   props: {
-    showActions: {
-      type: Boolean,
-      default: true
-    },
     entries: {
-      type: Array as () => GqlEntry[],
+      type: Object as () => Entries,
       required: true
     },
     chronologicalOrder: {
       type: Boolean,
       default: false
+    },
+    showActions: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -74,8 +74,8 @@ export default Vue.extend({
   },
 
   computed: {
-    sortedEntries(): GqlEntry[] {
-      const sorted = sortBy(this.entries, elt => elt.start);
+    sortedEntries(): Entry[] {
+      const sorted = sortBy(this.entries.entries, elt => elt.start);
       if (!this.chronologicalOrder) {
         return sorted.reverse();
       }
@@ -84,11 +84,11 @@ export default Vue.extend({
   },
 
   methods: {
-    duration(entry: GqlEntry) {
+    duration(entry: Entry) {
       return yearsDaysHoursMinutes(minutesBetween(entry.start, entry.stop));
     },
 
-    stopTimeMaybeDate(entry: GqlEntry) {
+    stopTimeMaybeDate(entry: Entry) {
       const result = [fancyTime(entry.stop)];
       const delta = dayDelta(entry.start, entry.stop);
       if (delta > 0) {

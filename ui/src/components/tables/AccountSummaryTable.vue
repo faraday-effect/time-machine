@@ -27,7 +27,7 @@ export default Vue.extend({
 
   data() {
     return {
-      accountSummaries: {} as AccountSummary,
+      accountSummaries: [] as AccountSummary[],
 
       headers: [
         { text: "First Name", value: "firstName" },

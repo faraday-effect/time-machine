@@ -16,13 +16,15 @@
           </v-tab-item>
 
           <v-tab-item>
-            <entries-table
-              :entries="gqlAllEntries"
-              :chronological-order="false"
-              :show-actions="false"
-            />
+            NOP
           </v-tab-item>
         </v-tabs>
+
+        <entries-table
+          :entries="selectedEntries"
+          :chronological-order="false"
+          :show-actions="false"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -32,11 +34,7 @@
 import Vue from "vue";
 import { Entries } from "@/models/entry.model";
 import { AccountSummaries_accountSummaries as AccountSummary } from "@/graphql/types/AccountSummaries";
-import {
-  ReadEntries,
-  ReadEntries_readEntries as GqlEntry
-} from "@/graphql/types/ReadEntries";
-import { ENTRIES_BY_ACCOUNT, READ_ENTRIES } from "@/graphql/entries.graphql";
+import { ENTRIES_BY_ACCOUNT } from "@/graphql/entries.graphql";
 import EntriesTable from "@/components/tables/EntriesTable.vue";
 import ProjectSummaryTable from "@/components/tables/ProjectSummaryTable.vue";
 import AccountSummaryTable from "@/components/tables/AccountSummaryTable.vue";
@@ -56,7 +54,7 @@ export default Vue.extend({
 
   data() {
     return {
-      selectedEntries: Entries,
+      selectedEntries: {} as Entries,
 
       currentTab: null,
 
@@ -65,12 +63,6 @@ export default Vue.extend({
         content: ""
       }
     };
-  },
-
-  computed: {
-    allEntries(): Entries {
-      return new Entries(this.gqlAllEntries);
-    }
   },
 
   methods: {
@@ -83,7 +75,9 @@ export default Vue.extend({
         })
         .then(
           result =>
-            (this.selectedEntries = new Entries(result.data.readEntriesByAccount))
+            (this.selectedEntries = new Entries(
+              result.data.readEntriesByAccount
+            ))
         );
     },
 

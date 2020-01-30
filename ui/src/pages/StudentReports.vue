@@ -18,10 +18,10 @@ import Vue from "vue";
 import { Entries } from "@/models/entry.model";
 import GroupBy from "@/components/GroupBy.vue";
 import {
-  ReadEntries,
-  ReadEntries_readEntries as GqlEntry
-} from "@/graphql/types/ReadEntries";
-import { READ_ENTRIES } from "@/graphql/entries.graphql";
+  EntriesByAccount,
+  EntriesByAccountVariables
+} from "@/graphql/types/EntriesByAccount";
+import { ENTRIES_BY_ACCOUNT, READ_ENTRIES } from "@/graphql/entries.graphql";
 
 export default Vue.extend({
   name: "StudentReports",
@@ -32,7 +32,7 @@ export default Vue.extend({
 
   data() {
     return {
-      gqlAccountEntries: [] as GqlEntry[],
+      selectedEntries: {} as Entries,
 
       snackbar: {
         visible: false,
@@ -41,20 +41,20 @@ export default Vue.extend({
     };
   },
 
-  computed: {
-    allEntries(): Entries {
-      return new Entries(this.gqlAccountEntries);
-    }
-  },
-
   methods: {
     getEntries() {
       // Defined this way to allow type-safe use of `this.$store`.
       this.$apollo
-        .query<ReadEntries>({
-          query: READ_ENTRIES
+        .query<EntriesByAccount, EntriesByAccountVariables>({
+          query: ENTRIES_BY_ACCOUNT,
+          variables: { accountId: this.$store.state.claims.id }
         })
-        .then(result => (this.gqlAccountEntries = result.data.readEntries))
+        .then(
+          result =>
+            (this.selectedEntries = new Entries(
+              result.data.readEntriesByAccount
+            ))
+        )
         .catch(error => this.showSnackbar(error));
     },
 

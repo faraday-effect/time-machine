@@ -1,24 +1,18 @@
-import {
-  ReadEntries_readEntries as GqlEntry,
-  ReadEntries_readEntries_project as GqlProject,
-  ReadEntries_readEntries_account as GqlAccount
-} from "@/graphql/types/ReadEntries";
-
 import groupBy from "lodash/groupBy";
 
 import { hoursMinutes, minutesBetween } from "@/helpers/time-and-date";
 
-export class Account implements GqlAccount {
+export class Account {
   readonly id: number;
   readonly firstName: string;
   readonly lastName: string;
   readonly email: string;
 
-  constructor(gqlAccount: GqlAccount) {
-    this.id = gqlAccount.id;
-    this.firstName = gqlAccount.firstName;
-    this.lastName = gqlAccount.lastName;
-    this.email = gqlAccount.email;
+  constructor(account: Account) {
+    this.id = account.id;
+    this.firstName = account.firstName;
+    this.lastName = account.lastName;
+    this.email = account.email;
   }
 
   get fullName() {
@@ -26,35 +20,50 @@ export class Account implements GqlAccount {
   }
 }
 
-export class Project implements GqlProject {
+export class Project {
   readonly id: number;
   readonly title: string;
 
-  constructor(gqlProject: GqlProject) {
-    this.id = gqlProject.id;
-    this.title = gqlProject.title;
+  constructor(project: Project) {
+    this.id = project.id;
+    this.title = project.title;
   }
 }
 
-export class Entry implements GqlEntry {
+interface EntryFields {
+  id: number;
+  start: string;
+  stop: string;
+  description: string;
+  created: Date;
+  updated: Date;
+  account?: Account;
+  project?: Project;
+}
+
+export class Entry {
   readonly id: number;
   readonly start: string;
   readonly stop: string;
   readonly description: string;
   readonly created: Date;
   readonly updated: Date;
-  readonly account: Account;
-  readonly project: Project;
+  readonly account?: Account;
+  readonly project?: Project;
 
-  constructor(gqlEntry: GqlEntry) {
-    this.id = gqlEntry.id;
-    this.start = gqlEntry.start;
-    this.stop = gqlEntry.stop;
-    this.description = gqlEntry.description;
-    this.created = gqlEntry.created;
-    this.updated = gqlEntry.updated;
-    this.account = new Account(gqlEntry.account);
-    this.project = new Project(gqlEntry.project);
+  constructor(entry: EntryFields) {
+    this.id = entry.id;
+    this.start = entry.start;
+    this.stop = entry.stop;
+    this.description = entry.description;
+    this.created = entry.created;
+    this.updated = entry.updated;
+    if (entry.account) {
+      this.account = new Account(entry.account);
+    }
+    if (entry.project) {
+      this.project = new Project(entry.project);
+    }
   }
 
   get minutes() {
@@ -71,10 +80,10 @@ function totalMinutes(entries: Entry[]) {
 }
 
 export class Entries {
-  private readonly entries: Entry[];
+  readonly entries: Entry[];
 
-  constructor(gqlEntries: GqlEntry[]) {
-    this.entries = gqlEntries.map(gqlEntry => new Entry(gqlEntry));
+  constructor(entries: EntryFields[]) {
+    this.entries = entries.map(entry => new Entry(entry));
   }
 
   get minutes() {
