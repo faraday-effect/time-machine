@@ -13,11 +13,24 @@ export class EntryResolver {
   }
 
   @Query(() => [Entry])
-  readEntries(
+  readEntries() {
+    return this.entryService.readEntries();
+  }
+
+  @Query(() => [Entry])
+  readEntriesByAccount(
     @Args({ name: "accountId", type: () => Int, nullable: true })
     accountId: number
   ) {
-    return this.entryService.readEntries(accountId);
+    return this.entryService.readEntriesByAccount(accountId);
+  }
+
+  @Query(() => [Entry])
+  readEntriesByProject(
+    @Args({ name: "projectId", type: () => Int, nullable: true })
+    projectId: number
+  ) {
+    return this.entryService.readEntriesByProject(projectId);
   }
 
   @Mutation(() => Entry)

@@ -35,7 +35,3 @@ export interface ReadEntries_readEntries {
 export interface ReadEntries {
   readEntries: ReadEntries_readEntries[];
 }
-
-export interface ReadEntriesVariables {
-  accountId?: number | null;
-}

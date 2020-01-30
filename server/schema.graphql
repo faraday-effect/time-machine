@@ -190,7 +190,9 @@ type Query {
   readAccounts: [Account!]!
   readAccountSummaries: [AccountSummary!]!
   readRoles: [Role!]!
-  readEntries(accountId: Int): [Entry!]!
+  readEntries: [Entry!]!
+  readEntriesByAccount(accountId: Int): [Entry!]!
+  readEntriesByProject(projectId: Int): [Entry!]!
   readProjects: [Project!]!
   readProjectSummaries: [ProjectSummary!]!
 }

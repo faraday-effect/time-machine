@@ -24,8 +24,8 @@ export const CREATE_ENTRY = gql`
 `;
 
 export const READ_ENTRIES = gql`
-  query ReadEntries($accountId: Int) {
-    readEntries(accountId: $accountId) {
+  query ReadEntries {
+    readEntries {
       id
       created
       updated
@@ -38,6 +38,37 @@ export const READ_ENTRIES = gql`
         lastName
         email
       }
+      project {
+        id
+        title
+      }
+    }
+  }
+`;
+
+export const ENTRIES_BY_PROJECT = gql`
+  query EntriesByProject($projectId: Int!) {
+    readEntriesByProject(projectId: $projectId) {
+      id
+      start
+      stop
+      description
+      account {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+export const ENTRIES_BY_ACCOUNT = gql`
+  query EntriesByAccount($accountId: Int!) {
+    readEntriesByAccount(accountId: $accountId) {
+      id
+      start
+      stop
+      description
       project {
         id
         title

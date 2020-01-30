@@ -19,8 +19,7 @@ import { Entries } from "@/models/entry.model";
 import GroupBy from "@/components/GroupBy.vue";
 import {
   ReadEntries,
-  ReadEntries_readEntries as GqlEntry,
-  ReadEntriesVariables
+  ReadEntries_readEntries as GqlEntry
 } from "@/graphql/types/ReadEntries";
 import { READ_ENTRIES } from "@/graphql/entries.graphql";
 
@@ -52,11 +51,8 @@ export default Vue.extend({
     getEntries() {
       // Defined this way to allow type-safe use of `this.$store`.
       this.$apollo
-        .query<ReadEntries, ReadEntriesVariables>({
-          query: READ_ENTRIES,
-          variables: {
-            accountId: this.$store.state.claims.id
-          }
+        .query<ReadEntries>({
+          query: READ_ENTRIES
         })
         .then(result => (this.gqlAccountEntries = result.data.readEntries))
         .catch(error => this.showSnackbar(error));

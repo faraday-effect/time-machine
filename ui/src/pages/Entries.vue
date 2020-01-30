@@ -59,15 +59,11 @@ import { Entry } from "@/components/pickers/entry-entities";
 import {
   CREATE_ENTRY,
   DELETE_ENTRY,
-  READ_ENTRIES,
+  ENTRIES_BY_ACCOUNT,
   UPDATE_ENTRY
 } from "@/graphql/entries.graphql";
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
-import {
-  EntryCreateInput,
-  EntryUpdateInput
-} from "@/graphql/types/globalTypes";
 import { CreateEntry, CreateEntryVariables } from "@/graphql/types/CreateEntry";
 import {
   dayDelta,
@@ -76,14 +72,14 @@ import {
   minutesBetween,
   yearsDaysHoursMinutes
 } from "@/helpers/time-and-date";
-import { UpdateEntry } from "@/graphql/types/UpdateEntry";
+import { UpdateEntry, UpdateEntryVariables } from "@/graphql/types/UpdateEntry";
 import { sortBy } from "lodash";
 import ActionIcons from "@/components/ActionIcons.vue";
 import {
-  ReadEntries,
-  ReadEntries_readEntries as GqlEntry,
-  ReadEntriesVariables
-} from "@/graphql/types/ReadEntries";
+  EntriesByAccount,
+  EntriesByAccountVariables,
+  EntriesByAccount_readEntriesByAccount as GqlEntry
+} from "@/graphql/types/EntriesByAccount";
 
 enum DialogMode {
   CREATE,
@@ -146,13 +142,15 @@ export default Vue.extend({
     getEntries() {
       // Defined this way to allow type-safe-ish use of `this.$store`.
       this.$apollo
-        .query<ReadEntries, ReadEntriesVariables>({
-          query: READ_ENTRIES,
+        .query<EntriesByAccount, EntriesByAccountVariables>({
+          query: ENTRIES_BY_ACCOUNT,
           variables: {
             accountId: this.$store.state.claims.id
           }
         })
-        .then(result => (this.accountEntries = result.data.readEntries))
+        .then(
+          result => (this.accountEntries = result.data.readEntriesByAccount)
+        )
         .catch(error => this.showSnackbar(error));
     },
 
@@ -243,7 +241,7 @@ export default Vue.extend({
 
     updateEntry(uiEntry: Entry) {
       this.$apollo
-        .mutate<UpdateEntry>({
+        .mutate<UpdateEntry, UpdateEntryVariables>({
           mutation: UPDATE_ENTRY,
           variables: {
             updateInput: {
@@ -252,7 +250,7 @@ export default Vue.extend({
               stop: uiEntry.startStop.stopDateTime,
               description: uiEntry.description,
               projectId: uiEntry.projectId
-            } as EntryUpdateInput
+            }
           }
         })
         .then(result => {

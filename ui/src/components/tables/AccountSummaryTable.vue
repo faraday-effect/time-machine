@@ -1,5 +1,9 @@
 <template>
-  <v-data-table :headers="headers" :items="accountSummaries">
+  <v-data-table
+    :headers="headers"
+    :items="accountSummaries"
+    @click:row="onRowClick"
+  >
     <template v-slot:item.duration="{ item }">
       {{ item.totalMinutes | formatTime }}
     </template>
@@ -10,6 +14,7 @@
 import Vue from "vue";
 import { ACCOUNT_SUMMARIES } from "@/graphql/accounts.graphql";
 import { hoursMinutes } from "@/helpers/time-and-date";
+import { AccountSummaries_accountSummaries as AccountSummary } from "@/graphql/types/AccountSummaries";
 
 export default Vue.extend({
   name: "AccountSummaryTable",
@@ -22,6 +27,8 @@ export default Vue.extend({
 
   data() {
     return {
+      accountSummaries: {} as AccountSummary,
+
       headers: [
         { text: "First Name", value: "firstName" },
         { text: "Last Name", value: "lastName" },
@@ -30,6 +37,12 @@ export default Vue.extend({
         { text: "Duration", value: "duration", align: "end", sortable: false }
       ]
     };
+  },
+
+  methods: {
+    onRowClick(row: AccountSummary) {
+      console.log("ROW IS", row);
+    }
   },
 
   filters: {
