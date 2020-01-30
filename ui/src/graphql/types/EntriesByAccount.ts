@@ -19,6 +19,8 @@ export interface EntriesByAccount_readEntriesByAccount {
   start: string;
   stop: string;
   description: string;
+  created: any;
+  updated: any;
   project: EntriesByAccount_readEntriesByAccount_project;
 }
 

@@ -69,6 +69,8 @@ export const ENTRIES_BY_ACCOUNT = gql`
       start
       stop
       description
+      created
+      updated
       project {
         id
         title

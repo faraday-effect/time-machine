@@ -41,7 +41,7 @@ export default Vue.extend({
 
   methods: {
     onRowClick(row: AccountSummary) {
-      console.log("ROW IS", row);
+      this.$emit("click", row);
     }
   },
 

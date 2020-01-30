@@ -12,7 +12,7 @@
           </v-tab-item>
 
           <v-tab-item>
-            <account-summary-table />
+            <account-summary-table @click="onAccountClick" />
           </v-tab-item>
 
           <v-tab-item>
@@ -31,28 +31,32 @@
 <script lang="ts">
 import Vue from "vue";
 import { Entries } from "@/models/entry.model";
-import GroupBy from "@/components/GroupBy.vue";
+import { AccountSummaries_accountSummaries as AccountSummary } from "@/graphql/types/AccountSummaries";
 import {
   ReadEntries,
   ReadEntries_readEntries as GqlEntry
 } from "@/graphql/types/ReadEntries";
-import { READ_ENTRIES } from "@/graphql/entries.graphql";
+import { ENTRIES_BY_ACCOUNT, READ_ENTRIES } from "@/graphql/entries.graphql";
 import EntriesTable from "@/components/tables/EntriesTable.vue";
 import ProjectSummaryTable from "@/components/tables/ProjectSummaryTable.vue";
 import AccountSummaryTable from "@/components/tables/AccountSummaryTable.vue";
+import {
+  EntriesByAccount,
+  EntriesByAccountVariables
+} from "@/graphql/types/EntriesByAccount";
 
 export default Vue.extend({
   name: "GraderReports",
 
   components: {
-    EntriesTable,
     ProjectSummaryTable,
-    AccountSummaryTable
+    AccountSummaryTable,
+    EntriesTable
   },
 
   data() {
     return {
-      gqlAllEntries: [] as GqlEntry[],
+      selectedEntries: Entries,
 
       currentTab: null,
 
@@ -70,24 +74,23 @@ export default Vue.extend({
   },
 
   methods: {
-    getEntries() {
-      // Defined this way to allow type-safe use of `this.$store`.
+    onAccountClick(row: AccountSummary) {
+      console.log("CLICKED", JSON.stringify(row, null, 2));
       this.$apollo
-        .query<ReadEntries>({
-          query: READ_ENTRIES
+        .query<EntriesByAccount, EntriesByAccountVariables>({
+          query: ENTRIES_BY_ACCOUNT,
+          variables: { accountId: row.accountId }
         })
-        .then(result => (this.gqlAllEntries = result.data.readEntries))
-        .catch(error => this.showSnackbar(error));
+        .then(
+          result =>
+            (this.selectedEntries = new Entries(result.data.readEntriesByAccount))
+        );
     },
 
     showSnackbar(content: string) {
       this.snackbar.content = content;
       this.snackbar.visible = true;
     }
-  },
-
-  mounted() {
-    this.getEntries();
   }
 });
 </script>
