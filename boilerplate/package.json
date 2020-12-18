@@ -10,7 +10,7 @@
     "boil": "ts-node src/boil.ts"
   },
   "dependencies": {
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "commander": "^5.1.0",
     "figlet": "^1.4.0",
     "handlebars": "^4.7.6",
