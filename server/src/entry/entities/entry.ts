@@ -4,11 +4,11 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
-import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { Project } from "@/project/entities";
-import { Account } from "@/account/entities";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
+import { Project } from "../../project/entities";
+import { Account } from "../../account/entities";
 
 @Entity()
 @ObjectType()
@@ -24,20 +24,12 @@ export class Entry {
   @Field() @Column("text") description: string;
 
   @Field(() => Account)
-  @ManyToOne(
-    () => Account,
-    account => account.entries,
-    { nullable: false }
-  )
+  @ManyToOne(() => Account, (account) => account.entries, { nullable: false })
   account: Account;
   @Column("integer") accountId: number;
 
   @Field(() => Project)
-  @ManyToOne(
-    () => Project,
-    project => project.entries,
-    { nullable: false }
-  )
+  @ManyToOne(() => Project, (project) => project.entries, { nullable: false })
   project: Project;
   @Column("integer") projectId: number;
 }

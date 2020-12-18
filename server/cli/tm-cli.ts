@@ -1,4 +1,4 @@
-import { hashPassword } from "@/auth/crypto";
+import { hashPassword } from "../src/auth/crypto";
 import * as commander from "commander";
 
 const program = new commander.Command();
@@ -9,7 +9,7 @@ program
   .command("hash-password <password>")
   .description("hash a password")
   .action((password: string) => {
-    hashPassword(password).then(hash => console.log(hash));
+    hashPassword(password).then((hash) => console.log(hash));
   });
 
 program.parse(process.argv);

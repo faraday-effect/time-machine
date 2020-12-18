@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { Int } from "type-graphql";
+import { Int } from "@nestjs/graphql";
 
 import { AccountService, RoleService } from "./account.service";
 import {

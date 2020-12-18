@@ -67,7 +67,6 @@ export default Vue.extend({
 
   methods: {
     onAccountClick(row: AccountSummary) {
-      console.log("CLICKED", JSON.stringify(row, null, 2));
       this.$apollo
         .query<EntriesByAccount, EntriesByAccountVariables>({
           query: ENTRIES_BY_ACCOUNT,

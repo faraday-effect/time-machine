@@ -6,7 +6,7 @@ import {
   ProjectSummary,
   ProjectUpdateInput
 } from "./entities";
-import { Int } from "type-graphql";
+import { Int } from "@nestjs/graphql";
 
 @Resolver("Project")
 export class ProjectResolver {

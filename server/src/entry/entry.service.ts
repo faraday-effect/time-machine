@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Entry, EntryCreateInput, EntryUpdateInput } from "./entities";
 import { Repository } from "typeorm";
-import { Account } from "@/account/entities";
+import { Account } from "../account/entities";
 import debug from "debug";
-import { Project } from "@/project/entities";
+import { Project } from "../project/entities";
 
 const entryDebug = debug("event");
 
@@ -24,9 +24,9 @@ export class EntryService {
 
     return this.entryRepo
       .save(this.entryRepo.create(createInput))
-      .then(savedEntity =>
+      .then((savedEntity) =>
         this.entryRepo.findOne(savedEntity.id, {
-          relations: ["account", "project"]
+          relations: ["account", "project"],
         })
       );
   }
@@ -58,15 +58,15 @@ export class EntryService {
 
     return this.entryRepo
       .preload(updateInput)
-      .then(updatedInput => this.entryRepo.save(updatedInput))
-      .then(savedInput =>
+      .then((updatedInput) => this.entryRepo.save(updatedInput))
+      .then((savedInput) =>
         this.entryRepo.findOne(savedInput.id, {
-          relations: ["account", "project"]
+          relations: ["account", "project"],
         })
       );
   }
 
   deleteEntry(id: number) {
-    return this.entryRepo.delete(id).then(result => result.affected);
+    return this.entryRepo.delete(id).then((result) => result.affected);
   }
 }

@@ -5,7 +5,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Field, InputType, Int, ObjectType } from "type-graphql";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
 import { Account } from "./account";
 @Entity()
 @ObjectType()

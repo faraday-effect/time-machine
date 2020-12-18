@@ -1,5 +1,5 @@
-import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { Role } from "@/account/entities";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
+import { Role } from "../../account/entities";
 
 @ObjectType()
 export class JWTClaims {

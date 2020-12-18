@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { validatePassword } from "./crypto";
 import { JWTClaims, LoginCredentials } from "./entities";
-import { AccountService } from "@/account/account.service";
+import { AccountService } from "../account/account.service";
 
 @Injectable()
 export class AuthService {

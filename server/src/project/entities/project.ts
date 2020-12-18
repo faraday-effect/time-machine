@@ -6,9 +6,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { Entry } from "@/entry/entities";
-import { Account } from "@/account/entities";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
+import { Entry } from "../../entry/entities";
+import { Account } from "../../account/entities";
 
 @Entity()
 @ObjectType()

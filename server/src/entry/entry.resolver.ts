@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { EntryService } from "./entry.service";
 import { Entry, EntryCreateInput, EntryUpdateInput } from "./entities";
-import { Int } from "type-graphql";
+import { Int } from "@nestjs/graphql";
 
 @Resolver("Entry")
 export class EntryResolver {

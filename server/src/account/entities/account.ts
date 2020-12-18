@@ -7,10 +7,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
-import { Field, ObjectType, Int, InputType } from "type-graphql";
-import { Entry } from "@/entry/entities";
-import { Project } from "@/project/entities";
-import { hashPassword } from "@/auth/crypto";
+import { Field, ObjectType, Int, InputType } from "@nestjs/graphql";
+import { Entry } from "../../entry/entities";
+import { Project } from "../../project/entities";
+import { hashPassword } from "../../auth/crypto";
 import { Role } from "./role";
 
 @Entity()
