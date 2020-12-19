@@ -30,6 +30,7 @@ USAGE
 <!-- commands -->
 * [`tm-cli hello [FILE]`](#tm-cli-hello-file)
 * [`tm-cli help [COMMAND]`](#tm-cli-help-command)
+* [`tm-cli password [FILE]`](#tm-cli-password-file)
 
 ## `tm-cli hello [FILE]`
 
@@ -67,4 +68,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
+
+## `tm-cli password [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ tm-cli password [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/password.ts](https://github.com/nurkkala/tm-cli/blob/v0.0.0/src/commands/password.ts)_
 <!-- commandsstop -->

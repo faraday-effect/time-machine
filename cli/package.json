@@ -2,20 +2,25 @@
   "name": "tm-cli",
   "description": "Command-line interface for Faraday Time Machine",
   "version": "0.0.0",
-  "author": "Tom Nurkkala @nurkkala",
+  "author": {
+    "name": "Tom Nurkkala @nurkkala"
+  },
   "bin": {
     "tm-cli": "./bin/run"
   },
-  "bugs": "https://github.com/nurkkala/tm-cli/issues",
+  "bugs": "https://github.com/faraday-effect/time-machine/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
+    "@oclif/plugin-autocomplete": "^0.3.0",
     "@oclif/plugin-help": "^3",
+    "bcrypt": "^5.0.0",
     "tslib": "^1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
+    "@types/bcrypt": "^3.0.0",
     "@types/chai": "^4",
     "@types/mocha": "^5",
     "@types/node": "^10",
@@ -39,7 +44,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/nurkkala/tm-cli",
+  "homepage": "https://github.com/faraday-effect/time-machine",
   "keywords": [
     "oclif"
   ],
@@ -49,7 +54,8 @@
     "commands": "./lib/commands",
     "bin": "tm-cli",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-autocomplete"
     ]
   },
   "repository": "nurkkala/tm-cli",
