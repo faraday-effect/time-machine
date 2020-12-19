@@ -9,7 +9,7 @@ import {
   AccountUpdateInput,
   Role,
   RoleCreateInput,
-  RoleUpdateInput
+  RoleUpdateInput,
 } from "./entities";
 
 @Resolver("Account")

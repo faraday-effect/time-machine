@@ -6,7 +6,7 @@ import {
   AccountUpdateInput,
   Role,
   RoleCreateInput,
-  RoleUpdateInput
+  RoleUpdateInput,
 } from "./entities";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -54,11 +54,11 @@ export class AccountService {
   updateAccount(updateInput: AccountUpdateInput) {
     return this.accountRepo
       .preload(updateInput)
-      .then(result => this.accountRepo.save(result));
+      .then((result) => this.accountRepo.save(result));
   }
 
   deleteAccount(id: number) {
-    return this.accountRepo.delete(id).then(result => result.affected);
+    return this.accountRepo.delete(id).then((result) => result.affected);
   }
 }
 
@@ -79,10 +79,10 @@ export class RoleService {
   updateRole(updateInput: RoleUpdateInput) {
     return this.roleRepo
       .preload(updateInput)
-      .then(result => this.roleRepo.save(result));
+      .then((result) => this.roleRepo.save(result));
   }
 
   deleteRole(id: number) {
-    return this.roleRepo.delete(id).then(result => result.affected);
+    return this.roleRepo.delete(id).then((result) => result.affected);
   }
 }
