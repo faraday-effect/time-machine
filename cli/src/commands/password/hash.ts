@@ -1,7 +1,7 @@
 import { Command } from "@oclif/command";
-import { hash } from "bcrypt";
+import { hashSync } from "bcrypt";
 
-export default class HashPassword extends Command {
+export default class PasswordHash extends Command {
   static description = "hash a password";
 
   static args = [
@@ -13,7 +13,7 @@ export default class HashPassword extends Command {
   ];
 
   async run() {
-    const { args } = this.parse(HashPassword);
-    await hash(args.password, 10).then((result: string) => this.log(result));
+    const { args } = this.parse(PasswordHash);
+    this.log(hashSync(args.password, 10));
   }
 }

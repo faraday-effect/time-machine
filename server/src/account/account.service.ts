@@ -17,6 +17,11 @@ export class AccountService {
     @InjectRepository(Account) private readonly accountRepo: Repository<Account>
   ) {}
 
+  getMetadata() {
+    const metadata = this.accountRepo.metadata;
+    // console.dir(metadata, { depth: 2 });
+  }
+
   async createAccount(createInput: AccountCreateInput) {
     if (await this.findAccountByEmail(createInput.email)) {
       throw new BadRequestException(

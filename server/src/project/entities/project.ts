@@ -13,15 +13,21 @@ import { Account } from "../../account/entities";
 @Entity()
 @ObjectType()
 export class Project {
-  @Field(() => Int) @PrimaryGeneratedColumn() id: number;
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Field({ description: "Project title" }) @Column() title: string;
+  @Field({ description: "Project title" })
+  @Column()
+  title: string;
 
   @Field({ description: "Description of this project" })
   @Column()
   description: string;
 
-  @Field({ description: "Is this project active?" }) @Column() active: boolean;
+  @Field({ description: "Is this project active?" })
+  @Column()
+  active: boolean;
 
   @Field(() => Int, {
     description: "Number of entries for this project",
