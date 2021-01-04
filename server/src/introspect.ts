@@ -4,9 +4,9 @@ config();
 import { NestContainer, NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { inspect } from "util";
-import { AccountService } from "./account/account.service";
+// import { AccountService } from "./account/account.service";
 import { getConnection } from "typeorm";
-import { ProjectService } from "./project/project.service";
+// import { ProjectService } from "./project/project.service";
 import { writeFileSync } from "fs";
 
 type Dictionary = { [key: string]: string };
@@ -48,7 +48,7 @@ abstract class AbstractGraph {
   protected edges: DotEdge[] = [];
   protected subGraphs: AbstractGraph[] = [];
 
-  constructor(private name: string, private type: GraphType) {}
+  protected constructor(private name: string, private type: GraphType) {}
 
   haveNode(lhs: string, rhs: string) {
     return this.edges.some((node) => node.equals(lhs, rhs));
@@ -224,8 +224,8 @@ async function bootstrap() {
 
   showModules(container);
 
-  const accountService = app.get(AccountService);
-  const projectService = app.get(ProjectService);
+  // const accountService = app.get(AccountService);
+  // const projectService = app.get(ProjectService);
 
   const connection = getConnection();
   for (let meta of connection.entityMetadatas) {
