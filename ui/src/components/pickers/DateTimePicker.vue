@@ -18,24 +18,24 @@ export default Vue.extend({
 
   components: {
     DatePickerDialog,
-    TimePickerDialog
+    TimePickerDialog,
   },
 
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
     return {
       date: "",
-      time: ""
+      time: "",
     };
   },
 
@@ -54,13 +54,13 @@ export default Vue.extend({
       if (iso) {
         this.$emit("input", iso);
       }
-    }
+    },
   },
 
   created() {
     this.$watch(
       "value",
-      function(newDateTime) {
+      function (newDateTime) {
         if (newDateTime) {
           const dt = DateTime.fromISO(newDateTime);
           this.date = formatDate(dt);
@@ -72,18 +72,18 @@ export default Vue.extend({
       { immediate: true }
     );
 
-    this.$watch("date", function(newDate) {
+    this.$watch("date", function (newDate) {
       this.date = newDate;
       this.onUpdate();
     });
 
-    this.$watch("time", function(newTime) {
+    this.$watch("time", function (newTime) {
       this.time = newTime;
       if (!this.date) {
         this.date = DateTime.local().toISODate();
       }
       this.onUpdate();
     });
-  }
+  },
 });
 </script>

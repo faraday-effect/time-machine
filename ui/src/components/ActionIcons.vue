@@ -17,7 +17,7 @@ export default Vue.extend({
 
   props: {
     canUpdate: { type: Boolean, default: true },
-    canDelete: { type: Boolean, default: true }
-  }
+    canDelete: { type: Boolean, default: true },
+  },
 });
 </script>

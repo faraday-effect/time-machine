@@ -42,17 +42,17 @@ export default Vue.extend({
   name: "TimeEntryForm",
 
   components: {
-    StartStopPicker
+    StartStopPicker,
   },
 
   props: {
-    value: {} as () => Entry
+    value: {} as () => Entry,
   },
 
   apollo: {
     allProjects: {
-      query: ALL_PROJECTS
-    }
+      query: ALL_PROJECTS,
+    },
   },
 
   data() {
@@ -60,35 +60,35 @@ export default Vue.extend({
       allProjects: [] as Project[],
 
       formValid: false,
-      required: [(v: string) => !!v || "Required"]
+      required: [(v: string) => !!v || "Required"],
     };
   },
 
   computed: {
     projectChoices(): VSelectChoices<number> {
-      return this.allProjects.map(project => ({
+      return this.allProjects.map((project) => ({
         text: project.title,
-        value: project.id
+        value: project.id,
       }));
-    }
+    },
   },
 
   methods: {
     update(key: string, value: string) {
       this.$emit("input", { ...this.value, [key]: value });
-    }
+    },
   },
 
   created() {
     this.$watch(
-      function() {
+      function () {
         return this.formValid && this.value.startStop.valid;
       },
-      function(newValue) {
+      function (newValue) {
         this.$emit("valid", newValue);
       }
     );
-  }
+  },
 });
 </script>
 

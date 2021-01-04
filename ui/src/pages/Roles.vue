@@ -7,9 +7,7 @@
             <h1 class="title">Roles</h1>
           </v-col>
           <v-col>
-            <v-btn color="primary" @click="showCreateDialog">
-              Add Role
-            </v-btn>
+            <v-btn color="primary" @click="showCreateDialog"> Add Role </v-btn>
           </v-col>
         </v-row>
       </v-card-title>
@@ -24,9 +22,7 @@
           <v-icon v-if="item.active" color="success">
             mdi-check-circle-outline
           </v-icon>
-          <v-icon v-else color="error">
-            mdi-minus-circle-outline
-          </v-icon>
+          <v-icon v-else color="error"> mdi-minus-circle-outline </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -61,12 +57,12 @@ import {
   ALL_ROLES,
   CREATE_ROLE,
   DELETE_ROLE,
-  UPDATE_ROLE
+  UPDATE_ROLE,
 } from "@/graphql/roles.graphql";
 import {
   CreateRole,
   CreateRole_newRole as Role,
-  CreateRoleVariables
+  CreateRoleVariables,
 } from "@/graphql/types/CreateRole";
 import { UpdateRole, UpdateRoleVariables } from "@/graphql/types/UpdateRole";
 import { DeleteRole, DeleteRoleVariables } from "@/graphql/types/DeleteRole";
@@ -76,13 +72,13 @@ export default Vue.extend({
 
   components: {
     ActionIcons,
-    RoleDialog
+    RoleDialog,
   },
 
   apollo: {
     allRoles: {
-      query: ALL_ROLES
-    }
+      query: ALL_ROLES,
+    },
   },
 
   data() {
@@ -92,24 +88,24 @@ export default Vue.extend({
       sortBy: "title",
 
       createDialog: {
-        visible: false
+        visible: false,
       },
 
       updateDialog: {
         role: {} as Role,
-        visible: false
+        visible: false,
       },
 
       headers: [
         { text: "Name", value: "name" },
         { text: "Description", value: "description" },
-        { text: "Actions", value: "actions" }
+        { text: "Actions", value: "actions" },
       ],
 
       snackbar: {
         visible: false,
-        content: ""
-      }
+        content: "",
+      },
     };
   },
 
@@ -131,12 +127,12 @@ export default Vue.extend({
     createRole(role: Role) {
       this.$apollo
         .mutate<CreateRole>({
-          mutation: CREATE_ROLE
+          mutation: CREATE_ROLE,
           // variables: {
           //   createInput: role
           // } as CreateRoleVariables
         })
-        .then(result => {
+        .then((result) => {
           const newRole = result.data!.newRole;
           this.allRoles.push(newRole);
           this.showSnackbar(`Created role ${newRole.name}`);
@@ -148,13 +144,13 @@ export default Vue.extend({
         .mutate<UpdateRole>({
           mutation: UPDATE_ROLE,
           variables: {
-            updateInput: pick(role, ["id", "title", "description", "active"])
-          } as UpdateRoleVariables
+            updateInput: pick(role, ["id", "title", "description", "active"]),
+          } as UpdateRoleVariables,
         })
-        .then(result => {
+        .then((result) => {
           const updatedRole = result.data!.updatedRole;
           const idx = this.allRoles.findIndex(
-            role => role.id === updatedRole.id
+            (role) => role.id === updatedRole.id
           );
           this.$set(this.allRoles, idx, updatedRole);
           this.showSnackbar(`Updated role ${updatedRole.name}`);
@@ -165,14 +161,14 @@ export default Vue.extend({
       this.$apollo
         .mutate<DeleteRole>({
           mutation: DELETE_ROLE,
-          variables: { id } as DeleteRoleVariables
+          variables: { id } as DeleteRoleVariables,
         })
         .then(() => {
-          const idx = this.allRoles.findIndex(role => role.id === id);
+          const idx = this.allRoles.findIndex((role) => role.id === id);
           this.allRoles.splice(idx, 1);
           this.showSnackbar("Role deleted");
         });
-    }
-  }
+    },
+  },
 });
 </script>

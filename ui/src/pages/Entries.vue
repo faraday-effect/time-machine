@@ -10,9 +10,7 @@
             <v-switch label="Chronological" v-model="chronologicalOrder" />
           </v-col>
           <v-col>
-            <v-btn color="primary" @click="showCreateDialog">
-              Add Entry
-            </v-btn>
+            <v-btn color="primary" @click="showCreateDialog"> Add Entry </v-btn>
           </v-col>
         </v-row>
       </v-card-title>
@@ -60,7 +58,7 @@ import {
   CREATE_ENTRY,
   DELETE_ENTRY,
   ENTRIES_BY_ACCOUNT,
-  UPDATE_ENTRY
+  UPDATE_ENTRY,
 } from "@/graphql/entries.graphql";
 import TimeEntryDialog from "@/components/dialogs/TimeEntryDialog.vue";
 import { DeleteEntry, DeleteEntryVariables } from "@/graphql/types/DeleteEntry";
@@ -70,7 +68,7 @@ import {
   fancyDate,
   fancyTime,
   minutesBetween,
-  yearsDaysHoursMinutes
+  yearsDaysHoursMinutes,
 } from "@/helpers/time-and-date";
 import { UpdateEntry, UpdateEntryVariables } from "@/graphql/types/UpdateEntry";
 import { sortBy } from "lodash";
@@ -78,12 +76,12 @@ import ActionIcons from "@/components/ActionIcons.vue";
 import {
   EntriesByAccount,
   EntriesByAccountVariables,
-  EntriesByAccount_readEntriesByAccount as GqlEntry
+  EntriesByAccount_readEntriesByAccount as GqlEntry,
 } from "@/graphql/types/EntriesByAccount";
 
 enum DialogMode {
   CREATE,
-  UPDATE
+  UPDATE,
 }
 
 export default Vue.extend({
@@ -91,7 +89,7 @@ export default Vue.extend({
 
   components: {
     TimeEntryDialog,
-    ActionIcons
+    ActionIcons,
   },
 
   data() {
@@ -107,31 +105,31 @@ export default Vue.extend({
         { text: "Duration", align: "end" },
         { text: "Project" },
         { text: "Description", width: "40%" },
-        { text: "Actions" }
+        { text: "Actions" },
       ],
 
       dialog: {
         entryId: NaN,
         uiEntry: {} as Entry,
         mode: DialogMode.CREATE,
-        visible: false
+        visible: false,
       },
 
       snackbar: {
         visible: false,
-        content: ""
-      }
+        content: "",
+      },
     };
   },
 
   computed: {
     sortedEntries(): GqlEntry[] {
-      const sorted = sortBy(this.accountEntries, elt => elt.start);
+      const sorted = sortBy(this.accountEntries, (elt) => elt.start);
       if (!this.chronologicalOrder) {
         return sorted.reverse();
       }
       return sorted;
-    }
+    },
   },
 
   mounted() {
@@ -145,13 +143,13 @@ export default Vue.extend({
         .query<EntriesByAccount, EntriesByAccountVariables>({
           query: ENTRIES_BY_ACCOUNT,
           variables: {
-            accountId: this.$store.state.claims.id
-          }
+            accountId: this.$store.state.claims.id,
+          },
         })
         .then(
-          result => (this.accountEntries = result.data.readEntriesByAccount)
+          (result) => (this.accountEntries = result.data.readEntriesByAccount)
         )
-        .catch(error => this.showSnackbar(error));
+        .catch((error) => this.showSnackbar(error));
     },
 
     showSnackbar(content: string) {
@@ -178,10 +176,10 @@ export default Vue.extend({
           valid: false,
           startDateTime: "",
           stopDateTime: "",
-          minutes: 0
+          minutes: 0,
         },
         description: "",
-        projectId: NaN
+        projectId: NaN,
       } as Entry;
 
       this.dialog.mode = DialogMode.CREATE;
@@ -195,10 +193,10 @@ export default Vue.extend({
           valid: true,
           startDateTime: gqlEntry.start,
           stopDateTime: gqlEntry.stop,
-          minutes: 0
+          minutes: 0,
         },
         description: gqlEntry.description,
-        projectId: gqlEntry.project.id
+        projectId: gqlEntry.project.id,
       } as Entry;
 
       this.dialog.mode = DialogMode.UPDATE;
@@ -228,15 +226,15 @@ export default Vue.extend({
               projectId: uiEntry.projectId,
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
-              description: uiEntry.description
-            }
-          }
+              description: uiEntry.description,
+            },
+          },
         })
-        .then(result => {
+        .then((result) => {
           this.accountEntries.push(result.data!.createEntry);
           this.showSnackbar("Added time entry");
         })
-        .catch(error => this.showSnackbar(error));
+        .catch((error) => this.showSnackbar(error));
     },
 
     updateEntry(uiEntry: Entry) {
@@ -249,19 +247,19 @@ export default Vue.extend({
               start: uiEntry.startStop.startDateTime,
               stop: uiEntry.startStop.stopDateTime,
               description: uiEntry.description,
-              projectId: uiEntry.projectId
-            }
-          }
+              projectId: uiEntry.projectId,
+            },
+          },
         })
-        .then(result => {
+        .then((result) => {
           const updateEntry = result.data!.updateEntry;
           const idx = this.accountEntries.findIndex(
-            elt => elt.id === updateEntry.id
+            (elt) => elt.id === updateEntry.id
           );
           this.$set(this.accountEntries, idx, updateEntry);
           this.showSnackbar("Updated time entry");
         })
-        .catch(error => this.showSnackbar(error));
+        .catch((error) => this.showSnackbar(error));
     },
 
     deleteEntry(entryId: number) {
@@ -269,16 +267,18 @@ export default Vue.extend({
         .mutate<DeleteEntry>({
           mutation: DELETE_ENTRY,
           variables: {
-            id: entryId
-          } as DeleteEntryVariables
+            id: entryId,
+          } as DeleteEntryVariables,
         })
         .then(() => {
-          const idx = this.accountEntries.findIndex(elt => elt.id === entryId);
+          const idx = this.accountEntries.findIndex(
+            (elt) => elt.id === entryId
+          );
           this.accountEntries.splice(idx, 1);
           this.showSnackbar("Deleted time entry");
         })
-        .catch(error => this.showSnackbar(error));
-    }
+        .catch((error) => this.showSnackbar(error));
+    },
   },
 
   filters: {
@@ -288,7 +288,7 @@ export default Vue.extend({
 
     formatTime(dt: string) {
       return fancyTime(dt);
-    }
-  }
+    },
+  },
 });
 </script>

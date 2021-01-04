@@ -10,7 +10,7 @@ export default Vue.extend({
   name: "App",
 
   components: {
-    DefaultLayout
-  }
+    DefaultLayout,
+  },
 });
 </script>

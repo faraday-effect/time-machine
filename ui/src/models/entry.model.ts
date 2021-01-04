@@ -83,7 +83,7 @@ export class Entries {
   readonly entries: Entry[];
 
   constructor(entries: EntryFields[]) {
-    this.entries = entries.map(entry => new Entry(entry));
+    this.entries = entries.map((entry) => new Entry(entry));
   }
 
   get minutes() {
@@ -96,13 +96,13 @@ export class Entries {
 
   private byGroups(iteratee: string) {
     const groups = groupBy(this.entries, iteratee);
-    return Object.entries(groups).map(function([key, val]) {
+    return Object.entries(groups).map(function ([key, val]) {
       const minutes = totalMinutes(val);
       return {
         groupName: key,
         entries: val,
         minutes,
-        duration: hoursMinutes(minutes)
+        duration: hoursMinutes(minutes),
       };
     });
   }

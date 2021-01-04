@@ -19,7 +19,7 @@ import { Entries } from "@/models/entry.model";
 import GroupBy from "@/components/GroupBy.vue";
 import {
   EntriesByAccount,
-  EntriesByAccountVariables
+  EntriesByAccountVariables,
 } from "@/graphql/types/EntriesByAccount";
 import { ENTRIES_BY_ACCOUNT, READ_ENTRIES } from "@/graphql/entries.graphql";
 
@@ -27,7 +27,7 @@ export default Vue.extend({
   name: "StudentReports",
 
   components: {
-    GroupBy
+    GroupBy,
   },
 
   data() {
@@ -36,8 +36,8 @@ export default Vue.extend({
 
       snackbar: {
         visible: false,
-        content: ""
-      }
+        content: "",
+      },
     };
   },
 
@@ -47,25 +47,25 @@ export default Vue.extend({
       this.$apollo
         .query<EntriesByAccount, EntriesByAccountVariables>({
           query: ENTRIES_BY_ACCOUNT,
-          variables: { accountId: this.$store.state.claims.id }
+          variables: { accountId: this.$store.state.claims.id },
         })
         .then(
-          result =>
+          (result) =>
             (this.selectedEntries = new Entries(
               result.data.readEntriesByAccount
             ))
         )
-        .catch(error => this.showSnackbar(error));
+        .catch((error) => this.showSnackbar(error));
     },
 
     showSnackbar(content: string) {
       this.snackbar.content = content;
       this.snackbar.visible = true;
-    }
+    },
   },
 
   mounted() {
     this.getEntries();
-  }
+  },
 });
 </script>

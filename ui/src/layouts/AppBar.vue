@@ -18,22 +18,12 @@
 
       <v-list>
         <template v-if="hasRole('admin')">
-          <v-list-item :to="{ name: 'roles' }">
-            Roles
-          </v-list-item>
-          <v-list-item :to="{ name: 'projects' }">
-            Projects
-          </v-list-item>
-          <v-list-item :to="{ name: 'grader' }">
-            Grader
-          </v-list-item>
+          <v-list-item :to="{ name: 'roles' }"> Roles </v-list-item>
+          <v-list-item :to="{ name: 'projects' }"> Projects </v-list-item>
+          <v-list-item :to="{ name: 'grader' }"> Grader </v-list-item>
         </template>
-        <v-list-item :to="{ name: 'home' }">
-          Entries
-        </v-list-item>
-        <v-list-item :to="{ name: 'reports' }">
-          Reports
-        </v-list-item>
+        <v-list-item :to="{ name: 'home' }"> Entries </v-list-item>
+        <v-list-item :to="{ name: 'reports' }"> Reports </v-list-item>
 
         <v-divider />
 
@@ -67,13 +57,13 @@ export default Vue.extend({
     logOut() {
       this.$store.commit("logOut");
       this.$router.push({ name: "login" });
-    }
+    },
   },
 
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
-    }
-  }
+    },
+  },
 });
 </script>

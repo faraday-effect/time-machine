@@ -36,7 +36,7 @@ export default Vue.extend({
   props: {
     value: { type: Boolean, required: true },
     title: { type: String, required: true },
-    project: { type: Object as () => Project }
+    project: { type: Object as () => Project },
   },
 
   data() {
@@ -44,11 +44,11 @@ export default Vue.extend({
       form: {
         title: "",
         description: "",
-        active: false
+        active: false,
       } as Project,
 
       formValid: false,
-      required: [(v: string) => !!v || "Required field"]
+      required: [(v: string) => !!v || "Required field"],
     };
   },
 
@@ -60,7 +60,7 @@ export default Vue.extend({
     onSubmit() {
       this.$emit("ready", this.form);
       this.$emit("input", false);
-    }
+    },
   },
 
   watch: {
@@ -68,8 +68,8 @@ export default Vue.extend({
       handler(newValue: Project) {
         this.form = { ...newValue }; // Don't clobber parent.
       },
-      immediate: true
-    }
-  }
+      immediate: true,
+    },
+  },
 });
 </script>

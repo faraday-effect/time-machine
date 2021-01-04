@@ -20,13 +20,13 @@ export default Vue.extend({
 
   props: {
     minutes: { type: Number, required: true },
-    warning: { type: String }
+    warning: { type: String },
   },
 
   computed: {
     hrMin() {
       return yearsDaysHoursMinutes(this.minutes);
-    }
-  }
+    },
+  },
 });
 </script>

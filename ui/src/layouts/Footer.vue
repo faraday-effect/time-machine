@@ -1,8 +1,6 @@
 <template>
   <v-footer app dark>
-    <span class="title text-uppercase font-weight-light">
-      Faraday
-    </span>
+    <span class="title text-uppercase font-weight-light"> Faraday </span>
     <v-spacer />
     <span class="caption text-uppercase">
       &copy; Copyright {{ theYear }} Tom Nurkkala
@@ -17,7 +15,7 @@ export default {
   computed: {
     theYear() {
       return new Date().getFullYear();
-    }
-  }
+    },
+  },
 };
 </script>

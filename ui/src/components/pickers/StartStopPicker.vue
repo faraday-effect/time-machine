@@ -23,11 +23,11 @@ import Duration from "@/components/Duration.vue";
 import {
   yearsDaysHoursMinutes,
   minutesBetween,
-  nowDateTime
+  nowDateTime,
 } from "@/helpers/time-and-date";
 import {
   EntryStartStop,
-  MAX_MINUTES
+  MAX_MINUTES,
 } from "@/components/pickers/entry-entities";
 
 export default Vue.extend({
@@ -35,38 +35,38 @@ export default Vue.extend({
 
   components: {
     DateTimePicker,
-    Duration
+    Duration,
   },
 
   props: {
-    value: {} as () => EntryStartStop
+    value: {} as () => EntryStartStop,
   },
 
   data() {
     return {
       startDateTime: "",
-      stopDateTime: ""
+      stopDateTime: "",
     };
   },
 
   created() {
     this.$watch(
-      function() {
+      function () {
         return this.startDateTime + this.stopDateTime;
       },
-      function() {
+      function () {
         this.$emit("input", {
           startDateTime: this.startDateTime,
           stopDateTime: this.stopDateTime,
           minutes: this.minutes,
-          valid: this.isValid
+          valid: this.isValid,
         } as EntryStartStop);
       }
     );
 
     this.$watch(
       "value",
-      function(newValue) {
+      function (newValue) {
         const now = nowDateTime(); // Get time once to maintain consistency.
         this.startDateTime = newValue.startDateTime || now;
         this.stopDateTime = newValue.stopDateTime || now;
@@ -103,7 +103,7 @@ export default Vue.extend({
         this.minutes > 0 &&
         this.minutes < MAX_MINUTES
       );
-    }
-  }
+    },
+  },
 });
 </script>

@@ -3,7 +3,7 @@ import Vuex, { GetterTree, MutationTree } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import {
   LogIn_login as LogInResponse,
-  LogIn_login_claims as JWTClaims
+  LogIn_login_claims as JWTClaims,
 } from "@/graphql/types/LogIn";
 
 Vue.use(Vuex);
@@ -19,10 +19,10 @@ const getters = <GetterTree<State, any>>{
   },
 
   hasRole(state) {
-    return function(roleName: string) {
-      return state.claims.roles.some(role => role.name === roleName);
+    return function (roleName: string) {
+      return state.claims.roles.some((role) => role.name === roleName);
     };
-  }
+  },
 };
 
 const mutations = <MutationTree<State>>{
@@ -34,14 +34,14 @@ const mutations = <MutationTree<State>>{
   logOut(state) {
     state.token = "";
     state.claims = {} as JWTClaims;
-  }
+  },
 };
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: new State(),
   getters,
-  mutations
+  mutations,
 });
 
 // https://stackoverflow.com/questions/53807294/how-is-the-correct-way-to-work-with-vuex-and-typescript

@@ -30,7 +30,7 @@ export default Vue.extend({
   props: {
     value: { type: Boolean, required: true },
     title: { type: String, required: true },
-    role: { type: Object as () => Role }
+    role: { type: Object as () => Role },
   },
 
   data() {
@@ -40,7 +40,7 @@ export default Vue.extend({
       } as Role,
 
       formValid: false,
-      required: [(v: string) => !!v || "Required field"]
+      required: [(v: string) => !!v || "Required field"],
     };
   },
 
@@ -52,7 +52,7 @@ export default Vue.extend({
     onSubmit() {
       this.$emit("ready", this.form);
       this.$emit("input", false);
-    }
+    },
   },
 
   watch: {
@@ -60,8 +60,8 @@ export default Vue.extend({
       handler(newValue: Role) {
         this.form = { ...newValue }; // Don't clobber parent.
       },
-      immediate: true
-    }
-  }
+      immediate: true,
+    },
+  },
 });
 </script>

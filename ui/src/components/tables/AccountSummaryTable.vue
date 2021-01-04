@@ -21,8 +21,8 @@ export default Vue.extend({
 
   apollo: {
     accountSummaries: {
-      query: ACCOUNT_SUMMARIES
-    }
+      query: ACCOUNT_SUMMARIES,
+    },
   },
 
   data() {
@@ -34,21 +34,21 @@ export default Vue.extend({
         { text: "Last Name", value: "lastName" },
         { text: "Entries", value: "entryCount", align: "end" },
         { text: "Minutes", value: "totalMinutes", align: "end" },
-        { text: "Duration", value: "duration", align: "end", sortable: false }
-      ]
+        { text: "Duration", value: "duration", align: "end", sortable: false },
+      ],
     };
   },
 
   methods: {
     onRowClick(row: AccountSummary) {
       this.$emit("click", row);
-    }
+    },
   },
 
   filters: {
     formatTime(minutes: number) {
       return hoursMinutes(minutes);
-    }
-  }
+    },
+  },
 });
 </script>

@@ -74,14 +74,14 @@ export default Vue.extend({
           (v: string) => /[A-Z]/.test(v) || "Upper case letter required",
           (v: string) => /[a-z]/.test(v) || "Lower case letter required",
           (v: string) => /\d/.test(v) || "Digit required",
-          (v: string) => v.length > 6 || "Minimum six characters"
-        ]
+          (v: string) => v.length > 6 || "Minimum six characters",
+        ],
       },
 
       snackbar: {
         show: false,
-        text: ""
-      }
+        text: "",
+      },
     };
   },
 
@@ -98,11 +98,11 @@ export default Vue.extend({
           variables: {
             credentials: {
               email: this.email,
-              password: this.password
-            }
-          } as LogInVariables
+              password: this.password,
+            },
+          } as LogInVariables,
         })
-        .then(response => {
+        .then((response) => {
           this.$store.commit("logIn", response.data!.login);
           this.$router.push({ name: "home" });
         })
@@ -110,7 +110,7 @@ export default Vue.extend({
           this.$store.commit("logOut");
           this.showSnackbar("Invalid credentials; please try again.");
         });
-    }
-  }
+    },
+  },
 });
 </script>

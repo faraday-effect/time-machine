@@ -62,7 +62,7 @@ import Vue from "vue";
 import { CREATE_ACCOUNT } from "@/graphql/accounts.graphql";
 import {
   CreateAccount,
-  CreateAccountVariables
+  CreateAccountVariables,
 } from "@/graphql/types/CreateAccount";
 import { collectErrorMessages } from "@/helpers/graphql";
 
@@ -81,8 +81,8 @@ export default Vue.extend({
 
       snackbar: {
         show: false,
-        text: ""
-      }
+        text: "",
+      },
     };
   },
 
@@ -94,14 +94,15 @@ export default Vue.extend({
           (v: string) => /[A-Z]/.test(v) || "Upper case letter required",
           (v: string) => /[a-z]/.test(v) || "Lower case letter required",
           (v: string) => /\d/.test(v) || "Digit required",
-          (v: string) => v.length > 6 || "Minimum six characters"
+          (v: string) => v.length > 6 || "Minimum six characters",
         ],
         passwordMatch: [
-          (v: string) => (!!v && v) === this.password || "Passwords don't match"
+          (v: string) =>
+            (!!v && v) === this.password || "Passwords don't match",
         ],
-        name: [(v: string) => v.length > 2 || "Too short"]
+        name: [(v: string) => v.length > 2 || "Too short"],
       };
-    }
+    },
   },
 
   methods: {
@@ -119,20 +120,20 @@ export default Vue.extend({
               email: this.email,
               password: this.password,
               firstName: this.firstName,
-              lastName: this.lastName
-            }
-          } as CreateAccountVariables
+              lastName: this.lastName,
+            },
+          } as CreateAccountVariables,
         })
-        .then(result => {
+        .then((result) => {
           this.showSnackbar(
             `${result.data!.createAccount.firstName} signed up successfully`
           );
           this.$router.push({ name: "login" });
         })
-        .catch(errResult =>
+        .catch((errResult) =>
           this.showSnackbar(collectErrorMessages(errResult.graphQLErrors))
         );
-    }
-  }
+    },
+  },
 });
 </script>

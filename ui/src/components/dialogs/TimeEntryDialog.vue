@@ -30,13 +30,13 @@ export default Vue.extend({
 
   props: {
     value: { type: Boolean, required: true },
-    initialEntry: {} as () => Entry
+    initialEntry: {} as () => Entry,
   },
 
   data() {
     return {
       canSubmit: false,
-      entry: {} as Entry
+      entry: {} as Entry,
     };
   },
 
@@ -48,7 +48,7 @@ export default Vue.extend({
     onSubmit() {
       this.$emit("result", this.entry);
       this.close();
-    }
+    },
   },
 
   watch: {
@@ -56,8 +56,8 @@ export default Vue.extend({
       handler(newValue) {
         this.entry = { ...newValue };
       },
-      immediate: true
-    }
-  }
+      immediate: true,
+    },
+  },
 });
 </script>

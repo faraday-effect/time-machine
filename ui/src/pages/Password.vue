@@ -67,8 +67,8 @@ export default Vue.extend({
 
       snackbar: {
         visible: false,
-        text: ""
-      }
+        text: "",
+      },
     };
   },
 
@@ -79,14 +79,14 @@ export default Vue.extend({
           (v: string) => /[A-Z]/.test(v) || "Upper case letter required",
           (v: string) => /[a-z]/.test(v) || "Lower case letter required",
           (v: string) => /\d/.test(v) || "Digit required",
-          (v: string) => v.length > 6 || "Minimum six characters"
+          (v: string) => v.length > 6 || "Minimum six characters",
         ],
         passwordMatch: [
           (v: string) =>
-            (!!v && v) === this.newPassword || "Passwords don't match"
-        ]
+            (!!v && v) === this.newPassword || "Passwords don't match",
+        ],
       };
-    }
+    },
   },
 
   methods: {
@@ -107,13 +107,13 @@ export default Vue.extend({
             passwordInput: {
               accountId: this.$store.state.claims.id,
               currentPassword: this.currentPassword,
-              newPassword: this.newPassword
-            } as ChangePasswordInput
-          }
+              newPassword: this.newPassword,
+            } as ChangePasswordInput,
+          },
         })
         .then(() => this.$router.push({ name: "home" }))
-        .catch(error => this.showSnackbar(error));
-    }
-  }
+        .catch((error) => this.showSnackbar(error));
+    },
+  },
 });
 </script>

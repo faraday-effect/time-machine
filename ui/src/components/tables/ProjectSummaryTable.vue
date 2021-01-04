@@ -17,8 +17,8 @@ export default Vue.extend({
 
   apollo: {
     projectSummaries: {
-      query: PROJECT_SUMMARIES
-    }
+      query: PROJECT_SUMMARIES,
+    },
   },
 
   data() {
@@ -29,15 +29,15 @@ export default Vue.extend({
         { text: "Title", value: "title" },
         { text: "Entries", value: "entryCount", align: "end" },
         { text: "Minutes", value: "totalMinutes", align: "end" },
-        { text: "Duration", value: "duration", align: "end", sortable: false }
-      ]
+        { text: "Duration", value: "duration", align: "end", sortable: false },
+      ],
     };
   },
 
   filters: {
     formatTime(minutes: number) {
       return hoursMinutes(minutes);
-    }
-  }
+    },
+  },
 });
 </script>

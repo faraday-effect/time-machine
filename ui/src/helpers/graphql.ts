@@ -13,11 +13,11 @@ interface ClientSideError {
     error: string;
     message: string;
   };
-  locations: [];
-  path: [];
+  locations: string[];
+  path: string[];
   extensions: {};
 }
 
 export function collectErrorMessages(errors: ClientSideError[]) {
-  return errors.map(error => error.message.message).join(" ");
+  return errors.map((error) => error.message.message).join(" ");
 }

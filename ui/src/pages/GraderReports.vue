@@ -15,9 +15,7 @@
             <account-summary-table @click="onAccountClick" />
           </v-tab-item>
 
-          <v-tab-item>
-            NOP
-          </v-tab-item>
+          <v-tab-item> NOP </v-tab-item>
         </v-tabs>
 
         <entries-table
@@ -40,7 +38,7 @@ import ProjectSummaryTable from "@/components/tables/ProjectSummaryTable.vue";
 import AccountSummaryTable from "@/components/tables/AccountSummaryTable.vue";
 import {
   EntriesByAccount,
-  EntriesByAccountVariables
+  EntriesByAccountVariables,
 } from "@/graphql/types/EntriesByAccount";
 
 export default Vue.extend({
@@ -49,7 +47,7 @@ export default Vue.extend({
   components: {
     ProjectSummaryTable,
     AccountSummaryTable,
-    EntriesTable
+    EntriesTable,
   },
 
   data() {
@@ -60,8 +58,8 @@ export default Vue.extend({
 
       snackbar: {
         visible: false,
-        content: ""
-      }
+        content: "",
+      },
     };
   },
 
@@ -70,10 +68,10 @@ export default Vue.extend({
       this.$apollo
         .query<EntriesByAccount, EntriesByAccountVariables>({
           query: ENTRIES_BY_ACCOUNT,
-          variables: { accountId: row.accountId }
+          variables: { accountId: row.accountId },
         })
         .then(
-          result =>
+          (result) =>
             (this.selectedEntries = new Entries(
               result.data.readEntriesByAccount
             ))
@@ -83,7 +81,7 @@ export default Vue.extend({
     showSnackbar(content: string) {
       this.snackbar.content = content;
       this.snackbar.visible = true;
-    }
-  }
+    },
+  },
 });
 </script>

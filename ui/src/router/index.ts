@@ -25,12 +25,12 @@ const routes = [
   {
     name: "home",
     path: "/",
-    component: Entries
+    component: Entries,
   },
   {
     name: "reports",
     path: "/reports",
-    component: StudentReports
+    component: StudentReports,
   },
 
   // Role-restricted routes
@@ -38,32 +38,32 @@ const routes = [
     name: "projects",
     path: "/projects",
     component: Projects,
-    meta: { roleRequired: "admin" }
+    meta: { roleRequired: "admin" },
   },
   {
     name: "roles",
     path: "/roles",
     component: Roles,
-    meta: { roleRequired: "admin" }
+    meta: { roleRequired: "admin" },
   },
   {
     name: "grader",
     path: "/grader",
     component: GraderReports,
-    meta: { roleRequired: "admin" }
+    meta: { roleRequired: "admin" },
   },
 
-  { path: "*", component: NotFound }
+  { path: "*", component: NotFound },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 function roleOk(matchedRecords: RouteRecord[]) {
-  for (let record of matchedRecords) {
+  for (const record of matchedRecords) {
     const roleReq = get(record, "meta.roleRequired");
     if (roleReq && !vuexStore.getters.hasRole(roleReq)) {
       return false; // Role required and not present

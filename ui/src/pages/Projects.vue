@@ -25,9 +25,7 @@
           <v-icon v-if="item.active" color="success">
             mdi-check-circle-outline
           </v-icon>
-          <v-icon v-else color="error">
-            mdi-minus-circle-outline
-          </v-icon>
+          <v-icon v-else color="error"> mdi-minus-circle-outline </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -59,22 +57,22 @@ import {
   ALL_PROJECTS,
   CREATE_PROJECT,
   DELETE_PROJECT,
-  UPDATE_PROJECT
+  UPDATE_PROJECT,
 } from "@/graphql/projects.graphql";
 import ActionIcons from "@/components/ActionIcons.vue";
 import ProjectDialog from "@/components/dialogs/ProjectDialog.vue";
 import {
   CreateProject,
   CreateProject_newProject as Project,
-  CreateProjectVariables
+  CreateProjectVariables,
 } from "@/graphql/types/CreateProject";
 import {
   DeleteProject,
-  DeleteProjectVariables
+  DeleteProjectVariables,
 } from "@/graphql/types/DeleteProject";
 import {
   UpdateProject,
-  UpdateProjectVariables
+  UpdateProjectVariables,
 } from "@/graphql/types/UpdateProject";
 import { pick } from "lodash";
 
@@ -83,13 +81,13 @@ export default Vue.extend({
 
   components: {
     ActionIcons,
-    ProjectDialog
+    ProjectDialog,
   },
 
   apollo: {
     allProjects: {
-      query: ALL_PROJECTS
-    }
+      query: ALL_PROJECTS,
+    },
   },
 
   data() {
@@ -99,25 +97,25 @@ export default Vue.extend({
       sortBy: "title",
 
       createDialog: {
-        visible: false
+        visible: false,
       },
 
       updateDialog: {
         project: {} as Project,
-        visible: false
+        visible: false,
       },
 
       headers: [
         { text: "Title", value: "title" },
         { text: "Description", value: "description" },
         { text: "Active", value: "active" },
-        { text: "Actions", value: "actions" }
+        { text: "Actions", value: "actions" },
       ],
 
       snackbar: {
         visible: false,
-        content: ""
-      }
+        content: "",
+      },
     };
   },
 
@@ -141,10 +139,10 @@ export default Vue.extend({
         .mutate<CreateProject>({
           mutation: CREATE_PROJECT,
           variables: {
-            createInput: project
-          } as CreateProjectVariables
+            createInput: project,
+          } as CreateProjectVariables,
         })
-        .then(result => {
+        .then((result) => {
           const newProject = result.data!.newProject;
           this.allProjects.push(newProject);
           this.showSnackbar(`Created project ${newProject.title}`);
@@ -156,13 +154,18 @@ export default Vue.extend({
         .mutate<UpdateProject>({
           mutation: UPDATE_PROJECT,
           variables: {
-            updateInput: pick(project, ["id", "title", "description", "active"])
-          } as UpdateProjectVariables
+            updateInput: pick(project, [
+              "id",
+              "title",
+              "description",
+              "active",
+            ]),
+          } as UpdateProjectVariables,
         })
-        .then(result => {
+        .then((result) => {
           const updatedProject = result.data!.updatedProject;
           const idx = this.allProjects.findIndex(
-            project => project.id === updatedProject.id
+            (project) => project.id === updatedProject.id
           );
           this.$set(this.allProjects, idx, updatedProject);
           this.showSnackbar(`Updated project ${updatedProject.title}`);
@@ -173,14 +176,16 @@ export default Vue.extend({
       this.$apollo
         .mutate<DeleteProject>({
           mutation: DELETE_PROJECT,
-          variables: { id } as DeleteProjectVariables
+          variables: { id } as DeleteProjectVariables,
         })
         .then(() => {
-          const idx = this.allProjects.findIndex(project => project.id === id);
+          const idx = this.allProjects.findIndex(
+            (project) => project.id === id
+          );
           this.allProjects.splice(idx, 1);
           this.showSnackbar("Project deleted");
         });
-    }
-  }
+    },
+  },
 });
 </script>

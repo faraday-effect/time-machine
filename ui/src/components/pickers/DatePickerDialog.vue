@@ -32,18 +32,18 @@ export default Vue.extend({
   props: {
     label: {
       type: String,
-      default: "Choose a date"
+      default: "Choose a date",
     },
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
     return {
       date: this.value,
-      isOpen: false
+      isOpen: false,
     };
   },
 
@@ -51,13 +51,13 @@ export default Vue.extend({
     onOkay() {
       (this.$refs.dialog as any).save(this.date);
       this.$emit("input", this.date);
-    }
+    },
   },
 
   watch: {
     value(newVal) {
       this.date = newVal;
-    }
-  }
+    },
+  },
 });
 </script>

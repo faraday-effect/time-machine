@@ -26,7 +26,7 @@ import {
   fancyDate,
   fancyTime,
   minutesBetween,
-  yearsDaysHoursMinutes
+  yearsDaysHoursMinutes,
 } from "@/helpers/time-and-date";
 import { sortBy } from "lodash";
 import ActionIcons from "@/components/ActionIcons.vue";
@@ -36,22 +36,22 @@ export default Vue.extend({
   name: "EntriesTable",
 
   components: {
-    ActionIcons
+    ActionIcons,
   },
 
   props: {
     entries: {
       type: Object as () => Entries,
-      required: true
+      required: true,
     },
     chronologicalOrder: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showActions: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   data() {
@@ -61,7 +61,7 @@ export default Vue.extend({
       { text: "Stop" },
       { text: "Duration", align: "end" },
       { text: "Project" },
-      { text: "Description", width: "40%" }
+      { text: "Description", width: "40%" },
     ];
 
     if (this.showActions) {
@@ -69,18 +69,18 @@ export default Vue.extend({
     }
 
     return {
-      headers
+      headers,
     };
   },
 
   computed: {
     sortedEntries(): Entry[] {
-      const sorted = sortBy(this.entries.entries, elt => elt.start);
+      const sorted = sortBy(this.entries.entries, (elt) => elt.start);
       if (!this.chronologicalOrder) {
         return sorted.reverse();
       }
       return sorted;
-    }
+    },
   },
 
   methods: {
@@ -95,7 +95,7 @@ export default Vue.extend({
         result.push(`(+${delta}d)`);
       }
       return result.join(" ");
-    }
+    },
   },
 
   filters: {
@@ -105,7 +105,7 @@ export default Vue.extend({
 
     formatTime(dt: string) {
       return fancyTime(dt);
-    }
-  }
+    },
+  },
 });
 </script>

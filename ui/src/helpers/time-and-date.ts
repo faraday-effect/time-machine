@@ -5,8 +5,8 @@ type DurationUnit = "years" | "months" | "days" | "hours" | "minutes";
 export function durationAs(minutes: number, ...units: DurationUnit[]) {
   const shifted = Duration.fromObject({ minutes }).shiftTo(...units);
   const segments = units
-    .filter(unit => shifted[unit] > 0)
-    .map(unit => `${shifted[unit]}${unit[0]}`);
+    .filter((unit) => shifted[unit] > 0)
+    .map((unit) => `${shifted[unit]}${unit[0]}`);
   return segments.join(" ");
 }
 

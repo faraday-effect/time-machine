@@ -5,20 +5,20 @@ import Vue from "vue";
 import VueApollo from "vue-apollo";
 
 const httpLink = new HttpLink({
-  uri: "/graphql"
+  uri: "/graphql",
 });
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
-  connectToDevTools: true
+  connectToDevTools: true,
 });
 
 Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 });
 
 export default apolloProvider;
