@@ -12,5 +12,7 @@ staging:
 
 production:
   hosts:
+    faraday:
+      server_name: "faraday.cse.taylor.edu"
   vars:
     node_env: production

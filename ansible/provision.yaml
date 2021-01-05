@@ -48,6 +48,7 @@
   become: yes
   vars_files:
     - public.yaml
+    - private.yaml
   tasks:
     - name: create owner
       when: inventory_hostname not in groups.development
@@ -60,6 +61,8 @@
   hosts: staging, production
   tags: db
   become: yes
+  vars_files:
+    - private.yaml
   become_user: postgres
   tasks:
     - name: create database user
@@ -79,6 +82,7 @@
   become_user: "{{ owner.username }}"
   vars_files:
     - public.yaml
+    - private.yaml
   tasks:
     - name: clone application from GitHub
       git:
@@ -93,6 +97,7 @@
   become_user: "{{ owner.username }}"
   vars_files:
     - public.yaml
+    - private.yaml
   tasks:
     - name: create server .env file
       template:
@@ -125,6 +130,7 @@
   become_user: "{{ owner.username }}"
   vars_files:
     - public.yaml
+    - private.yaml
   tasks:
     - name: install pm2 # run as root, installs in /usr/local/bin
       become_user: root
