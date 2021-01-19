@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Should already be running an SSH session to galilee-port-forward.
+# Run from CSE network or with VPN turned on.
 
 ansible-playbook \
   --ask-become-pass \
