@@ -35,6 +35,14 @@
             </td>
           </tr>
         </template>
+
+        <template v-slot:[`body.append`]>
+          <tr>
+            <td class="text-right text-uppercase" colspan="3">Total</td>
+            <td class="text-right">{{ totalDuration }}</td>
+            <td colspan="3" />
+          </tr>
+        </template>
       </v-data-table>
     </v-card>
 
@@ -129,6 +137,13 @@ export default Vue.extend({
         return sorted.reverse();
       }
       return sorted;
+    },
+
+    totalDuration(): string {
+      const durationMinutes = this.accountEntries
+        .map((entry) => minutesBetween(entry.start, entry.stop))
+        .reduce((totalMinutes, minutes) => totalMinutes + minutes, 0);
+      return yearsDaysHoursMinutes(durationMinutes);
     },
   },
 
