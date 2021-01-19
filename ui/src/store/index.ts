@@ -11,6 +11,7 @@ Vue.use(Vuex);
 export class State {
   token: string = "";
   claims: JWTClaims = {} as JWTClaims;
+  darkMode: boolean = true;
 }
 
 const getters = <GetterTree<State, any>>{
@@ -34,6 +35,10 @@ const mutations = <MutationTree<State>>{
   logOut(state) {
     state.token = "";
     state.claims = {} as JWTClaims;
+  },
+
+  setDarkMode(state, newValue: boolean) {
+    state.darkMode = newValue;
   },
 };
 

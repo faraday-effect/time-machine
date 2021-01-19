@@ -6,27 +6,25 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapMutations, mapState } from "vuex";
 
 export default Vue.extend({
   name: "LightDarkSwitcher",
 
-  data: () => ({
-    dark: false,
-  }),
-
   computed: {
-    currentIcon() {
-      return this.dark ? "mdi-lightbulb-on" : "mdi-lightbulb-off";
+    ...mapState(["darkMode"]),
+    currentIcon(): string {
+      return this.darkMode ? "mdi-lightbulb-on" : "mdi-lightbulb-off";
     },
   },
 
   methods: {
+    ...mapMutations(["setDarkMode"]),
     flipSwitch() {
-      this.dark = !this.dark;
-      this.$vuetify.theme.dark = this.dark;
+      const newValue = !this.darkMode;
+      this.setDarkMode(newValue);
+      this.$vuetify.theme.dark = newValue;
     },
   },
 });
 </script>
-
-<style scoped></style>
