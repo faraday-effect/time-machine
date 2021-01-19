@@ -1,9 +1,9 @@
 <template>
-  <v-footer app dark>
+  <v-footer app>
     <span class="title text-uppercase font-weight-light"> Faraday </span>
     <v-spacer />
     <span class="caption text-uppercase">
-      &copy; Copyright {{ theYear }} Tom Nurkkala
+      &copy; Copyright 2020&ndash;{{ theYear }} Tom Nurkkala
     </span>
   </v-footer>
 </template>

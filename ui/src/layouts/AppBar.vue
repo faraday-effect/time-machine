@@ -37,17 +37,26 @@
       </v-list>
     </v-menu>
 
-    <v-btn text href="https://github.com/faraday-effect/time-machine">
-      <v-icon color="grey">mdi-github-circle</v-icon>
+    <light-dark-switcher />
+
+    <v-btn
+      text
+      href="https://github.com/faraday-effect/time-machine"
+      target="_blank"
+    >
+      <v-icon>mdi-github</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import LightDarkSwitcher from "@/layouts/LightDarkSwitcher.vue";
 
 export default Vue.extend({
   name: "AppBar",
+
+  components: { LightDarkSwitcher },
 
   methods: {
     hasRole(roleName: string) {
