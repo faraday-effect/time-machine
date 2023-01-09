@@ -20,7 +20,7 @@
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "lodash": "^4.17.20",
-    "luxon": "^1.25.0",
+    "luxon": "^1.28.1",
     "vue": "^2.6.12",
     "vue-apollo": "^3.0.5",
     "vue-router": "^3.4.9",
